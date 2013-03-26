@@ -39,7 +39,7 @@ public class MainMenuScene extends Scene {
 		final Text menuSelectText = new Text(x, y, font, MENU_SELECT_STRING, MENU_SELECT_STRING.length(), engine.getVertexBufferObjectManager());
 		attachChild(menuSelectText);
 		
-		final Sprite a_button = new Sprite(x-30, y, 65, 80, ResourceManager.getInstance().mA_BUTTON, engine.getVertexBufferObjectManager());
+		final Sprite a_button = new Sprite(x-30, y, 65, 80, ResourceManager.getInstance().mO_BUTTON, engine.getVertexBufferObjectManager());
 		attachChild(a_button);
 		
 		engine.registerUpdateHandler(new TimerHandler(1, true, new ITimerCallback() {

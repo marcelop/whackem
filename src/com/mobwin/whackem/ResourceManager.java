@@ -34,8 +34,14 @@ public class ResourceManager {
 	public ITextureRegion mU_BUTTON;
 	public ITextureRegion mY_BUTTON;
 	public ITextureRegion mA_BUTTON;
-	public ITextureRegion mGameBackgroundTextureRegion;
 	public ITextureRegion mMenuBackgroundTextureRegion;
+	
+	public ITextureRegion mGameBackgroundTextureRegion;
+	public ITextureRegion mGameDirtRegion;
+	public ITextureRegion mGameHolesRegion1;
+	public ITextureRegion mGameHolesRegion2;
+	public ITextureRegion mGameHolesRegion3;
+	public ITextureRegion mGameHolesRegion4;
 
 	public Sound mSound;
 
@@ -88,7 +94,21 @@ public class ResourceManager {
 		button = new BitmapTextureAtlas(pEngine.getTextureManager(), 200, 200, TextureOptions.BILINEAR);
 		mA_BUTTON = BitmapTextureAtlasTextureRegionFactory.createFromAsset(button, pContext, "ouya/OUYA_A.png", 0, 0); button.load();
 
-	
+		//Load Game Textures
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
+		
+		BitmapTextureAtlas textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 1422, 640, TextureOptions.BILINEAR);
+		mGameBackgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "background/background_1@2x.png", 0, 0); textureAtlas.load();
+		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 512, 384, TextureOptions.BILINEAR);
+		mGameDirtRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "background/bg_dirt.png", 0, 0); textureAtlas.load();
+		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 1280, 720, TextureOptions.BILINEAR);
+		mGameHolesRegion1 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "background/bg_layer1.png", 0, 0); textureAtlas.load();
+		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 1280, 720, TextureOptions.BILINEAR);
+		mGameHolesRegion2 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "background/bg_layer2.png", 0, 0); textureAtlas.load();
+		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 1280, 720, TextureOptions.BILINEAR);
+		mGameHolesRegion3 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "background/bg_layer3.png", 0, 0); textureAtlas.load();
+		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 1280, 720, TextureOptions.BILINEAR);
+		mGameHolesRegion4 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "background/bg_layer4.png", 0, 0); textureAtlas.load();
 
 	}
 

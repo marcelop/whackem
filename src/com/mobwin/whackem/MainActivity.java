@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 
+import com.mobwin.whackem.scenes.GameScene;
 import com.mobwin.whackem.scenes.MainMenuScene;
 import com.mobwin.whackem.scenes.SplashScene;
 
@@ -36,6 +37,7 @@ public class MainActivity extends BaseGameActivity {
 	// We'll be creating 1 scene for our main menu and one for our splash image
 	private Scene mMenuScene;
 	private Scene mSplashScene;
+	private GameScene mGameScene;
 	
 	private Camera mCamera;
 	
@@ -85,8 +87,14 @@ public class MainActivity extends BaseGameActivity {
 		case 47:
 			return this.onKeyUp(OuyaController.BUTTON_A, event);
 		default:
-	    	return super.onKeyUp(keyCode, event);
+			break;
 		}
+    	if(keyCode == OuyaController.BUTTON_O && mEngine.getScene().getClass().equals(MainMenuScene.class))
+    	{
+    		mEngine.setScene(mGameScene);
+    		return true;
+    	}
+    	return super.onKeyUp(keyCode, event);
     }
 	
 	//====================================================
@@ -140,6 +148,8 @@ public class MainActivity extends BaseGameActivity {
 
 		mMenuScene =  new MainMenuScene(mEngine);
 		
+		mGameScene = new GameScene(mEngine);
+		
 		// Finally, we must callback the initial scene to be loaded (splash scene)
 		pOnCreateSceneCallback.onCreateSceneFinished(mSplashScene);
 	}
@@ -181,6 +191,9 @@ public class MainActivity extends BaseGameActivity {
 //					mMenuSceneText.setVisible(true);
 			}
 		});
+		
+		
+		mGameScene.populate(mEngine);
 
 		pOnPopulateSceneCallback.onPopulateSceneFinished();	
 	}
