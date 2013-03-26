@@ -44,6 +44,9 @@ public class GameScene extends Scene {
 
 		//Layer 4
 		attachChild(new Sprite(MainActivity.WIDTH / 2, MainActivity.HEIGHT/2, MainActivity.WIDTH, MainActivity.HEIGHT, ResourceManager.getInstance().mGameHolesRegion4, mEngine.getVertexBufferObjectManager()));
+		
+		final Sprite background = new Sprite(MainActivity.WIDTH / 2, MainActivity.HEIGHT - MainActivity.HEIGHT/8, MainActivity.WIDTH, MainActivity.HEIGHT/4, ResourceManager.getInstance().mGameBackgroundTextureRegion, mEngine.getVertexBufferObjectManager());
+		attachChild(background);
 
 		//Layer 3
 		attachChild(new Sprite(MainActivity.WIDTH / 2, MainActivity.HEIGHT/2, MainActivity.WIDTH, MainActivity.HEIGHT, ResourceManager.getInstance().mGameHolesRegion3, mEngine.getVertexBufferObjectManager()));
@@ -53,9 +56,6 @@ public class GameScene extends Scene {
 
 		//Layer 1
 		attachChild(new Sprite(MainActivity.WIDTH / 2, MainActivity.HEIGHT/2, MainActivity.WIDTH, MainActivity.HEIGHT, ResourceManager.getInstance().mGameHolesRegion1, mEngine.getVertexBufferObjectManager()));
-		
-		final Sprite background = new Sprite(MainActivity.WIDTH / 2, MainActivity.HEIGHT - MainActivity.HEIGHT/8, MainActivity.WIDTH, MainActivity.HEIGHT/4, ResourceManager.getInstance().mGameBackgroundTextureRegion, mEngine.getVertexBufferObjectManager());
-		attachChild(background);
 		
 		
 //		attachChild(new Sprite(MainActivity.WIDTH / 2, 384/2, 2*MainActivity.WIDTH/3, 384/2, ResourceManager.getInstance().mGameHolesUpRegion, mEngine.getVertexBufferObjectManager()));
