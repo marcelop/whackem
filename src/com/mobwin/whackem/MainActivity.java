@@ -71,8 +71,16 @@ public class MainActivity extends BaseGameActivity {
 		case 47:
 			return this.onKeyDown(OuyaController.BUTTON_A, event);
 		default:
-	    	return super.onKeyDown(keyCode, event);
+	    	break;
 		}
+    	
+    	if(mEngine.getScene().getClass().equals(GameScene.class))
+    	{
+    		((GameScene) mEngine.getScene()).onKeyDown(keyCode, event);
+    		return true;
+    	}
+    	
+    	return super.onKeyDown(keyCode, event);
     }
     
     @Override
@@ -94,6 +102,12 @@ public class MainActivity extends BaseGameActivity {
     		mEngine.setScene(mGameScene);
     		return true;
     	}
+    	else if(mEngine.getScene().getClass().equals(GameScene.class))
+    	{
+    		((GameScene) mEngine.getScene()).onKeyUp(keyCode, event);
+    		return true;
+    	}
+    	
     	return super.onKeyUp(keyCode, event);
     }
 	

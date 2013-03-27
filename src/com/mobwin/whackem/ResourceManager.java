@@ -42,6 +42,7 @@ public class ResourceManager {
 	public ITextureRegion mGameHolesRegion2;
 	public ITextureRegion mGameHolesRegion3;
 	public ITextureRegion mGameHolesRegion4;
+	public ITextureRegion mGameHoleSelector;
 
 	public Sound mSound;
 
@@ -109,6 +110,8 @@ public class ResourceManager {
 		mGameHolesRegion3 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "background/bg_layer3.png", 0, 0); textureAtlas.load();
 		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 1280, 720, TextureOptions.BILINEAR);
 		mGameHolesRegion4 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "background/bg_layer4.png", 0, 0); textureAtlas.load();
+		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 1280, 720, TextureOptions.BILINEAR);
+		mGameHoleSelector = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "foreground/selection.png", 0, 0); textureAtlas.load();
 
 	}
 
