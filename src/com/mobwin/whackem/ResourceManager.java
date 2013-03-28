@@ -12,9 +12,11 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
+import org.andengine.opengl.texture.atlas.buildable.BuildableTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtlasBuilder;
 import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder.TextureAtlasBuilderException;
 import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.util.debug.Debug;
 
 import android.content.Context;
@@ -43,6 +45,7 @@ public class ResourceManager {
 	public ITextureRegion mGameHolesRegion3;
 	public ITextureRegion mGameHolesRegion4;
 	public ITextureRegion mGameHoleSelector;
+	public ITiledTextureRegion mGameMole;
 
 	public Sound mSound;
 
@@ -113,6 +116,17 @@ public class ResourceManager {
 		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 1280, 720, TextureOptions.BILINEAR);
 		mGameHoleSelector = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "foreground/selection.png", 0, 0); textureAtlas.load();
 
+		BuildableBitmapTextureAtlas bmpTextureAtlas = new BuildableBitmapTextureAtlas(pEngine.getTextureManager(), 1424, 200, TextureOptions.BILINEAR);
+		mGameMole = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(bmpTextureAtlas, pContext, "mole/mole.png", 8, 1);
+		try {
+			bmpTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0,0,0));
+		} catch (Exception e) {
+			e.printStackTrace(); 
+		}
+		
+		bmpTextureAtlas.load();
+		
+		
 	}
 
 	/*
