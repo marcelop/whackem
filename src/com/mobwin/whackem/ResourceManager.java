@@ -7,6 +7,7 @@ import org.andengine.audio.sound.SoundFactory;
 import org.andengine.engine.Engine;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
+import org.andengine.opengl.texture.ITexture;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
@@ -45,7 +46,13 @@ public class ResourceManager {
 	public ITextureRegion mGameHolesRegion3;
 	public ITextureRegion mGameHolesRegion4;
 	public ITextureRegion mGameHoleSelector;
+	public ITextureRegion mGameHoleSelectorAlpha;
 	public ITiledTextureRegion mGameMole;
+	public ITextureRegion mGameFlowers;
+	public ITextureRegion mGameTree;
+	public ITextureRegion mGameCloud1;
+	public ITextureRegion mGameCloud2;
+	public ITextureRegion mGameMoon;
 
 	public Sound mSound;
 
@@ -103,7 +110,7 @@ public class ResourceManager {
 		
 		BitmapTextureAtlas textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 1422, 640, TextureOptions.BILINEAR);
 		mGameBackgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "background/background_1@2x.png", 0, 0); textureAtlas.load();
-		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 512, 384, TextureOptions.BILINEAR);
+		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 512, 384, TextureOptions.BILINEAR); 
 		mGameDirtRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "background/bg_dirt.png", 0, 0); textureAtlas.load();
 		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 1280, 720, TextureOptions.BILINEAR);
 		mGameHolesRegion1 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "background/bg_layer1.png", 0, 0); textureAtlas.load();
@@ -115,6 +122,8 @@ public class ResourceManager {
 		mGameHolesRegion4 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "background/bg_layer4.png", 0, 0); textureAtlas.load();
 		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 1280, 720, TextureOptions.BILINEAR);
 		mGameHoleSelector = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "foreground/selection.png", 0, 0); textureAtlas.load();
+		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 1280, 720, TextureOptions.BILINEAR);
+		mGameHoleSelectorAlpha = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "foreground/selection_alpha.png", 0, 0); textureAtlas.load();
 
 		BuildableBitmapTextureAtlas bmpTextureAtlas = new BuildableBitmapTextureAtlas(pEngine.getTextureManager(), 1424, 200, TextureOptions.BILINEAR);
 		mGameMole = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(bmpTextureAtlas, pContext, "mole/mole.png", 8, 1);
@@ -126,6 +135,17 @@ public class ResourceManager {
 		
 		bmpTextureAtlas.load();
 		
+
+		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 301, 152, TextureOptions.BILINEAR);
+		mGameFlowers = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "background/flowers@2x.png", 0, 0); textureAtlas.load();
+		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 226, 380, TextureOptions.BILINEAR);
+		mGameTree = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "background/tree@2x.png", 0, 0); textureAtlas.load();
+		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 382, 220, TextureOptions.BILINEAR);
+		mGameCloud1 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "background/cloud_1@2x.png", 0, 0); textureAtlas.load();
+		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 268, 196, TextureOptions.BILINEAR);
+		mGameCloud2 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "background/cloud_2@2x.png", 0, 0); textureAtlas.load();
+		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 112, 146, TextureOptions.BILINEAR);
+		mGameMoon = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "background/moon@2x.png", 0, 0); textureAtlas.load();
 		
 	}
 
@@ -135,9 +155,21 @@ public class ResourceManager {
 	 */
 	public synchronized void unloadGameTextures() {
 		// call unload to remove the corresponding texture atlas from memory
-		BuildableBitmapTextureAtlas mBitmapTextureAtlas = (BuildableBitmapTextureAtlas) mGameBackgroundTextureRegion
-				.getTexture();
-		mBitmapTextureAtlas.unload();
+		mGameBackgroundTextureRegion.getTexture().unload();
+		mGameDirtRegion.getTexture().unload();
+		mGameHoleSelector.getTexture().unload();
+		mGameHolesRegion1.getTexture().unload();
+		mGameHolesRegion2.getTexture().unload();
+		mGameHolesRegion3.getTexture().unload();
+		mGameHolesRegion4.getTexture().unload();
+		mGameMole.getTexture().unload();
+		mGameFlowers.getTexture().unload();
+		mGameTree.getTexture().unload();
+		mGameCloud1.getTexture().unload();
+		mGameCloud2.getTexture().unload();
+		mGameMoon.getTexture().unload();
+		
+		
 
 		// ... Continue to unload all textures related to the 'Game' scene
 
@@ -175,9 +207,9 @@ public class ResourceManager {
 	// Once again, this method is similar to the 'Game' scene's for unloading
 	public synchronized void unloadMenuTextures() {
 		// call unload to remove the corresponding texture atlas from memory
-		BuildableBitmapTextureAtlas mBitmapTextureAtlas = (BuildableBitmapTextureAtlas) mMenuBackgroundTextureRegion
-				.getTexture();
-		mBitmapTextureAtlas.unload();
+//		BuildableBitmapTextureAtlas mBitmapTextureAtlas = (BuildableBitmapTextureAtlas) mMenuBackgroundTextureRegion
+//				.getTexture();
+//		mBitmapTextureAtlas.unload();
 
 		// ... Continue to unload all textures related to the 'Game' scene
 

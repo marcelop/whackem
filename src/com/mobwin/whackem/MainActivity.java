@@ -1,5 +1,6 @@
 package com.mobwin.whackem;
 
+import org.andengine.engine.Engine;
 import org.andengine.engine.FixedStepEngine;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
@@ -29,6 +30,7 @@ public class MainActivity extends BaseGameActivity {
 	//====================================================
 	public static final int WIDTH = 1280;
 	public static final int HEIGHT = 720;
+	public static MainActivity activiy;
 	
 
 	//====================================================
@@ -36,7 +38,7 @@ public class MainActivity extends BaseGameActivity {
 	//====================================================
 	// We'll be creating 1 scene for our main menu and one for our splash image
 	private Scene mMenuScene;
-	private Scene mSplashScene;
+	private SplashScene mSplashScene;
 	private GameScene mGameScene;
 	
 	private Camera mCamera;
@@ -54,6 +56,7 @@ public class MainActivity extends BaseGameActivity {
         Log.d("whacka", "Initializing Controller");
         OuyaController.init(this);
         Log.d("whacka", "Finished Initializing Controller");
+        activiy = this;
     }
     
 	//====================================================
@@ -158,11 +161,7 @@ public class MainActivity extends BaseGameActivity {
 	@Override
 	public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) {
 		
-		mSplashScene = new SplashScene(mEngine);
-
-		mMenuScene =  new MainMenuScene(mEngine);
-		
-		mGameScene = new GameScene(mEngine);
+		mSplashScene = new SplashScene(mEngine, getApplicationContext());
 		
 		// Finally, we must callback the initial scene to be loaded (splash scene)
 		pOnCreateSceneCallback.onCreateSceneFinished(mSplashScene);
@@ -177,16 +176,16 @@ public class MainActivity extends BaseGameActivity {
 		
 		// We will create a timer-handler to handle the duration
 		// in which the splash screen is shown
-		mEngine.registerUpdateHandler(new TimerHandler(1, new ITimerCallback(){
-		
-		// Override ITimerCallback's 'onTimePassed' method to allow
-		// us to control what happens after the timer duration ends
-		@Override
-		public void onTimePassed(TimerHandler pTimerHandler) {
-			// When 4 seconds is up, switch to our menu scene
-			mEngine.setScene(mMenuScene);
-			}
-		}));
+//		mEngine.registerUpdateHandler(new TimerHandler(4, new ITimerCallback(){
+//		
+//		// Override ITimerCallback's 'onTimePassed' method to allow
+//		// us to control what happens after the timer duration ends
+//		@Override
+//		public void onTimePassed(TimerHandler pTimerHandler) {
+//			// When 4 seconds is up, switch to our menu scene
+//			mEngine.setScene(mMenuScene);
+//			}
+//		}));
 		
 		
 		//Tell the controller that a new frame has started
@@ -206,9 +205,50 @@ public class MainActivity extends BaseGameActivity {
 			}
 		});
 		
-		
-		mGameScene.populate(mEngine);
+		mEngine.registerUpdateHandler(new TimerHandler(3.5f, new ITimerCallback() {
+			
+			@Override
+			public void onTimePassed(TimerHandler pTimerHandler) {
+				mMenuScene =  new MainMenuScene(mEngine);
+				
+				mGameScene = new GameScene(mEngine);
+				
+				mGameScene.populate(mEngine);
+				
+				mEngine.setScene(mMenuScene);
+				
+				mSplashScene.unloadRes();
+				
+			}
+		}));
+
 
 		pOnPopulateSceneCallback.onPopulateSceneFinished();	
+	}
+	
+	
+	@Override
+	protected void onStop() {
+		ResourceManager.getInstance().unloadMenuTextures();
+		ResourceManager.getInstance().unloadGameTextures();
+		finish();
+		super.onStop();
+	}
+
+	public Scene getMenuScene() {
+		return mMenuScene;
+	}
+
+	public SplashScene getSplashScene() {
+		return mSplashScene;
+	}
+
+	public GameScene getGameScene() {
+		return mGameScene;
+	}
+	
+	public Engine getEngine()
+	{
+		return mEngine;
 	}
 }

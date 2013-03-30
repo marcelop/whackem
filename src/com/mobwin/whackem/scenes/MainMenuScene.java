@@ -6,6 +6,7 @@ import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
+import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontUtils;
 
@@ -49,5 +50,11 @@ public class MainMenuScene extends Scene {
 				a_button.setVisible(!a_button.isVisible());
 			}
 		}));
+	}
+	
+	@Override
+	public boolean onSceneTouchEvent(TouchEvent pSceneTouchEvent) {
+		MainActivity.activiy.getEngine().setScene(MainActivity.activiy.getGameScene());
+		return true;
 	}
 }
