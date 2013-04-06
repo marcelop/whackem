@@ -103,6 +103,7 @@ public class MainActivity extends BaseGameActivity {
     	if(keyCode == OuyaController.BUTTON_O && mEngine.getScene().getClass().equals(MainMenuScene.class))
     	{
     		mEngine.setScene(mGameScene);
+    		GameManager.getInstance().startLevel(0, mGameScene);
     		return true;
     	}
     	else if(mEngine.getScene().getClass().equals(GameScene.class))

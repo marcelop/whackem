@@ -30,8 +30,8 @@ public class GameScene extends Scene {
 
 	public static final String SPLASH_STRING = "HELLO GAME SCREEN!";
 	Engine mEngine;
-	Text mGameSceneText;
-	Random mRand = new Random();
+	public Text mGameSceneText;
+	public Random mRand = new Random();
 
 	Sprite mHoleSelector;
 	Sprite mHoleSelectorAlpha;
@@ -50,10 +50,10 @@ public class GameScene extends Scene {
 	int selectorX = 1;
 	int selectorY = 1;
 
-	MoleInstance[][] moles;
-	protected float curTimeElapsed = 0;
+	public MoleInstance[][] moles;
+	public float curTimeElapsed = 0;
 
-	enum MoleState
+	public enum MoleState
 	{
 		HIDDEN,
 		CLIMBING,
@@ -87,7 +87,7 @@ public class GameScene extends Scene {
 
 	}
 
-	class MoleInstance
+	public class MoleInstance
 	{
 		public MoleInstance(float i, float j) {
 			x = i;
@@ -116,10 +116,11 @@ public class GameScene extends Scene {
 			moleSprite.animate(durations, frames, false);
 		}
 
-		void makeMoleClimb()
+		public void makeMoleClimb()
 		{
-			if(state == MoleState.HIDDEN)
+			if(state == MoleState.HIDDEN && GameManager.getInstance().isInGame() && GameManager.getInstance().canMoleClimb())
 			{
+				GameManager.getInstance().decrementMoleCount();
 				moleSprite.animate(new long[1], new int[1], false);
 				moleSprite.registerEntityModifier(new SequenceEntityModifier(
 						new MoveModifier(0.3f, moleSprite.getX(), moleSprite.getY(), moleSprite.getX(), showingPos, new IEntityModifierListener() {
@@ -166,6 +167,7 @@ public class GameScene extends Scene {
 					@Override
 					public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {
 						state = MoleState.HIDING;
+						GameManager.getInstance().decrementMolesUp();
 
 						registerEntityModifier(new DelayModifier(0.05f, new IEntityModifierListener() {
 							@Override
@@ -193,6 +195,7 @@ public class GameScene extends Scene {
 							@Override
 							public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {
 								state = MoleState.HIT;
+								GameManager.getInstance().decrementMolesUp();
 								animMoleDie();
 								GameManager.getInstance().incrementMoleHitCount();
 								GameManager.getInstance().incrementScore(10);
@@ -223,14 +226,20 @@ public class GameScene extends Scene {
 							}
 						})));
 		}
+		
+		public void moveToHiddenPosition()
+		{
+			moleSprite.registerEntityModifier(new MoveModifier(0.2f, moleSprite.getX(), moleSprite.getY(), moleSprite.getX(), hiddenPos));
+			MoleState state = MoleState.HIDDEN;
+		}
 
 		float x;
 		float y;
 		float hiddenPos;
 		float showingPos;
 
-		AnimatedSprite moleSprite;
-		MoleState state = MoleState.HIDDEN;
+		public AnimatedSprite moleSprite;
+		public MoleState state = MoleState.HIDDEN;
 
 	}
 
@@ -313,27 +322,6 @@ public class GameScene extends Scene {
 		mGameSceneText = new Text(x, y, font, SPLASH_STRING, 200, mEngine.getVertexBufferObjectManager());
 		// Attach the text object to our splash scene
 		attachChild(mGameSceneText);
-
-		mEngine.registerUpdateHandler(new IUpdateHandler() {
-
-			@Override
-			public void reset() {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void onUpdate(float pSecondsElapsed) {
-				curTimeElapsed  += pSecondsElapsed;
-				if (curTimeElapsed >= 1)
-				{
-					moles[Math.abs(mRand.nextInt())%3][Math.abs(mRand.nextInt())%3].makeMoleClimb(); 
-					curTimeElapsed = 0;
-				}
-				mGameSceneText.setText("LEVEL: " + GameManager.getInstance().getCurrentLevel() + " SCORE: " + GameManager.getInstance().getCurrentScore() + " ACCURACY: " + GameManager.getInstance().getAccuracy());
-
-			}
-		});
 
 	}
 

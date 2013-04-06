@@ -1,6 +1,9 @@
 package com.mobwin.whackem;
 
+import org.andengine.engine.handler.IUpdateHandler;
+
 import com.mobwin.whackem.scenes.GameScene;
+import com.mobwin.whackem.scenes.GameScene.MoleState;
 
 public class GameManager {
 	
@@ -24,6 +27,19 @@ public class GameManager {
 	private int mHitCount;
 	private int mCurrentLevel;
 	private int mMolesInLevel;
+	private int mMissedMoles;
+	private int mMaxMissedMoles;
+	private int mMaxSimultaneousMoles;
+	private GameState mState;
+
+	private int mMolesUp;
+	
+	enum GameState
+	{
+		IN_GAME,
+		FINISHING,
+		OFF_GAME
+	}
 	
 	// The constructor does not do anything for this singleton
 	GameManager(){
@@ -57,6 +73,20 @@ public class GameManager {
 		mMoleHitCount++;
 	}
 	
+	public int getCurrentLevel() {
+		return mCurrentLevel;
+	}
+
+	public void incrementHitCount() {
+		mHitCount++;
+	}
+	
+	public void decrementMoleCount() {
+		mMolesInLevel--;
+		if(mMolesInLevel <= 0)
+			mState = GameState.FINISHING;
+	}
+	
 	// Any time a bird is launched, we decrement our bird count
 	public boolean makeMoleClimb(){
 		if (mMolesInLevel > 0)
@@ -79,18 +109,88 @@ public class GameManager {
 		mHitCount = INITIAL_HIT_COUNT;
 		mCurrentLevel = INITIAL_LEVEL;
 		mMolesInLevel = INITIAL_MOLE_COUNT;	
-	}
-
-	public int getCurrentLevel() {
-		return mCurrentLevel;
-	}
-
-	public void incrementHitCount() {
-		mHitCount++;
+		mMolesUp = INITIAL_MOLE_COUNT;
+		mMissedMoles = INITIAL_MOLE_COUNT;
+		mMaxMissedMoles = INITIAL_MOLE_COUNT;
+		mMaxSimultaneousMoles = INITIAL_MOLE_COUNT;
 	}
 	
-	public void startLevel(int level, GameScene scene)
+	public void startLevel(int level, final GameScene scene)
 	{
+		if (level == 0)
+			resetGame();
 		
+		mCurrentLevel = level;
+		mMolesInLevel = 10 + level*5;	
+		mMissedMoles = INITIAL_MOLE_COUNT;
+		mMolesUp = INITIAL_MOLE_COUNT;
+		mMaxMissedMoles = (int) (mMolesInLevel*0.3f);
+		mMaxSimultaneousMoles = (int) (2 + Math.floor(level / 15));
+		
+		for (int i = 0; i < scene.moles.length; i++) {
+			for (int j = 0; j < scene.moles[i].length; j++) {
+				GameScene.MoleInstance mole = scene.moles[i][j];
+				mole.moleSprite.clearEntityModifiers();
+				mole.moveToHiddenPosition();
+			}
+		}
+		
+		mState = GameState.IN_GAME;
+		
+		scene.registerUpdateHandler(new IUpdateHandler() {
+			
+			@Override
+			public void reset() {}
+			
+			@Override
+			public void onUpdate(float pSecondsElapsed) {
+				scene.curTimeElapsed  += pSecondsElapsed;
+				if (scene.curTimeElapsed >= 0.3f)
+				{
+					scene.moles[Math.abs(scene.mRand.nextInt())%3][Math.abs(scene.mRand.nextInt())%3].makeMoleClimb(); 
+					scene.curTimeElapsed = 0;
+					
+					//Verify if we can finish the game
+					if(mState == GameState.FINISHING)
+					{
+						int total_finished = 0;
+						for (int i = 0; i < scene.moles.length; i++) {
+							for (int j = 0; j < scene.moles[i].length; j++) {
+								GameScene.MoleInstance mole = scene.moles[i][j];
+								if(mole.state == GameScene.MoleState.HIDDEN || mole.state == GameScene.MoleState.HIT || mole.state == GameScene.MoleState.HIDING)
+									total_finished++;
+							}
+						}
+						if(total_finished == 9)
+						{
+							mState = GameState.OFF_GAME;
+							scene.clearUpdateHandlers();
+						}
+					}
+					
+				}
+				scene.mGameSceneText.setText("LEVEL: " + GameManager.getInstance().getCurrentLevel() + " SCORE: " + GameManager.getInstance().getCurrentScore() + " ACCURACY: " + GameManager.getInstance().getAccuracy());
+
+			}
+		});
+	}
+
+	public boolean isInGame() {
+		return mState == GameState.IN_GAME;
+	}
+
+	public boolean canMoleClimb() {
+		if(mMolesUp >= mMaxSimultaneousMoles)
+			return false;
+		else
+		{
+			mMolesUp++;
+			return true;
+		}
+	}
+	
+	public void decrementMolesUp()
+	{
+		mMolesUp--;
 	}
 }
