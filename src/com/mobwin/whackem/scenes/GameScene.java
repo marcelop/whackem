@@ -17,6 +17,7 @@ import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.opengl.font.Font;
+import org.andengine.util.adt.color.Color;
 import org.andengine.util.modifier.IModifier;
 
 import tv.ouya.console.api.OuyaController;
@@ -31,6 +32,7 @@ public class GameScene extends Scene {
 	public static final String SPLASH_STRING = "HELLO GAME SCREEN!";
 	Engine mEngine;
 	public Text mGameSceneText;
+	public Text mGameSceneLevel;
 	public Random mRand = new Random();
 
 	Sprite mHoleSelector;
@@ -168,6 +170,7 @@ public class GameScene extends Scene {
 					public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {
 						state = MoleState.HIDING;
 						GameManager.getInstance().decrementMolesUp();
+						GameManager.getInstance().incrementMissedMoleCount();
 
 						registerEntityModifier(new DelayModifier(0.05f, new IEntityModifierListener() {
 							@Override
@@ -230,7 +233,7 @@ public class GameScene extends Scene {
 		public void moveToHiddenPosition()
 		{
 			moleSprite.registerEntityModifier(new MoveModifier(0.2f, moleSprite.getX(), moleSprite.getY(), moleSprite.getX(), hiddenPos));
-			MoleState state = MoleState.HIDDEN;
+			state = MoleState.HIDDEN;
 		}
 
 		float x;
@@ -318,10 +321,15 @@ public class GameScene extends Scene {
 
 
 
-		// Create our splash screen text object
+		// Create our score text object
 		mGameSceneText = new Text(x, y, font, SPLASH_STRING, 200, mEngine.getVertexBufferObjectManager());
-		// Attach the text object to our splash scene
+		// Attach the score text object to our scene
 		attachChild(mGameSceneText);
+		
+		mGameSceneLevel = new Text(x, MainActivity.HEIGHT/2, font, "LEVEL 1", 200, mEngine.getVertexBufferObjectManager());
+		mGameSceneLevel.setColor(Color.BLUE);
+		mGameSceneLevel.setVisible(false);
+		attachChild(mGameSceneLevel);
 
 	}
 

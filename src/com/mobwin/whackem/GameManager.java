@@ -1,9 +1,13 @@
 package com.mobwin.whackem;
 
 import org.andengine.engine.handler.IUpdateHandler;
+import org.andengine.entity.IEntity;
+import org.andengine.entity.modifier.DelayModifier;
+import org.andengine.entity.modifier.IEntityModifier.IEntityModifierListener;
+import org.andengine.entity.modifier.SequenceEntityModifier;
+import org.andengine.util.modifier.IModifier;
 
 import com.mobwin.whackem.scenes.GameScene;
-import com.mobwin.whackem.scenes.GameScene.MoleState;
 
 public class GameManager {
 	
@@ -71,6 +75,13 @@ public class GameManager {
 	public void incrementMoleHitCount()
 	{
 		mMoleHitCount++;
+	}
+	
+	public void incrementMissedMoleCount()
+	{
+		mMissedMoles++;
+		if(mMissedMoles > mMaxMissedMoles)
+			mState = GameState.FINISHING;
 	}
 	
 	public int getCurrentLevel() {
@@ -165,6 +176,30 @@ public class GameManager {
 						{
 							mState = GameState.OFF_GAME;
 							scene.clearUpdateHandlers();
+
+							// Verify if the player won the level or not
+							if(mMissedMoles > mMaxMissedMoles)
+							{
+								//Game Over
+								displayGameOver(scene);
+								resetGame();
+							}
+							else
+							{
+								//Yay! Next Level
+								mCurrentLevel++;
+								displayNextLevel(mCurrentLevel, scene);
+								scene.registerEntityModifier(new SequenceEntityModifier(new DelayModifier(3, new IEntityModifierListener() {
+									@Override
+									public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {}
+									
+									@Override
+									public void onModifierFinished(IModifier<IEntity> pModifier, IEntity pItem) {
+										startLevel(mCurrentLevel, scene);
+									}
+								})));
+							}
+							
 						}
 					}
 					
@@ -175,12 +210,49 @@ public class GameManager {
 		});
 	}
 
+	protected void displayGameOver(final GameScene scene) {
+		scene.mGameSceneLevel.setText("GAME OVER :(");
+		scene.mGameSceneLevel.registerEntityModifier(new DelayModifier(2, new IEntityModifierListener() {
+			
+			@Override
+			public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {
+				// TODO Auto-generated method stub
+				scene.mGameSceneLevel.setVisible(true);
+			}
+			
+			@Override
+			public void onModifierFinished(IModifier<IEntity> pModifier, IEntity pItem) {
+				// TODO Auto-generated method stub
+				scene.mGameSceneLevel.setVisible(false);
+			}
+		}));
+	}
+
+	protected void displayNextLevel(int level, final GameScene scene) {
+		scene.mGameSceneLevel.setText("LEVEL " + level);
+		scene.mGameSceneLevel.registerEntityModifier(new DelayModifier(2, new IEntityModifierListener() {
+			
+			@Override
+			public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {
+				// TODO Auto-generated method stub
+				scene.mGameSceneLevel.setVisible(true);
+			}
+			
+			@Override
+			public void onModifierFinished(IModifier<IEntity> pModifier, IEntity pItem) {
+				// TODO Auto-generated method stub
+				scene.mGameSceneLevel.setVisible(false);
+			}
+		}));
+		
+	}
+
 	public boolean isInGame() {
 		return mState == GameState.IN_GAME;
 	}
 
 	public boolean canMoleClimb() {
-		if(mMolesUp >= mMaxSimultaneousMoles)
+		if(mMolesUp >= mMaxSimultaneousMoles && mMissedMoles <= mMaxMissedMoles)
 			return false;
 		else
 		{
