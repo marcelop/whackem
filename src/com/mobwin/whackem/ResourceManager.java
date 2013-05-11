@@ -53,6 +53,8 @@ public class ResourceManager {
 	public ITextureRegion mGameCloud1;
 	public ITextureRegion mGameCloud2;
 	public ITextureRegion mGameMoon;
+	
+	public ITextureRegion mGameTitle;
 
 	public Sound mSound;
 
@@ -147,6 +149,8 @@ public class ResourceManager {
 		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 112, 146, TextureOptions.BILINEAR);
 		mGameMoon = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "background/moon@2x.png", 0, 0); textureAtlas.load();
 		
+		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 496, 133, TextureOptions.BILINEAR);
+		mGameTitle = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "foreground/logo.png", 0, 0); textureAtlas.load();
 	}
 
 	/*

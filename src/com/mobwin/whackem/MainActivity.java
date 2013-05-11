@@ -30,7 +30,7 @@ public class MainActivity extends BaseGameActivity {
 	//====================================================
 	public static final int WIDTH = 1280;
 	public static final int HEIGHT = 720;
-	public static MainActivity activiy;
+	public static MainActivity activity;
 	
 
 	//====================================================
@@ -56,7 +56,7 @@ public class MainActivity extends BaseGameActivity {
         Log.d("whacka", "Initializing Controller");
         OuyaController.init(this);
         Log.d("whacka", "Finished Initializing Controller");
-        activiy = this;
+        activity = this;
     }
     
 	//====================================================
