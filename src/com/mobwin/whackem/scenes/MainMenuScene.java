@@ -125,8 +125,8 @@ public class MainMenuScene extends Scene {
 
 	@Override
 	public boolean onSceneTouchEvent(TouchEvent pSceneTouchEvent) {
-//		MainActivity.activity.getEngine().setScene(
-//				MainActivity.activity.getGameScene());
+		MainActivity.activity.getEngine().setScene(
+				MainActivity.activity.getGameScene());
 		logoSprite.registerEntityModifier(new MoveModifier(1f, logoSprite.getX(), logoSprite.getY(), logoSprite.getX(), MainActivity.HEIGHT - (MainActivity.HEIGHT / 2)/4, EaseElasticOut.getInstance()));
 		return true;
 	}

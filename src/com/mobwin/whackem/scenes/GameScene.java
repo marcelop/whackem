@@ -11,14 +11,17 @@ import org.andengine.entity.modifier.IEntityModifier.IEntityModifierListener;
 import org.andengine.entity.modifier.IEntityModifier.IEntityModifierMatcher;
 import org.andengine.entity.modifier.MoveByModifier;
 import org.andengine.entity.modifier.MoveModifier;
+import org.andengine.entity.modifier.RotationAtModifier;
 import org.andengine.entity.modifier.SequenceEntityModifier;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
+import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.font.Font;
 import org.andengine.util.adt.color.Color;
 import org.andengine.util.modifier.IModifier;
+import org.andengine.util.modifier.ease.EaseElasticOut;
 
 import tv.ouya.console.api.OuyaController;
 import android.view.KeyEvent;
@@ -54,6 +57,7 @@ public class GameScene extends Scene {
 
 	public MoleInstance[][] moles;
 	public float curTimeElapsed = 0;
+	private Sprite mHammer;
 
 	public enum MoleState
 	{
@@ -319,8 +323,13 @@ public class GameScene extends Scene {
 
 		placeBackgroundDetails();
 
-
-
+		
+		//Create our Hammer
+		mHammer = new Sprite(1130, 150, ResourceManager.getInstance().mGameHammer, mEngine.getVertexBufferObjectManager());
+		mHammer.setRotationCenter(mHammer.getRotationCenterX(), mHammer.getRotationCenterY()*0.5f);
+		mHammer.setScale(0.75f);
+		attachChild(mHammer);
+		
 		// Create our score text object
 		mGameSceneText = new Text(x, y, font, SPLASH_STRING, 200, mEngine.getVertexBufferObjectManager());
 		// Attach the score text object to our scene
@@ -405,6 +414,7 @@ public class GameScene extends Scene {
 		case OuyaController.BUTTON_O:
 			moles[selectorY][selectorX].makeMoleDie();
 			GameManager.getInstance().incrementHitCount();
+			animateHammerHit();
 			break;
 
 		default:
@@ -466,7 +476,18 @@ public class GameScene extends Scene {
 		mHoleSelector.registerEntityModifier(new MoveModifier(0.1f ,mHoleSelector.getX(), mHoleSelector.getY(), newX, newY ));
 		mHoleSelectorAlpha.registerEntityModifier(new MoveModifier(0.1f ,mHoleSelector.getX(), mHoleSelector.getY(), newX, newY ));
 
-		updateSelectorAlpha();
+		updateSelectorAlpha(); 
+		
+		//Move the hammer with the selector
+		mHammer.unregisterEntityModifiers(new IEntityModifierMatcher() {
+			@Override
+			public boolean matches(IModifier<IEntity> pObject) {
+				if (pObject.getClass() == MoveModifier.class)
+					return true;
+				return false;
+			}
+		});
+		mHammer.registerEntityModifier(new MoveModifier(0.1f ,mHammer.getX(), mHammer.getY(), newX + mHammer.getWidth()*0.4f, newY + mHammer.getHeight()*0.2f));
 	}
 
 
@@ -508,5 +529,29 @@ public class GameScene extends Scene {
 		}
 	}
 
+	private void animateHammerHit()
+	{
+		final float hitDuration = 0.05f;
+		final float backDuration = 0.1f;
+		mHammer.registerEntityModifier(new DelayModifier(hitDuration+0.1f, new IEntityModifierListener() {
+			
+			@Override
+			public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {
+				mHammer.registerEntityModifier(new RotationAtModifier(hitDuration, mHammer.getRotation(), -50, mHammer.getRotationCenterX(), mHammer.getRotationCenterY()));
+			}
+			
+			@Override
+			public void onModifierFinished(IModifier<IEntity> pModifier, IEntity pItem) {
+				mHammer.registerEntityModifier(new RotationAtModifier(backDuration, mHammer.getRotation(), 0, mHammer.getRotationCenterX(), mHammer.getRotationCenterY()));				
+			}
+		}));
+		
+	}
+	
+	@Override
+	public boolean onSceneTouchEvent(TouchEvent pSceneTouchEvent) {
+		animateHammerHit();
+		return true;
+	}
 
 }
