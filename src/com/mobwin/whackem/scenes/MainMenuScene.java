@@ -19,11 +19,13 @@ import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontUtils;
 import org.andengine.util.modifier.IModifier;
+import org.andengine.util.modifier.ease.EaseBackOut;
 import org.andengine.util.modifier.ease.EaseBounceIn;
 import org.andengine.util.modifier.ease.EaseBounceInOut;
 import org.andengine.util.modifier.ease.EaseElasticIn;
 import org.andengine.util.modifier.ease.EaseElasticOut;
 
+import com.mobwin.whackem.GameManager;
 import com.mobwin.whackem.MainActivity;
 import com.mobwin.whackem.ResourceManager;
 
@@ -33,6 +35,7 @@ public class MainMenuScene extends Scene {
 	public static final String MENU_SELECT_STRING = "PRESS         TO SELECT";
 	Text mMenuSceneText;
 	Sprite logoSprite;
+	Sprite buttonSprite;
 
 	public MainMenuScene(Engine engine)
 	{
@@ -86,6 +89,9 @@ public class MainMenuScene extends Scene {
 			}
 		}));
 		
+		buttonSprite = new Sprite( -MainActivity.WIDTH, MainActivity.HEIGHT / 2, MainActivity.WIDTH / 4, 80, ResourceManager.getInstance().mUIRedButton, engine.getVertexBufferObjectManager());
+		attachChild(buttonSprite);
+		
 	}
 
 	protected void registerSkew(final Sprite logoSprite) {
@@ -125,9 +131,12 @@ public class MainMenuScene extends Scene {
 
 	@Override
 	public boolean onSceneTouchEvent(TouchEvent pSceneTouchEvent) {
+		GameManager.getInstance().startLevel(0, MainActivity.activity.getGameScene());
 		MainActivity.activity.getEngine().setScene(
 				MainActivity.activity.getGameScene());
 		logoSprite.registerEntityModifier(new MoveModifier(1f, logoSprite.getX(), logoSprite.getY(), logoSprite.getX(), MainActivity.HEIGHT - (MainActivity.HEIGHT / 2)/4, EaseElasticOut.getInstance()));
+		buttonSprite.registerEntityModifier(new MoveModifier(1f, buttonSprite.getX(), buttonSprite.getY(), MainActivity.WIDTH/2, MainActivity.HEIGHT/2, EaseBackOut.getInstance()));
+		
 		return true;
 	}
 }
