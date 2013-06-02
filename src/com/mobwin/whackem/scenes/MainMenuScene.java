@@ -25,8 +25,12 @@ import org.andengine.util.modifier.ease.EaseBounceInOut;
 import org.andengine.util.modifier.ease.EaseElasticIn;
 import org.andengine.util.modifier.ease.EaseElasticOut;
 
+import android.view.KeyEvent;
+
 import com.mobwin.whackem.GameManager;
 import com.mobwin.whackem.MainActivity;
+import com.mobwin.whackem.MenuBuilder;
+import com.mobwin.whackem.MenuItem;
 import com.mobwin.whackem.ResourceManager;
 
 public class MainMenuScene extends Scene {
@@ -36,6 +40,7 @@ public class MainMenuScene extends Scene {
 	Text mMenuSceneText;
 	Sprite logoSprite;
 	Sprite buttonSprite;
+	MenuBuilder menu;
 
 	public MainMenuScene(Engine engine)
 	{
@@ -58,6 +63,19 @@ public class MainMenuScene extends Scene {
 		final Text menuSelectText = new Text(x, y, font, MENU_SELECT_STRING, MENU_SELECT_STRING.length(), engine.getVertexBufferObjectManager());
 		attachChild(menuSelectText);
 		
+		
+		//Make a temporary menu
+		
+		String[] o = new String[2];
+		o[0] = "hi";
+		o[1] = "bye";
+		MenuItem[] items = new MenuItem[2];
+		items[0] = new MenuItem("Long Text 1", o);
+		items[1] = new MenuItem("Long Text 202993983", o);
+		
+		menu = new MenuBuilder(this, engine, x, y+90, items);
+		//end temp menu
+		
 		final Sprite a_button = new Sprite(x-30, y, 65, 80, ResourceManager.getInstance().mO_BUTTON, engine.getVertexBufferObjectManager());
 		attachChild(a_button);
 		
@@ -67,8 +85,7 @@ public class MainMenuScene extends Scene {
 				menuSelectText.setVisible(!menuSelectText.isVisible());
 				a_button.setVisible(!a_button.isVisible());
 			}
-		}));
-		
+		}));		
 		
 		//Make logo move indefinitely
 		logoSprite = new Sprite(MainActivity.WIDTH / 2, MainActivity.HEIGHT / 2, ResourceManager.getInstance().mGameTitle, engine.getVertexBufferObjectManager());
@@ -128,15 +145,19 @@ public class MainMenuScene extends Scene {
 			}
 	}));
 	}
-
+    
 	@Override
 	public boolean onSceneTouchEvent(TouchEvent pSceneTouchEvent) {
-		GameManager.getInstance().startLevel(0, MainActivity.activity.getGameScene());
-		MainActivity.activity.getEngine().setScene(
-				MainActivity.activity.getGameScene());
+		//GameManager.getInstance().startLevel(0, MainActivity.activity.getGameScene());
+		//MainActivity.activity.getEngine().setScene(
+		//		MainActivity.activity.getGameScene());
 		logoSprite.registerEntityModifier(new MoveModifier(1f, logoSprite.getX(), logoSprite.getY(), logoSprite.getX(), MainActivity.HEIGHT - (MainActivity.HEIGHT / 2)/4, EaseElasticOut.getInstance()));
 		buttonSprite.registerEntityModifier(new MoveModifier(1f, buttonSprite.getX(), buttonSprite.getY(), MainActivity.WIDTH/2, MainActivity.HEIGHT/2, EaseBackOut.getInstance()));
 		
 		return true;
+	}
+	
+	public synchronized void onKeyUp(int keyCode, KeyEvent event) {
+		menu.onKeyUp(keyCode, event);
 	}
 }

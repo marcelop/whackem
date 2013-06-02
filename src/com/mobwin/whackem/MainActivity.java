@@ -106,6 +106,11 @@ public class MainActivity extends BaseGameActivity {
     		GameManager.getInstance().startLevel(0, mGameScene);
     		return true;
     	}
+    	else if(mEngine.getScene().getClass().equals(MainMenuScene.class))
+    	{
+    		((MainMenuScene) mEngine.getScene()).onKeyUp(keyCode, event);
+    		return true;
+    	}
     	else if(mEngine.getScene().getClass().equals(GameScene.class))
     	{
     		((GameScene) mEngine.getScene()).onKeyUp(keyCode, event);
