@@ -66,12 +66,13 @@ public class MainMenuScene extends Scene {
 		String[] o = new String[2];
 		o[0] = "hi";
 		o[1] = "bye";
-		MenuItem[] items = new MenuItem[2];
+		MenuItem[] items = new MenuItem[3];
 		items[0] = new MenuItem("Start Game");
 		items[1] = new MenuItem("Start Game too! LOL", o);
+		items[2] = new MenuItem("Yet another option", new String[] {"1","2","3","big number"});
 	
 		
-		menu = new MenuBuilder(this, engine, x, y+90, items, ResourceManager.getInstance().mGameHammer);
+		menu = new MenuBuilder(this, engine, x, y+90, items, ResourceManager.getInstance().mFont, ResourceManager.getInstance().mGameHammer,ResourceManager.getInstance().mGameHammer);
 		//end temp menu
 
 		

@@ -11,7 +11,8 @@ public class MenuItem {
 	public MenuItem (String text, String[] options) {
 		this.text = text;
 		this.options = options;
-		selector = 0;
+		if (options != null) selector = 0;
+		else selector = -1;
 		handler = null;
 	}
 	
@@ -25,7 +26,7 @@ public class MenuItem {
 	public int selectionUp() {
 		if (options != null && selector < options.length -1 ) {
 			selector++;
-			if (handler != null) handler.onChange(selector);
+			if (handler != null) handler.onChange(this,selector);
 		}
 		return selector;
 	}
@@ -33,7 +34,7 @@ public class MenuItem {
 	public int selectionDown() {
 		if (options != null && selector > 0 ) {
 			selector--;
-			if (handler != null) handler.onChange(selector);
+			if (handler != null) handler.onChange(this,selector);
 		}
 		return selector;
 	}
@@ -43,21 +44,28 @@ public class MenuItem {
 	}
 	
 	public String getSelectionText() {
-		if (options == null) return null;
+		if (options == null) return "";
 		return options[selector];
 	}
 	
-	public String toString() {
-		if (options == null) return text;
-		return text + "   < " + options[selector] + " >";
+	public String getText() {
+		return text;
+	}
+	
+	public boolean hasOptions() {
+		return (options != null);
+	}
+	
+	public void Select() {
+		if (handler!= null) handler.onClick(this);
 	}
 	
 	void registerHandler(IMenuHandler handler) {
 		this.handler = handler;
-	}
+	}	
 	
 	public interface IMenuHandler {
-		void onChange(int selected);
-		void onClick();
+		void onChange(MenuItem sender, int selected);
+		void onClick(MenuItem sender);
 	}
 }
