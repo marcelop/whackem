@@ -2,6 +2,8 @@ package com.mobwin.whackem;
 
 import java.io.IOException;
 
+import org.andengine.audio.music.Music;
+import org.andengine.audio.music.MusicFactory;
 import org.andengine.audio.sound.Sound;
 import org.andengine.audio.sound.SoundFactory;
 import org.andengine.engine.Engine;
@@ -59,7 +61,11 @@ public class ResourceManager {
 	
 	public ITextureRegion mUIRedButton;
 
-	public Sound mSound;
+	public Sound mHitSound;
+	public Sound mHammerSound;
+	public Sound mButtonClickSound;
+	public Music mIntroMusic;
+	public Music mGameMusic;
 
 	public Font mFont;
 
@@ -84,22 +90,7 @@ public class ResourceManager {
 		// Set our game assets folder in "assets/gfx/game/"
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 
-//		BuildableBitmapTextureAtlas mBitmapTextureAtlas = new BuildableBitmapTextureAtlas(
-//				pEngine.getTextureManager(), 200, 200);
 
-//		mGameBackgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory
-//				.createFromAsset(mBitmapTextureAtlas, pContext,
-//						"ouya/OUYA_A.png");
-//
-//		try {
-//			mBitmapTextureAtlas
-//					.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
-//							0, 1, 1));
-//			mBitmapTextureAtlas.load();
-//		} catch (TextureAtlasBuilderException e) {
-//			Debug.e(e);
-//		}
-		
 		//Load button textures
 		BitmapTextureAtlas button = new BitmapTextureAtlas(pEngine.getTextureManager(), 200, 200, TextureOptions.BILINEAR);
 		mO_BUTTON = BitmapTextureAtlasTextureRegionFactory.createFromAsset(button, pContext, "ouya/OUYA_O.png", 0, 0); button.load();
@@ -197,38 +188,26 @@ public class ResourceManager {
 	 * used to load a different scene's textures
 	 */
 	public synchronized void loadMenuTextures(Engine pEngine, Context pContext) {
-		// Set our menu assets folder in "assets/gfx/menu/"
-		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/menu/");
 
-		BuildableBitmapTextureAtlas mBitmapTextureAtlas = new BuildableBitmapTextureAtlas(
-				pEngine.getTextureManager(), 800, 480);
-
-		mMenuBackgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(mBitmapTextureAtlas, pContext,
-						"menu_background.png");
-
-		try {
-			mBitmapTextureAtlas
-					.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
-							0, 1, 1));
-			mBitmapTextureAtlas.load();
-		} catch (TextureAtlasBuilderException e) {
-			Debug.e(e);
-		}
+		BitmapTextureAtlas textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 1422, 640, TextureOptions.BILINEAR);
+		mMenuBackgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "background/background_2@2x.png", 0, 0); textureAtlas.load();
+		
+//		BuildableBitmapTextureAtlas textureAtlas = new BuildableBitmapTextureAtlas(pEngine.getTextureManager(), 1422, 640, TextureOptions.BILINEAR);
+//		mGameBackgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(textureAtlas, pContext, "background/background_2@2x.png", 1, 1);
+//		/* Build and load the mBitmapTextureAtlas object */
+//		try {
+//			textureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 0, 0));
+//		} catch (TextureAtlasBuilderException e) {
+//		e.printStackTrace();
+//		}
+//		textureAtlas.load();
 
 	}
 
 	// Once again, this method is similar to the 'Game' scene's for unloading
 	public synchronized void unloadMenuTextures() {
 		// call unload to remove the corresponding texture atlas from memory
-//		BuildableBitmapTextureAtlas mBitmapTextureAtlas = (BuildableBitmapTextureAtlas) mMenuBackgroundTextureRegion
-//				.getTexture();
-//		mBitmapTextureAtlas.unload();
-
-		// ... Continue to unload all textures related to the 'Game' scene
-
-		// Once all textures have been unloaded, attempt to invoke the Garbage
-		// Collector
+		mGameBackgroundTextureRegion.getTexture().unload();
 		System.gc();
 	}
 
@@ -238,11 +217,20 @@ public class ResourceManager {
 	 */
 	public synchronized void loadSounds(Engine pEngine, Context pContext) {
 		// Set the SoundFactory's base path
-		SoundFactory.setAssetBasePath("sounds/");
+		SoundFactory.setAssetBasePath("sfx/");
 		try {
 			// Create mSound object via SoundFactory class
-			mSound = SoundFactory.createSoundFromAsset(
-					pEngine.getSoundManager(), pContext, "sound.mp3");
+			mHitSound = SoundFactory.createSoundFromAsset(
+					pEngine.getSoundManager(), pContext, "sound/hit.wav");
+			mHammerSound = SoundFactory.createSoundFromAsset(
+					pEngine.getSoundManager(), pContext, "sound/hammer.wav");
+			mButtonClickSound = SoundFactory.createSoundFromAsset(
+					pEngine.getSoundManager(), pContext, "sound/button_down.wav");
+/*			mIntroMusic = MusicFactory.createMusicFromAsset(
+					pEngine.getMusicManager(), pContext, "music/intro.ogg");
+			mGameMusic = MusicFactory.createMusicFromAsset(
+					pEngine.getMusicManager(), pContext, "music/gameplay.ogg");*/
+			
 		} catch (final IOException e) {
 			Log.v("Sounds Load", "Exception:" + e.getMessage());
 		}
@@ -256,8 +244,8 @@ public class ResourceManager {
 	 */
 	public synchronized void unloadSounds() {
 		// we call the release() method on sounds to remove them from memory
-		if (!mSound.isReleased())
-			mSound.release();
+//		if (!mSound.isReleased())
+//			mSound.release();
 	}
 
 	/*

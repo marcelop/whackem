@@ -197,6 +197,8 @@ public class GameScene extends Scene {
 		void makeMoleDie()
 		{
 			if(state == MoleState.VULNERABLE)
+			{
+				ResourceManager.getInstance().mHitSound.play();
 				moleSprite.registerEntityModifier(new SequenceEntityModifier(
 						new DelayModifier(0.2f, new IEntityModifierListener() {
 							@Override
@@ -232,6 +234,7 @@ public class GameScene extends Scene {
 								updateSelectorAlpha();
 							}
 						})));
+			}
 		}
 		
 		public void moveToHiddenPosition()
@@ -414,6 +417,7 @@ public class GameScene extends Scene {
 		case OuyaController.BUTTON_O:
 			moles[selectorY][selectorX].makeMoleDie();
 			GameManager.getInstance().incrementHitCount();
+			ResourceManager.getInstance().mHammerSound.play();
 			animateHammerHit();
 			break;
 
@@ -551,6 +555,7 @@ public class GameScene extends Scene {
 	@Override
 	public boolean onSceneTouchEvent(TouchEvent pSceneTouchEvent) {
 		animateHammerHit();
+		setChildSceneModal(MainActivity.activity.mMenuScene);
 		return true;
 	}
 

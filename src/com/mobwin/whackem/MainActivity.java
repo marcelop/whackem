@@ -37,7 +37,7 @@ public class MainActivity extends BaseGameActivity {
 	// VARIABLES
 	//====================================================
 	// We'll be creating 1 scene for our main menu and one for our splash image
-	private Scene mMenuScene;
+	public Scene mMenuScene;
 	private SplashScene mSplashScene;
 	private GameScene mGameScene;
 	
@@ -155,6 +155,9 @@ public class MainActivity extends BaseGameActivity {
 		// Load our fonts.
 		ResourceManager.getInstance().loadFonts(mEngine);
 		ResourceManager.getInstance().loadGameTextures(mEngine, getApplicationContext());
+		
+		ResourceManager.getInstance().loadMenuTextures(mEngine, getApplicationContext());
+		ResourceManager.getInstance().loadSounds(mEngine, getApplicationContext());
 
 		
 		pOnCreateResourcesCallback.onCreateResourcesFinished();

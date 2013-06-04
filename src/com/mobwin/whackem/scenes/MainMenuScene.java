@@ -1,18 +1,18 @@
 package com.mobwin.whackem.scenes;
 
-import java.lang.reflect.Modifier;
-
 import org.andengine.engine.Engine;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.DelayModifier;
 import org.andengine.entity.modifier.IEntityModifier.IEntityModifierListener;
-import org.andengine.entity.modifier.MoveByModifier;
 import org.andengine.entity.modifier.MoveModifier;
 import org.andengine.entity.modifier.ScaleModifier;
 import org.andengine.entity.modifier.SkewModifier;
 import org.andengine.entity.scene.Scene;
+import org.andengine.entity.scene.background.AutoParallaxBackground;
+import org.andengine.entity.scene.background.ParallaxBackground;
+import org.andengine.entity.scene.background.ParallaxBackground.ParallaxEntity;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.input.touch.TouchEvent;
@@ -20,14 +20,10 @@ import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontUtils;
 import org.andengine.util.modifier.IModifier;
 import org.andengine.util.modifier.ease.EaseBackOut;
-import org.andengine.util.modifier.ease.EaseBounceIn;
-import org.andengine.util.modifier.ease.EaseBounceInOut;
-import org.andengine.util.modifier.ease.EaseElasticIn;
 import org.andengine.util.modifier.ease.EaseElasticOut;
 
 import android.view.KeyEvent;
 
-import com.mobwin.whackem.GameManager;
 import com.mobwin.whackem.MainActivity;
 import com.mobwin.whackem.MenuBuilder;
 import com.mobwin.whackem.MenuItem;
@@ -41,8 +37,9 @@ public class MainMenuScene extends Scene {
 	Sprite logoSprite;
 	Sprite buttonSprite;
 	MenuBuilder menu;
+	private Sprite backgroundSprite;
 
-	public MainMenuScene(Engine engine)
+	public MainMenuScene(final Engine engine)
 	{
 		// Retrieve our font from the resource manager
 		Font font = ResourceManager.getInstance().mFont;
@@ -70,11 +67,13 @@ public class MainMenuScene extends Scene {
 		o[0] = "hi";
 		o[1] = "bye";
 		MenuItem[] items = new MenuItem[2];
-		items[0] = new MenuItem("Long Text 1", o);
-		items[1] = new MenuItem("Long Text 202993983", o);
+		items[0] = new MenuItem("Start Game", o);
+		items[1] = new MenuItem("Start Game too! LOL", o);
 		
 		menu = new MenuBuilder(this, engine, x, y+90, items);
 		//end temp menu
+
+		
 		
 		final Sprite a_button = new Sprite(x-30, y, 65, 80, ResourceManager.getInstance().mO_BUTTON, engine.getVertexBufferObjectManager());
 		attachChild(a_button);
@@ -109,6 +108,15 @@ public class MainMenuScene extends Scene {
 		buttonSprite = new Sprite( -MainActivity.WIDTH, MainActivity.HEIGHT / 2, MainActivity.WIDTH / 4, 80, ResourceManager.getInstance().mUIRedButton, engine.getVertexBufferObjectManager());
 		attachChild(buttonSprite);
 		
+		backgroundSprite = new Sprite(MainActivity.WIDTH / 2 , MainActivity.HEIGHT/2,MainActivity.WIDTH, MainActivity.HEIGHT, ResourceManager.getInstance().mMenuBackgroundTextureRegion, engine.getVertexBufferObjectManager());
+		
+		ParallaxBackground background = new AutoParallaxBackground(0, 0, 0, 5);
+		
+		background.attachParallaxEntity(new ParallaxEntity(10, backgroundSprite));
+		setBackground(background);
+		setBackgroundEnabled(true);
+		
+		//ResourceManager.getInstance().mIntroMusic.play();
 	}
 
 	protected void registerSkew(final Sprite logoSprite) {
@@ -153,7 +161,7 @@ public class MainMenuScene extends Scene {
 		//		MainActivity.activity.getGameScene());
 		logoSprite.registerEntityModifier(new MoveModifier(1f, logoSprite.getX(), logoSprite.getY(), logoSprite.getX(), MainActivity.HEIGHT - (MainActivity.HEIGHT / 2)/4, EaseElasticOut.getInstance()));
 		buttonSprite.registerEntityModifier(new MoveModifier(1f, buttonSprite.getX(), buttonSprite.getY(), MainActivity.WIDTH/2, MainActivity.HEIGHT/2, EaseBackOut.getInstance()));
-		
+		super.onSceneTouchEvent(pSceneTouchEvent);
 		return true;
 	}
 	
