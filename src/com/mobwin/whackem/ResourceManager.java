@@ -55,6 +55,7 @@ public class ResourceManager {
 	public ITextureRegion mGameCloud1;
 	public ITextureRegion mGameCloud2;
 	public ITextureRegion mGameMoon;
+	public ITextureRegion mGameOver;
 	
 	public ITextureRegion mGameTitle;
 	public ITextureRegion mGameHammer;
@@ -143,6 +144,9 @@ public class ResourceManager {
 		mGameCloud2 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "background/cloud_2@2x.png", 0, 0); textureAtlas.load();
 		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 112, 146, TextureOptions.BILINEAR);
 		mGameMoon = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "background/moon@2x.png", 0, 0); textureAtlas.load();
+		
+		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 486, 123, TextureOptions.BILINEAR);
+		mGameOver = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "foreground/gameover.png", 0, 0); textureAtlas.load();
 		
 		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 496, 133, TextureOptions.BILINEAR);
 		mGameTitle = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "foreground/logo.png", 0, 0); textureAtlas.load();
