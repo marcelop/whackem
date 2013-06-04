@@ -55,6 +55,7 @@ public class MenuBuilder {
 				selector++;
 				// update position of the selection indicator
 				imgSelector.setPosition(menuSelections[selector].getX(), menuSelections[selector].getY());
+				ResourceManager.getInstance().mButtonClickSound.play();
 			}
 			break;
 		case OuyaController.BUTTON_DPAD_UP:
@@ -62,15 +63,18 @@ public class MenuBuilder {
 				selector--;
 				// update position of the selection indicator
 				imgSelector.setPosition(menuSelections[selector].getX(), menuSelections[selector].getY());
+				ResourceManager.getInstance().mButtonClickSound.play();
 			}
 			break;
 		case OuyaController.BUTTON_DPAD_RIGHT:
 			options[selector].selectionUp();
 			menuSelections[selector].setText(options[selector].toString());
+			ResourceManager.getInstance().mButtonClickSound.play();
 			break;
 		case OuyaController.BUTTON_DPAD_LEFT:
 			options[selector].selectionDown();
 			menuSelections[selector].setText(options[selector].toString());
+			ResourceManager.getInstance().mButtonClickSound.play();
 			break;
 		}
 		

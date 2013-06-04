@@ -555,7 +555,6 @@ public class GameScene extends Scene {
 	@Override
 	public boolean onSceneTouchEvent(TouchEvent pSceneTouchEvent) {
 		animateHammerHit();
-		setChildSceneModal(MainActivity.activity.mMenuScene);
 		return true;
 	}
 }
