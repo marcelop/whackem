@@ -4,18 +4,26 @@ import org.andengine.entity.sprite.Sprite;
 
 public class MenuItem {
 	String text;
-	int selector = 0;
+	int selector;
 	String[] options;
 	IMenuHandler handler;
 	
 	public MenuItem (String text, String[] options) {
 		this.text = text;
 		this.options = options;
+		selector = 0;
+		handler = null;
+	}
+	
+	public MenuItem(String text) {
+		this.text = text;
+		this.options = null;
+		selector = -1; //no selection
 		handler = null;
 	}
 	
 	public int selectionUp() {
-		if (selector < options.length -1 ) {
+		if (options != null && selector < options.length -1 ) {
 			selector++;
 			if (handler != null) handler.onChange(selector);
 		}
@@ -23,7 +31,7 @@ public class MenuItem {
 	}
 	
 	public int selectionDown() {
-		if (selector > 0 ) {
+		if (options != null && selector > 0 ) {
 			selector--;
 			if (handler != null) handler.onChange(selector);
 		}
@@ -35,11 +43,13 @@ public class MenuItem {
 	}
 	
 	public String getSelectionText() {
+		if (options == null) return null;
 		return options[selector];
 	}
 	
 	public String toString() {
-		return(text + "   < " + options[selector] + " >");
+		if (options == null) return text;
+		return text + "   < " + options[selector] + " >";
 	}
 	
 	void registerHandler(IMenuHandler handler) {
@@ -48,5 +58,6 @@ public class MenuItem {
 	
 	public interface IMenuHandler {
 		void onChange(int selected);
+		void onClick();
 	}
 }
