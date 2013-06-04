@@ -102,6 +102,8 @@ public class MainActivity extends BaseGameActivity {
 		}
     	if(keyCode == OuyaController.BUTTON_O && mEngine.getScene().getClass().equals(MainMenuScene.class))
     	{
+    		ResourceManager.getInstance().mIntroMusic.pause();
+    		ResourceManager.getInstance().mGameMusic.play();
     		mEngine.setScene(mGameScene);
     		GameManager.getInstance().startLevel(0, mGameScene);
     		return true;
@@ -235,6 +237,14 @@ public class MainActivity extends BaseGameActivity {
 		pOnPopulateSceneCallback.onPopulateSceneFinished();	
 	}
 	
+	@Override
+	protected void onPause() {
+		if(ResourceManager.getInstance().mIntroMusic != null)
+			ResourceManager.getInstance().mIntroMusic.pause();
+		if(ResourceManager.getInstance().mGameMusic != null)
+			ResourceManager.getInstance().mGameMusic.pause();
+		super.onPause();
+	}
 	
 	@Override
 	protected void onStop() {

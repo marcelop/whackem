@@ -64,6 +64,7 @@ public class ResourceManager {
 	public Sound mHitSound;
 	public Sound mHammerSound;
 	public Sound mButtonClickSound;
+	public Sound mLevelUpSound;
 	public Music mIntroMusic;
 	public Music mGameMusic;
 
@@ -217,19 +218,27 @@ public class ResourceManager {
 	 */
 	public synchronized void loadSounds(Engine pEngine, Context pContext) {
 		// Set the SoundFactory's base path
-		SoundFactory.setAssetBasePath("sfx/");
+		SoundFactory.setAssetBasePath("sfx/sound/");
+		MusicFactory.setAssetBasePath("sfx/music/");
 		try {
 			// Create mSound object via SoundFactory class
 			mHitSound = SoundFactory.createSoundFromAsset(
-					pEngine.getSoundManager(), pContext, "sound/hit.wav");
+					pEngine.getSoundManager(), pContext, "hit.wav");
 			mHammerSound = SoundFactory.createSoundFromAsset(
-					pEngine.getSoundManager(), pContext, "sound/hammer.wav");
+					pEngine.getSoundManager(), pContext, "hammer.wav");
 			mButtonClickSound = SoundFactory.createSoundFromAsset(
-					pEngine.getSoundManager(), pContext, "sound/button_down.wav");
-/*			mIntroMusic = MusicFactory.createMusicFromAsset(
-					pEngine.getMusicManager(), pContext, "music/intro.ogg");
+					pEngine.getSoundManager(), pContext, "button_down.wav");
+			mLevelUpSound = SoundFactory.createSoundFromAsset(
+					pEngine.getSoundManager(), pContext, "level-up.mp3");
+			mIntroMusic = MusicFactory.createMusicFromAsset(
+					pEngine.getMusicManager(), pContext, "intro.mp3");
 			mGameMusic = MusicFactory.createMusicFromAsset(
-					pEngine.getMusicManager(), pContext, "music/gameplay.ogg");*/
+					pEngine.getMusicManager(), pContext, "gameplay.mp3");
+			
+			mIntroMusic.setLooping(true);
+			mGameMusic.setLooping(true);
+			mIntroMusic.setVolume(0.7f);
+			mGameMusic.setVolume(0.7f);
 			
 		} catch (final IOException e) {
 			Log.v("Sounds Load", "Exception:" + e.getMessage());

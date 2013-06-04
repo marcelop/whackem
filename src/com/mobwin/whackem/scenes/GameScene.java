@@ -558,5 +558,4 @@ public class GameScene extends Scene {
 		setChildSceneModal(MainActivity.activity.mMenuScene);
 		return true;
 	}
-
 }

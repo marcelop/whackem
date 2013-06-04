@@ -1,5 +1,6 @@
 package com.mobwin.whackem;
 
+import org.andengine.audio.sound.SoundFactory;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.DelayModifier;
@@ -188,6 +189,7 @@ public class GameManager {
 							{
 								//Yay! Next Level
 								mCurrentLevel++;
+								ResourceManager.getInstance().mLevelUpSound.play();
 								displayNextLevel(mCurrentLevel, scene);
 								scene.registerEntityModifier(new SequenceEntityModifier(new DelayModifier(3, new IEntityModifierListener() {
 									@Override
