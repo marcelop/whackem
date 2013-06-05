@@ -90,6 +90,8 @@ public class MenuBuilder {
 					imgLeftArrow.setPosition(menuTexts[selector].getX() + menuTexts[selector].getWidth() + bufferArea, menuTexts[selector].getY());
 					imgRightArrow.setPosition(menuSelections[selector].getX() + menuSelections[selector].getWidth() + bufferArea, menuTexts[selector].getY());
 				}
+				imgSelector.setPosition(menuSelections[selector].getX(), menuSelections[selector].getY());
+				ResourceManager.getInstance().mButtonClickSound.play();
 			}
 			break;
 		case OuyaController.BUTTON_DPAD_UP:
@@ -105,6 +107,8 @@ public class MenuBuilder {
 					imgLeftArrow.setPosition(menuTexts[selector].getX() + menuTexts[selector].getWidth() + bufferArea, menuTexts[selector].getY());
 					imgRightArrow.setPosition(menuSelections[selector].getX() + menuSelections[selector].getWidth() + bufferArea, menuTexts[selector].getY());
 				}
+				imgSelector.setPosition(menuSelections[selector].getX(), menuSelections[selector].getY());
+				ResourceManager.getInstance().mButtonClickSound.play();
 			}
 			break;
 		case OuyaController.BUTTON_DPAD_RIGHT:
@@ -114,6 +118,9 @@ public class MenuBuilder {
 				/* Adjust right arrow to the end of the new text */
 				imgRightArrow.setPosition(menuSelections[selector].getX() + menuSelections[selector].getWidth() + bufferArea, menuTexts[selector].getY());
 			}
+			options[selector].selectionUp();
+			menuSelections[selector].setText(options[selector].toString());
+			ResourceManager.getInstance().mButtonClickSound.play();
 			break;
 		case OuyaController.BUTTON_DPAD_LEFT:
 			if (options[selector].hasOptions()) {
@@ -122,9 +129,13 @@ public class MenuBuilder {
 				/* Adjust right arrow to the end of the new text */
 				imgRightArrow.setPosition(menuSelections[selector].getX() + menuSelections[selector].getWidth() + bufferArea, menuTexts[selector].getY());
 			}
+			options[selector].selectionDown();
+			menuSelections[selector].setText(options[selector].toString());
+			ResourceManager.getInstance().mButtonClickSound.play();
 			break;
 		case OuyaController.BUTTON_O:
 			options[selector].Select();
+			ResourceManager.getInstance().mButtonClickSound.play();
 		}
 		
 	}

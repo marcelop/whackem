@@ -33,7 +33,7 @@ import com.mobwin.whackem.ResourceManager;
 public class GameScene extends Scene {
 
 	public static final String SPLASH_STRING = "HELLO GAME SCREEN!";
-	Engine mEngine;
+	private Engine mEngine;
 	public Text mGameSceneText;
 	public Text mGameSceneLevel;
 	public Random mRand = new Random();
@@ -101,7 +101,7 @@ public class GameScene extends Scene {
 			hiddenPos = y-90;
 			showingPos = y+40;
 
-			moleSprite = new AnimatedSprite(x, hiddenPos, 135, 152, ResourceManager.getInstance().mGameMole, mEngine.getVertexBufferObjectManager());
+			moleSprite = new AnimatedSprite(x, hiddenPos, 135, 152, ResourceManager.getInstance().mGameMole, getEngine().getVertexBufferObjectManager());
 		}
 
 		void animMoleLaugh()
@@ -537,7 +537,7 @@ public class GameScene extends Scene {
 	{
 		final float hitDuration = 0.05f;
 		final float backDuration = 0.1f;
-		mHammer.registerEntityModifier(new DelayModifier(hitDuration+0.1f, new IEntityModifierListener() {
+		mHammer.registerEntityModifier(new DelayModifier(hitDuration+backDuration, new IEntityModifierListener() {
 			
 			@Override
 			public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {
@@ -555,7 +555,11 @@ public class GameScene extends Scene {
 	@Override
 	public boolean onSceneTouchEvent(TouchEvent pSceneTouchEvent) {
 		animateHammerHit();
-		setChildSceneModal(MainActivity.activity.mMenuScene);
 		return true;
 	}
+
+	public Engine getEngine() {
+		return mEngine;
+	}
+
 }

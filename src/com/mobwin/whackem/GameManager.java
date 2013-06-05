@@ -6,6 +6,7 @@ import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.DelayModifier;
 import org.andengine.entity.modifier.IEntityModifier.IEntityModifierListener;
 import org.andengine.entity.modifier.SequenceEntityModifier;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.util.modifier.IModifier;
 
 import com.mobwin.whackem.scenes.GameScene;
@@ -36,6 +37,8 @@ public class GameManager {
 	private int mMaxMissedMoles;
 	private int mMaxSimultaneousMoles;
 	private GameState mState;
+	
+	private Sprite mGameOver = null;
 
 	private int mMolesUp;
 	
@@ -213,19 +216,23 @@ public class GameManager {
 	}
 
 	protected void displayGameOver(final GameScene scene) {
-		scene.mGameSceneLevel.setText("GAME OVER :(");
-		scene.mGameSceneLevel.registerEntityModifier(new DelayModifier(2, new IEntityModifierListener() {
-			
+
+		if (mGameOver == null)
+		{
+			mGameOver = new Sprite(MainActivity.WIDTH/2, MainActivity.HEIGHT/2, ResourceManager.getInstance().mGameOver, scene.getEngine().getVertexBufferObjectManager());
+			scene.attachChild(mGameOver);
+		}
+
+		mGameOver.registerEntityModifier(new DelayModifier(2, new IEntityModifierListener() {
+
 			@Override
 			public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {
-				// TODO Auto-generated method stub
-				scene.mGameSceneLevel.setVisible(true);
+				pItem.setVisible(true);
 			}
-			
+
 			@Override
 			public void onModifierFinished(IModifier<IEntity> pModifier, IEntity pItem) {
-				// TODO Auto-generated method stub
-				scene.mGameSceneLevel.setVisible(false);
+				pItem.setVisible(false);
 			}
 		}));
 	}
