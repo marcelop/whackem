@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 
+import com.mobwin.whackem.scenes.CreditsScene;
 import com.mobwin.whackem.scenes.GameScene;
 import com.mobwin.whackem.scenes.MainMenuScene;
 import com.mobwin.whackem.scenes.SplashScene;
@@ -38,8 +39,9 @@ public class MainActivity extends BaseGameActivity {
 	//====================================================
 	// We'll be creating 1 scene for our main menu and one for our splash image
 	public Scene mMenuScene;
-	private SplashScene mSplashScene;
-	private GameScene mGameScene;
+	public SplashScene mSplashScene;
+	public GameScene mGameScene;
+	public CreditsScene mCreditsScene;
 	
 	private Camera mCamera;
 	
@@ -100,15 +102,7 @@ public class MainActivity extends BaseGameActivity {
 		default:
 			break;
 		}
-    	if(keyCode == OuyaController.BUTTON_O && mEngine.getScene().getClass().equals(MainMenuScene.class))
-    	{
-    		ResourceManager.getInstance().mIntroMusic.pause();
-    		ResourceManager.getInstance().mGameMusic.play();
-    		mEngine.setScene(mGameScene);
-    		GameManager.getInstance().startLevel(0, mGameScene);
-    		return true;
-    	}
-    	else if(mEngine.getScene().getClass().equals(MainMenuScene.class))
+    	if(mEngine.getScene().getClass().equals(MainMenuScene.class))
     	{
     		((MainMenuScene) mEngine.getScene()).onKeyUp(keyCode, event);
     		return true;
@@ -227,6 +221,8 @@ public class MainActivity extends BaseGameActivity {
 				mGameScene.populate(mEngine);
 				
 				mEngine.setScene(mMenuScene);
+				
+				mCreditsScene = new CreditsScene(mEngine);
 				
 				mSplashScene.unloadRes();
 				
