@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.andengine.engine.Engine;
+import org.andengine.engine.handler.timer.ITimerCallback;
+import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.Entity;
 import org.andengine.entity.modifier.DelayModifier;
 import org.andengine.entity.modifier.FadeInModifier;
@@ -26,26 +28,26 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.ITextureRegion;
 
+import tv.ouya.console.api.OuyaController;
+
 import android.annotation.SuppressLint;
+import android.view.KeyEvent;
+
 import com.mobwin.whackem.MainActivity;
 import com.mobwin.whackem.ResourceManager;
 
 public class CreditsScene extends Scene {
 
 	final Engine engine;
-	
 	// titles identify the number of different categories you have. Such as producer, artists, designers, programmers, etc
 	String[] titles;
-	
 	// names contain the name of the each person on each category (that have the same title)
 	String[][] names;
-	
 	// define the amount of space in between lines
 	final float lineSpacing = 10;
-		
-	int numberOfTitles;
-	
+	int numberOfTitles;	
 	private Sprite backgroundSprite;
+	public static final String MENU_BACK_STRING = "PRESS         TO RETURN";
 	
 	public CreditsScene(final Engine engine) {
 		
@@ -58,9 +60,29 @@ public class CreditsScene extends Scene {
 		titles = new String[numberOfTitles];
 		names = new String[numberOfTitles][];
 		
+		// Add return option at the bottom right corner of the screen
+		Font font = ResourceManager.getInstance().mFont;
+		
+		float x = MainActivity.WIDTH - 150;
+		float y = font.getLineHeight();
+		
+		final Text returnOption = new Text(x, y, font, MENU_BACK_STRING, engine.getVertexBufferObjectManager());
+		final Sprite a_button = new Sprite(x-30, y, 65, 80, ResourceManager.getInstance().mO_BUTTON, engine.getVertexBufferObjectManager());
+		attachChild(a_button);
+		
+		engine.registerUpdateHandler(new TimerHandler(1, true, new ITimerCallback() {
+			@Override
+			public void onTimePassed(TimerHandler arg0) {
+				returnOption.setVisible(!returnOption.isVisible());
+				a_button.setVisible(!a_button.isVisible());
+			}
+		}));	
+		this.attachChild(returnOption);
+		
+		
 		// Place credits centered in the screen, starting from the bottom
-		float x = MainActivity.WIDTH / 2;
-		float y = -20; //start offscreen		
+		x = MainActivity.WIDTH / 2;
+		y = -20; //start offscreen		
 		
 		
 		// Initialize all the titles and names you want in the credits
@@ -117,5 +139,13 @@ public class CreditsScene extends Scene {
 	}
 	
 	public void unloadRes() {
+	}
+	
+	public synchronized void onKeyUp(int keyCode, KeyEvent event) {
+		switch (keyCode) {
+		case OuyaController.BUTTON_O:
+    		engine.setScene(MainActivity.activity.mMenuScene);
+			ResourceManager.getInstance().mButtonClickSound.play();
+		}
 	}
 }

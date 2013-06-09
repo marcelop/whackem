@@ -107,6 +107,11 @@ public class MainActivity extends BaseGameActivity {
     		((MainMenuScene) mEngine.getScene()).onKeyUp(keyCode, event);
     		return true;
     	}
+    	else if(mEngine.getScene().getClass().equals(CreditsScene.class))
+    	{
+    		((CreditsScene) mEngine.getScene()).onKeyUp(keyCode, event);
+    		return true;
+    	}
     	else if(mEngine.getScene().getClass().equals(GameScene.class))
     	{
     		((GameScene) mEngine.getScene()).onKeyUp(keyCode, event);
