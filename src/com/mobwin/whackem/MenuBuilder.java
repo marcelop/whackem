@@ -21,12 +21,17 @@ public class MenuBuilder {
 	final Sprite imgSelector;
 	final Sprite imgLeftArrow, imgRightArrow;
 	final float bufferArea = 10;
+	private float anchorX;
+	private float anchorY;
 	
 	public MenuBuilder(Scene scene, Engine engine, float x, float y, MenuItem[] options, Font font, ITextureRegion selectorImage, ITextureRegion arrowImage) {
 		
 		selector = 0;
 		this.options = options;
 
+		anchorX = 0.5f;
+		anchorY = 0.5f;
+		
 		// place the selector right before the first option
 		this.imgSelector = new Sprite(x,y,selectorImage,engine.getVertexBufferObjectManager());
 		imgSelector.setRotationCenter(imgSelector.getRotationCenterX(), imgSelector.getRotationCenterY()*0.5f);
@@ -134,4 +139,16 @@ public class MenuBuilder {
 		
 	}
 	
+	void setAnchor(float pX, float pY) {
+		anchorX = pX;
+		anchorY = pY;
+	}
+	
+	void setAnchorX(float pX) {
+		anchorX = pX;
+	}
+	
+	void setAnchorY(float pY) {
+		anchorY = pY;
+	}
 }

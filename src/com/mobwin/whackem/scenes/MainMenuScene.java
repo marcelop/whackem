@@ -22,11 +22,15 @@ import org.andengine.util.modifier.IModifier;
 import org.andengine.util.modifier.ease.EaseBackOut;
 import org.andengine.util.modifier.ease.EaseElasticOut;
 
+import tv.ouya.console.api.OuyaController;
+
 import android.view.KeyEvent;
 
+import com.mobwin.whackem.GameManager;
 import com.mobwin.whackem.MainActivity;
 import com.mobwin.whackem.MenuBuilder;
 import com.mobwin.whackem.MenuItem;
+import com.mobwin.whackem.MenuItem.IMenuHandler;
 import com.mobwin.whackem.ResourceManager;
 
 public class MainMenuScene extends Scene {
@@ -66,11 +70,50 @@ public class MainMenuScene extends Scene {
 		String[] o = new String[2];
 		o[0] = "hi";
 		o[1] = "bye";
-		MenuItem[] items = new MenuItem[3];
+		MenuItem[] items = new MenuItem[4];
 		items[0] = new MenuItem("Start Game");
+		
+		items[0].registerHandler(new IMenuHandler() {
+
+			@Override
+			public void onChange(MenuItem sender, int selected) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onClick(MenuItem sender) {
+				// TODO Auto-generated method stub
+	    		ResourceManager.getInstance().mIntroMusic.pause();
+	    		ResourceManager.getInstance().mGameMusic.play();
+	    		engine.setScene(MainActivity.activity.mGameScene);
+	    		GameManager.getInstance().startLevel(0, MainActivity.activity.mGameScene);				
+			}
+		});
+		
+		
 		items[1] = new MenuItem("Start Game too! LOL", o);
 		items[2] = new MenuItem("Yet another option", new String[] {"1","2","3","big number"});
 	
+		items[3] = new MenuItem("Credits");
+		
+		items[3].registerHandler(new IMenuHandler() {
+
+			@Override
+			public void onChange(MenuItem sender, int selected) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onClick(MenuItem sender) {
+				// TODO Auto-generated method stub
+	    		ResourceManager.getInstance().mIntroMusic.pause();
+	    		//ResourceManager.getInstance().mGameMusic.play();
+	    		engine.setScene(MainActivity.activity.mCreditsScene);
+			}
+		});
+		
 		
 		menu = new MenuBuilder(this, engine, x, y+90, items, ResourceManager.getInstance().mFont, ResourceManager.getInstance().mGameHammer,ResourceManager.getInstance().mGameHammer);
 		//end temp menu

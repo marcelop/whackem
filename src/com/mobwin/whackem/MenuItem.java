@@ -1,6 +1,8 @@
 package com.mobwin.whackem;
 
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.entity.text.Text;
+import org.andengine.opengl.font.Font;
 
 public class MenuItem {
 	String text;
@@ -60,7 +62,7 @@ public class MenuItem {
 		if (handler!= null) handler.onClick(this);
 	}
 	
-	void registerHandler(IMenuHandler handler) {
+	public void registerHandler(IMenuHandler handler) {
 		this.handler = handler;
 	}	
 	
