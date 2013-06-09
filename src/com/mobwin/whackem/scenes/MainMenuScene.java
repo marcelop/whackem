@@ -3,6 +3,7 @@ package com.mobwin.whackem.scenes;
 import org.andengine.engine.Engine;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
+import org.andengine.entity.Entity;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.DelayModifier;
 import org.andengine.entity.modifier.IEntityModifier.IEntityModifierListener;
@@ -13,6 +14,7 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.AutoParallaxBackground;
 import org.andengine.entity.scene.background.ParallaxBackground;
 import org.andengine.entity.scene.background.ParallaxBackground.ParallaxEntity;
+import org.andengine.entity.sprite.ButtonSprite;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.input.touch.TouchEvent;
@@ -42,6 +44,9 @@ public class MainMenuScene extends Scene {
 	Sprite buttonSprite;
 	MenuBuilder menu;
 	private Sprite backgroundSprite;
+	private Entity menuLayer;
+	private boolean isMenuActivated = false;
+	
 
 	public MainMenuScene(final Engine engine)
 	{
@@ -68,8 +73,8 @@ public class MainMenuScene extends Scene {
 		//Make a temporary menu
 		
 		String[] o = new String[2];
-		o[0] = "hi";
-		o[1] = "bye";
+		o[0] = "ON";
+		o[1] = "OFF";
 		MenuItem[] items = new MenuItem[4];
 		items[0] = new MenuItem("Start Game");
 		
@@ -92,8 +97,8 @@ public class MainMenuScene extends Scene {
 		});
 		
 		
-		items[1] = new MenuItem("Start Game too! LOL", o);
-		items[2] = new MenuItem("Yet another option", new String[] {"1","2","3","big number"});
+		items[1] = new MenuItem("Music", o);
+		items[2] = new MenuItem("Sound Effects", new String[] {"ON","OFF"});
 	
 		items[3] = new MenuItem("Credits");
 		
@@ -114,10 +119,10 @@ public class MainMenuScene extends Scene {
 			}
 		});
 		
-		
-		menu = new MenuBuilder(this, engine, x, y+90, items, ResourceManager.getInstance().mFont, ResourceManager.getInstance().mGameHammer,ResourceManager.getInstance().mGameHammer);
+		menuLayer = new Entity( -MainActivity.WIDTH, MainActivity.HEIGHT / 2);
+		menu = new MenuBuilder(menuLayer, engine, x, y+90, items, ResourceManager.getInstance().mFont, ResourceManager.getInstance().mGameHammer,ResourceManager.getInstance().mGameHammer);
 		//end temp menu
-
+		attachChild(menuLayer);
 		
 		
 		final Sprite a_button = new Sprite(x-30, y, 65, 80, ResourceManager.getInstance().mO_BUTTON, engine.getVertexBufferObjectManager());
@@ -201,16 +206,25 @@ public class MainMenuScene extends Scene {
     
 	@Override
 	public boolean onSceneTouchEvent(TouchEvent pSceneTouchEvent) {
-		//GameManager.getInstance().startLevel(0, MainActivity.activity.getGameScene());
-		//MainActivity.activity.getEngine().setScene(
-		//		MainActivity.activity.getGameScene());
-		logoSprite.registerEntityModifier(new MoveModifier(1f, logoSprite.getX(), logoSprite.getY(), logoSprite.getX(), MainActivity.HEIGHT - (MainActivity.HEIGHT / 2)/4, EaseElasticOut.getInstance()));
-		buttonSprite.registerEntityModifier(new MoveModifier(1f, buttonSprite.getX(), buttonSprite.getY(), MainActivity.WIDTH/2, MainActivity.HEIGHT/2, EaseBackOut.getInstance()));
+//		GameManager.getInstance().startLevel(0, MainActivity.activity.getGameScene());
+//		MainActivity.activity.getEngine().setScene(
+//				MainActivity.activity.getGameScene());
+		activateMenu();
 		super.onSceneTouchEvent(pSceneTouchEvent);
 		return true;
 	}
 	
+	public void activateMenu()
+	{
+		isMenuActivated = true;
+		logoSprite.registerEntityModifier(new MoveModifier(1f, logoSprite.getX(), logoSprite.getY(), logoSprite.getX(), MainActivity.HEIGHT - (MainActivity.HEIGHT / 2)/4, EaseElasticOut.getInstance()));
+		menuLayer.registerEntityModifier(new MoveModifier(1f, menuLayer.getX(),  MainActivity.HEIGHT/2-100, 0, MainActivity.HEIGHT/2-100, EaseBackOut.getInstance()));		
+	}
+	
 	public synchronized void onKeyUp(int keyCode, KeyEvent event) {
-		menu.onKeyUp(keyCode, event);
+		if(isMenuActivated)
+			menu.onKeyUp(keyCode, event);
+		else
+			activateMenu();
 	}
 }
