@@ -37,8 +37,6 @@ import com.mobwin.whackem.ResourceManager;
 
 public class MainMenuScene extends Scene {
 
-	public static final String MENU_STRING = "HELLO MENU SCREEN!";
-	public static final String MENU_SELECT_STRING = "PRESS         TO SELECT";
 	Text mMenuSceneText;
 	Sprite logoSprite;
 	Sprite buttonSprite;
@@ -53,22 +51,9 @@ public class MainMenuScene extends Scene {
 		// Retrieve our font from the resource manager
 		Font font = ResourceManager.getInstance().mFont;
 
-		// We must change the value of x depending on the length of our menu
-		// string now in order to keep the text centered on-screen
-		float x = MainActivity.WIDTH / 2 - FontUtils.measureText(font, MENU_STRING) / 2;
-		float y = MainActivity.HEIGHT / 2 - font.getLineHeight() / 2;
-		
-		// Create our menu screen text object
-		mMenuSceneText = new Text(x, y, font, MENU_STRING, MENU_STRING.length(), engine.getVertexBufferObjectManager());
-		// Attach the text object to our menu scene
-		//attachChild(mMenuSceneText);
-		
-		x = MainActivity.WIDTH / 2;
-		y = font.getLineHeight() / 2 + 100;
-		
-		final Text menuSelectText = new Text(x, y, font, MENU_SELECT_STRING, MENU_SELECT_STRING.length(), engine.getVertexBufferObjectManager());
-		attachChild(menuSelectText);
-		
+		float x = MainActivity.WIDTH / 2;
+		float y = font.getLineHeight() / 2 + 100;
+				
 		
 		//Make a temporary menu
 		
@@ -116,25 +101,16 @@ public class MainMenuScene extends Scene {
 	    		ResourceManager.getInstance().mIntroMusic.pause();
 	    		//ResourceManager.getInstance().mGameMusic.play();
 	    		engine.setScene(MainActivity.activity.mCreditsScene);
+	    		MainActivity.activity.mCreditsScene.start();
 			}
 		});
 		
 		menuLayer = new Entity( -MainActivity.WIDTH, MainActivity.HEIGHT / 2);
 		menu = new MenuBuilder(menuLayer, engine, x, y+90, items, ResourceManager.getInstance().mFont, ResourceManager.getInstance().mGameHammer,ResourceManager.getInstance().mGameHammer);
 		//end temp menu
+
 		attachChild(menuLayer);
 		
-		
-		final Sprite a_button = new Sprite(x-30, y, 65, 80, ResourceManager.getInstance().mO_BUTTON, engine.getVertexBufferObjectManager());
-		attachChild(a_button);
-		
-		engine.registerUpdateHandler(new TimerHandler(1, true, new ITimerCallback() {
-			@Override
-			public void onTimePassed(TimerHandler arg0) {
-				menuSelectText.setVisible(!menuSelectText.isVisible());
-				a_button.setVisible(!a_button.isVisible());
-			}
-		}));		
 		
 		//Make logo move indefinitely
 		logoSprite = new Sprite(MainActivity.WIDTH / 2, MainActivity.HEIGHT / 2, ResourceManager.getInstance().mGameTitle, engine.getVertexBufferObjectManager());
