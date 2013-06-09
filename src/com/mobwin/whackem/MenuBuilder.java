@@ -1,16 +1,13 @@
 package com.mobwin.whackem;
 
 import org.andengine.engine.Engine;
-import org.andengine.entity.scene.Scene;
+import org.andengine.entity.Entity;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
-import org.andengine.entity.text.TextOptions;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.texture.region.ITextureRegion;
-import org.andengine.util.adt.align.HorizontalAlign;
 
 import tv.ouya.console.api.OuyaController;
-
 import android.view.KeyEvent;
 
 public class MenuBuilder {
@@ -24,7 +21,7 @@ public class MenuBuilder {
 	private float anchorX;
 	private float anchorY;
 	
-	public MenuBuilder(Scene scene, Engine engine, float x, float y, MenuItem[] options, Font font, ITextureRegion selectorImage, ITextureRegion arrowImage) {
+	public MenuBuilder(Entity scene, Engine engine, float x, float y, MenuItem[] options, Font font, ITextureRegion selectorImage, ITextureRegion arrowImage) {
 		
 		selector = 0;
 		this.options = options;
@@ -37,18 +34,15 @@ public class MenuBuilder {
 		imgSelector.setRotationCenter(imgSelector.getRotationCenterX(), imgSelector.getRotationCenterY()*0.5f);
 		imgSelector.setScale(font.getLineHeight()/imgSelector.getHeight());
 		imgSelector.setAnchorCenterX(1f);
-		scene.attachChild(imgSelector);
-		
+
 		this.imgLeftArrow = new Sprite(x,y,arrowImage,engine.getVertexBufferObjectManager());
 		imgLeftArrow.setScale(font.getLineHeight()/imgLeftArrow.getHeight());
 		imgLeftArrow.setAnchorCenterX(0f);
-		scene.attachChild(imgLeftArrow);
 		
 		this.imgRightArrow = new Sprite(x,y,arrowImage,engine.getVertexBufferObjectManager());
 		imgRightArrow.setFlippedHorizontal(true); // Flip the image for the right side
 		imgRightArrow.setScale(font.getLineHeight()/imgRightArrow.getHeight());
 		imgRightArrow.setAnchorCenterX(0f);
-		scene.attachChild(imgRightArrow);
 
 		/* if the first option in the menu does not contain any extra options, hide the arrows */
 		imgLeftArrow.setVisible(options[selector].hasOptions());
@@ -59,15 +53,20 @@ public class MenuBuilder {
 		
 		for(int i = 0; i < menuSelections.length; i++) {
 			menuTexts[i] = new Text(x, y, font, options[i].getText(), engine.getVertexBufferObjectManager());
-			menuTexts[i].setAnchorCenterX(0f);
+			//menuTexts[i].setAnchorCenterX(0f);
+			scene.attachChild(new Sprite(menuTexts[i].getX() , menuTexts[i].getY(), 
+					 MainActivity.WIDTH/3 -60, font.getLineHeight()+40, ResourceManager.getInstance().mUIRedButton, MainActivity.activity.getVertexBufferObjectManager()));
 			scene.attachChild(menuTexts[i]);
+			
+			
+			
 			if (options[i].hasOptions()) {				
 				/* place the selection after the menu text and the arrow to the left
 				 * menu text _ < _ menu option _ > 
 				 */
 				menuSelections[i] = new Text(x + 2*bufferArea + 30 + menuTexts[i].getWidth(),
 						y, font, options[i].getSelectionText(), 100, engine.getVertexBufferObjectManager());
-				menuSelections[i].setAnchorCenterX(0f);
+				//menuSelections[i].setAnchorCenterX(0f);
 				scene.attachChild(menuSelections[i]);
 				if (i == selector) {
 					/* correct placement of the arrows  */
@@ -76,8 +75,13 @@ public class MenuBuilder {
 				}	
 			}
 			// separates the lines according to the font size, adding some space in between
-			y -= font.getLineHeight();
+			y -= font.getLineHeight() +40;
 		}
+		
+		imgSelector.setX(MainActivity.WIDTH/2 - menuTexts[0].getWidth()/2);
+		scene.attachChild(imgSelector);
+		scene.attachChild(imgLeftArrow);
+		scene.attachChild(imgRightArrow);
 	}
 	
 	public synchronized void onKeyUp(int keyCode, KeyEvent event) {
@@ -137,6 +141,7 @@ public class MenuBuilder {
 			ResourceManager.getInstance().mButtonClickSound.play();
 		}
 		
+		imgSelector.setX(MainActivity.WIDTH/2 - menuTexts[selector].getWidth()/2);
 	}
 	
 	void setAnchor(float pX, float pY) {

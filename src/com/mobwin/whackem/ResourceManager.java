@@ -155,7 +155,7 @@ public class ResourceManager {
 		mGameHammer = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "foreground/hammer.png", 0, 0); textureAtlas.load();
 		
 		
-		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 901, 901, TextureOptions.BILINEAR);
+		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 877, 270, TextureOptions.BILINEAR);
 		mUIRedButton = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "foreground/red_button.png", 0, 0); textureAtlas.load();
 	}
 
