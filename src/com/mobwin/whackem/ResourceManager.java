@@ -94,13 +94,13 @@ public class ResourceManager {
 
 
 		//Load button textures
-		BitmapTextureAtlas button = new BitmapTextureAtlas(pEngine.getTextureManager(), 200, 200, TextureOptions.BILINEAR);
+		BitmapTextureAtlas button = new BitmapTextureAtlas(pEngine.getTextureManager(), 200, 200, TextureOptions.DEFAULT);
 		mO_BUTTON = BitmapTextureAtlasTextureRegionFactory.createFromAsset(button, pContext, "ouya/OUYA_O.png", 0, 0); button.load();
-		button = new BitmapTextureAtlas(pEngine.getTextureManager(), 200, 200, TextureOptions.BILINEAR);
+		button = new BitmapTextureAtlas(pEngine.getTextureManager(), 200, 200, TextureOptions.DEFAULT);
 		mU_BUTTON = BitmapTextureAtlasTextureRegionFactory.createFromAsset(button, pContext, "ouya/OUYA_U.png", 0, 0); button.load();
-		button = new BitmapTextureAtlas(pEngine.getTextureManager(), 200, 200, TextureOptions.BILINEAR);
+		button = new BitmapTextureAtlas(pEngine.getTextureManager(), 200, 200, TextureOptions.DEFAULT);
 		mY_BUTTON = BitmapTextureAtlasTextureRegionFactory.createFromAsset(button, pContext, "ouya/OUYA_Y.png", 0, 0); button.load();
-		button = new BitmapTextureAtlas(pEngine.getTextureManager(), 200, 200, TextureOptions.BILINEAR);
+		button = new BitmapTextureAtlas(pEngine.getTextureManager(), 200, 200, TextureOptions.DEFAULT);
 		mA_BUTTON = BitmapTextureAtlasTextureRegionFactory.createFromAsset(button, pContext, "ouya/OUYA_A.png", 0, 0); button.load();
 
 		//Load Game Textures
