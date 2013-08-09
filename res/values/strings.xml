@@ -15,7 +15,7 @@
  * limitations under the License.
 -->
 <resources>
-    <string name="app_name">Whack-A-Mole</string>
+    <string name="app_name">Whack\'em</string>
     <string name="menu_title">Welcome to Whack-A-Mole!</string>
     <string name="new_game">New Game</string>
     <string name="options">Options</string>
