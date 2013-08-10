@@ -32,12 +32,13 @@ import com.mobwin.whackem.GameManager;
 import com.mobwin.whackem.MainActivity;
 import com.mobwin.whackem.MenuBuilder;
 import com.mobwin.whackem.MenuItem;
+import com.mobwin.whackem.UserData;
 import com.mobwin.whackem.MenuItem.IMenuHandler;
 import com.mobwin.whackem.ResourceManager;
 
 public class MainMenuScene extends Scene {
 
-	Text mMenuSceneText;
+	Text mHighScoreText;
 	Sprite logoSprite;
 	Sprite buttonSprite;
 	MenuBuilder menu;
@@ -60,7 +61,7 @@ public class MainMenuScene extends Scene {
 		String[] o = new String[2];
 		o[0] = "ON";
 		o[1] = "OFF";
-		MenuItem[] items = new MenuItem[4];
+		MenuItem[] items = new MenuItem[5];
 		items[0] = new MenuItem("Start Game");
 		
 		items[0].registerHandler(new IMenuHandler() {
@@ -84,10 +85,12 @@ public class MainMenuScene extends Scene {
 		
 		items[1] = new MenuItem("Music", o);
 		items[2] = new MenuItem("Sound Effects", new String[] {"ON","OFF"});
-	
-		items[3] = new MenuItem("Credits");
 		
-		items[3].registerHandler(new IMenuHandler() {
+		items[3] = new MenuItem("UNLOCK GAME");
+	
+		items[4] = new MenuItem("Credits");
+		
+		items[4].registerHandler(new IMenuHandler() {
 
 			@Override
 			public void onChange(MenuItem sender, int selected) {
@@ -142,6 +145,9 @@ public class MainMenuScene extends Scene {
 		setBackground(background);
 		setBackgroundEnabled(true);
 		
+		mHighScoreText = new Text(-MainActivity.WIDTH, -MainActivity.HEIGHT/6, font, "HIGH SCORE: " + UserData.getInstance().getHighScore(), 300, engine.getVertexBufferObjectManager());
+		attachChild(mHighScoreText);
+		
 		ResourceManager.getInstance().mIntroMusic.play();
 	}
 
@@ -182,9 +188,6 @@ public class MainMenuScene extends Scene {
     
 	@Override
 	public boolean onSceneTouchEvent(TouchEvent pSceneTouchEvent) {
-//		GameManager.getInstance().startLevel(0, MainActivity.activity.getGameScene());
-//		MainActivity.activity.getEngine().setScene(
-//				MainActivity.activity.getGameScene());
 		activateMenu();
 		super.onSceneTouchEvent(pSceneTouchEvent);
 		return true;
@@ -194,7 +197,8 @@ public class MainMenuScene extends Scene {
 	{
 		isMenuActivated = true;
 		logoSprite.registerEntityModifier(new MoveModifier(1f, logoSprite.getX(), logoSprite.getY(), logoSprite.getX(), MainActivity.HEIGHT - (MainActivity.HEIGHT / 2)/4, EaseElasticOut.getInstance()));
-		menuLayer.registerEntityModifier(new MoveModifier(1f, menuLayer.getX(),  MainActivity.HEIGHT/2-100, 0, MainActivity.HEIGHT/2-100, EaseBackOut.getInstance()));		
+		menuLayer.registerEntityModifier(new MoveModifier(1f, menuLayer.getX(),  MainActivity.HEIGHT/2-100, 0, MainActivity.HEIGHT/2-100, EaseBackOut.getInstance()));
+		mHighScoreText.registerEntityModifier(new MoveModifier(1f, mHighScoreText.getX(),  MainActivity.HEIGHT/8, MainActivity.WIDTH/2, MainActivity.HEIGHT/8, EaseBackOut.getInstance()));
 	}
 	
 	public synchronized void onKeyUp(int keyCode, KeyEvent event) {

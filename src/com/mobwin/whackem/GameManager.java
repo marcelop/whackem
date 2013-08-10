@@ -28,7 +28,7 @@ public class GameManager {
 	 * our game. This particular game manager holds data for score, bird
 	 * counts and enemy counts.
 	 */
-	private int mCurrentScore;
+	private long mCurrentScore;
 	private int mMoleHitCount;
 	private int mHitCount;
 	private int mCurrentLevel;
@@ -67,7 +67,7 @@ public class GameManager {
 	}
 	
 	// get the current score
-	public int getCurrentScore(){
+	public long getCurrentScore(){
 		return this.mCurrentScore;
 	}
 	
@@ -186,12 +186,14 @@ public class GameManager {
 							{
 								//Game Over
 								displayGameOver(scene);
+								UserData.getInstance().setHighScore(getCurrentScore());
 								resetGame();
 							}
 							else
 							{
 								//Yay! Next Level
 								mCurrentLevel++;
+								UserData.getInstance().unlockLevel(mCurrentLevel);
 								ResourceManager.getInstance().mLevelUpSound.play();
 								displayNextLevel(mCurrentLevel, scene);
 								scene.registerEntityModifier(new SequenceEntityModifier(new DelayModifier(3, new IEntityModifierListener() {

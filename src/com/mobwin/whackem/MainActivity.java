@@ -55,10 +55,11 @@ public class MainActivity extends BaseGameActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("whacka", "Initializing Controller");
         OuyaController.init(this);
-        Log.d("whacka", "Finished Initializing Controller");
         activity = this;
+        
+        // Initializing User Data
+        UserData.getInstance().init(this);
     }
     
 	//====================================================
