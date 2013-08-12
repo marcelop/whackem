@@ -1,5 +1,8 @@
 package com.mobwin.whackem.scenes;
 
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
+
 import org.andengine.engine.Engine;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
@@ -23,8 +26,10 @@ import org.andengine.opengl.font.FontUtils;
 import org.andengine.util.modifier.IModifier;
 import org.andengine.util.modifier.ease.EaseBackOut;
 import org.andengine.util.modifier.ease.EaseElasticOut;
+import org.json.JSONException;
 
 import tv.ouya.console.api.OuyaController;
+import tv.ouya.console.api.OuyaFacade;
 
 import android.view.KeyEvent;
 
@@ -58,10 +63,19 @@ public class MainMenuScene extends Scene {
 		
 		//Make a temporary menu
 		
+		int menuSize = 4;
+		if (OuyaFacade.getInstance().isRunningOnOUYAHardware() && 
+				!UserData.getInstance().isGameUnlocked())
+			menuSize = 5;
+
+		
 		String[] o = new String[2];
 		o[0] = "ON";
 		o[1] = "OFF";
-		MenuItem[] items = new MenuItem[5];
+		
+		
+		
+		MenuItem[] items = new MenuItem[menuSize];
 		items[0] = new MenuItem("Start Game");
 		
 		items[0].registerHandler(new IMenuHandler() {
@@ -86,11 +100,29 @@ public class MainMenuScene extends Scene {
 		items[1] = new MenuItem("Music", o);
 		items[2] = new MenuItem("Sound Effects", new String[] {"ON","OFF"});
 		
-		items[3] = new MenuItem("UNLOCK GAME");
+		if (OuyaFacade.getInstance().isRunningOnOUYAHardware() && 
+				!UserData.getInstance().isGameUnlocked())
+		{
+			items[3] = new MenuItem("UNLOCK GAME");
+			items[3].registerHandler(new IMenuHandler() {
+				
+				@Override
+				public void onClick(MenuItem sender) {
+					try {
+						GameManager.getInstance().requestPurchase();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+				
+				@Override
+				public void onChange(MenuItem sender, int selected) {}
+			});
+		}
 	
-		items[4] = new MenuItem("Credits");
+		items[menuSize-1] = new MenuItem("Credits");
 		
-		items[4].registerHandler(new IMenuHandler() {
+		items[menuSize-1].registerHandler(new IMenuHandler() {
 
 			@Override
 			public void onChange(MenuItem sender, int selected) {

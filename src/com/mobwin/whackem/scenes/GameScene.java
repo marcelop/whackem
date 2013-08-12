@@ -21,7 +21,6 @@ import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.font.Font;
 import org.andengine.util.adt.color.Color;
 import org.andengine.util.modifier.IModifier;
-import org.andengine.util.modifier.ease.EaseElasticOut;
 
 import tv.ouya.console.api.OuyaController;
 import android.view.KeyEvent;
@@ -562,4 +561,8 @@ public class GameScene extends Scene {
 		return mEngine;
 	}
 
+	
+	void purchaseGame(){
+		
+	}
 }

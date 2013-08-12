@@ -12,7 +12,8 @@ public class UserData {
 	
 	/* These keys will tell the shared preferences editor which
 	   data we're trying to access */
-	 
+	
+	private static final String GAME_UNLOCKED = "gameUnlocked";
 	private static final String UNLOCKED_LEVEL_KEY = "unlockedLevels";
 	private static final String HIGH_SCORE_KEY = "highScore";
 	private static final String SOUND_KEY = "soundKey";
@@ -27,6 +28,9 @@ public class UserData {
 	
 	// keep track of our highest score
 	private long mHighScore;
+	
+	// keep track of whether or not the game has been unlocked
+	private boolean mGameUnlocked;
 
 	// keep track of whether or not sound is enabled
 	private boolean mSoundEnabled;
@@ -69,6 +73,8 @@ public class UserData {
 			 * if the setting does not currently exist
 			 */
 			mSoundEnabled = mSettings.getBoolean(SOUND_KEY, true);
+			
+			mGameUnlocked = mSettings.getBoolean(GAME_UNLOCKED, false);
 		}
 	}
 
@@ -95,6 +101,18 @@ public class UserData {
 	/* retrieve the boolean defining whether sound is muted or not */
 	public synchronized boolean isSoundMuted() {
 		return mSoundEnabled;
+	}
+	
+	/* retrieve the boolean defining whether the game is unlocked or not */
+	public synchronized boolean isGameUnlocked() {
+		return mGameUnlocked;
+	}
+	
+	/* Unlock the game forever */
+	public synchronized void unlockGame() {
+		mGameUnlocked = true;
+		mEditor.putBoolean(GAME_UNLOCKED, true);
+		mEditor.commit();
 	}
 
 	/* This method provides a means to increase the max unlocked level
