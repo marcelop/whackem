@@ -61,6 +61,7 @@ public class ResourceManager {
 	public ITextureRegion mGameHammer;
 	
 	public ITextureRegion mUIRedButton;
+	public ITextureRegion mCheckMark;
 
 	public Sound mHitSound;
 	public Sound mHammerSound;
@@ -157,6 +158,9 @@ public class ResourceManager {
 		
 		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 877, 270, TextureOptions.BILINEAR);
 		mUIRedButton = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "foreground/red_button.png", 0, 0); textureAtlas.load();
+		
+		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 150, 150, TextureOptions.DEFAULT);
+		mCheckMark = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "foreground/checkmark.png", 0, 0); textureAtlas.load();
 	}
 
 	/*

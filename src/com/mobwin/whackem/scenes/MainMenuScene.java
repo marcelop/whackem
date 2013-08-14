@@ -63,18 +63,11 @@ public class MainMenuScene extends Scene {
 		
 		//Make a temporary menu
 		
-		int menuSize = 4;
+		int menuSize = 3;
 		if (OuyaFacade.getInstance().isRunningOnOUYAHardware() && 
 				!UserData.getInstance().isGameUnlocked())
-			menuSize = 5;
+			menuSize = 4;
 
-		
-		String[] o = new String[2];
-		o[0] = "ON";
-		o[1] = "OFF";
-		
-		
-		
 		MenuItem[] items = new MenuItem[menuSize];
 		items[0] = new MenuItem("Start Game");
 		
@@ -82,29 +75,51 @@ public class MainMenuScene extends Scene {
 
 			@Override
 			public void onChange(MenuItem sender, int selected) {
-				// TODO Auto-generated method stub
-				
 			}
 
 			@Override
 			public void onClick(MenuItem sender) {
-				// TODO Auto-generated method stub
-	    		ResourceManager.getInstance().mIntroMusic.pause();
-	    		ResourceManager.getInstance().mGameMusic.play();
+				if(GameManager.getInstance().isMusicEnabled())
+				{
+					ResourceManager.getInstance().mIntroMusic.pause();
+					ResourceManager.getInstance().mGameMusic.play();
+				}
 	    		engine.setScene(MainActivity.activity.mGameScene);
 	    		GameManager.getInstance().startLevel(0, MainActivity.activity.mGameScene);				
 			}
 		});
 		
 		
-		items[1] = new MenuItem("Music", o);
-		items[2] = new MenuItem("Sound Effects", new String[] {"ON","OFF"});
+		items[1] = new MenuItem("Music", true);
+		items[1].registerHandler(new IMenuHandler() {
+			
+			@Override
+			public void onClick(MenuItem sender) {
+				GameManager.getInstance().toggleMusic();
+				if(GameManager.getInstance().isMusicEnabled())
+				{
+					ResourceManager.getInstance().mIntroMusic.play();			
+					sender.setCheckMarkVisible(true);
+				}
+				else
+				{
+					ResourceManager.getInstance().mIntroMusic.pause();
+					sender.setCheckMarkVisible(false);
+				}
+			}
+			
+			@Override
+			public void onChange(MenuItem sender, int selected) {
+			}
+		});
+		
+		//items[2] = new MenuItem("Sound Effects", new String[] {"ON","OFF"});
 		
 		if (OuyaFacade.getInstance().isRunningOnOUYAHardware() && 
 				!UserData.getInstance().isGameUnlocked())
 		{
-			items[3] = new MenuItem("UNLOCK GAME");
-			items[3].registerHandler(new IMenuHandler() {
+			items[2] = new MenuItem("UNLOCK GAME");
+			items[2].registerHandler(new IMenuHandler() {
 				
 				@Override
 				public void onClick(MenuItem sender) {
@@ -126,13 +141,10 @@ public class MainMenuScene extends Scene {
 
 			@Override
 			public void onChange(MenuItem sender, int selected) {
-				// TODO Auto-generated method stub
-				
 			}
 
 			@Override
 			public void onClick(MenuItem sender) {
-				// TODO Auto-generated method stub
 	    		ResourceManager.getInstance().mIntroMusic.pause();
 	    		//ResourceManager.getInstance().mGameMusic.play();
 	    		engine.setScene(MainActivity.activity.mCreditsScene);
@@ -145,7 +157,6 @@ public class MainMenuScene extends Scene {
 		//end temp menu
 
 		attachChild(menuLayer);
-		
 		
 		//Make logo move indefinitely
 		logoSprite = new Sprite(MainActivity.WIDTH / 2, MainActivity.HEIGHT / 2, ResourceManager.getInstance().mGameTitle, engine.getVertexBufferObjectManager());

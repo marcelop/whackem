@@ -66,6 +66,8 @@ public class GameManager {
 	private int mMaxSimultaneousMoles;
 	private GameState mState;
 	
+	private boolean mMusicEnabled = true;
+	
 	private Sprite mGameOver = null;
 
 	private int mMolesUp;
@@ -324,6 +326,16 @@ public class GameManager {
 	public void decrementMolesUp()
 	{
 		mMolesUp--;
+	}
+	
+	public boolean isMusicEnabled()
+	{
+		return mMusicEnabled;
+	}
+	
+	public void toggleMusic()
+	{
+		mMusicEnabled = !mMusicEnabled;
 	}
 	
 	
