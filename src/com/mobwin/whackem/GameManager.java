@@ -262,7 +262,7 @@ public class GameManager {
 					}
 					
 				}
-				scene.mGameSceneText.setText("LEVEL: " + GameManager.getInstance().getCurrentLevel() + " SCORE: " + GameManager.getInstance().getCurrentScore() + " ACCURACY: " + GameManager.getInstance().getAccuracy());
+				scene.mGameSceneText.setText("LEVEL:   " + GameManager.getInstance().getCurrentLevel() + "\nSCORE: " + GameManager.getInstance().getCurrentScore());// + " ACCURACY: " + GameManager.getInstance().getAccuracy());
 
 			}
 		});
