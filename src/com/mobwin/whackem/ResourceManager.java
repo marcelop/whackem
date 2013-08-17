@@ -280,7 +280,7 @@ public class ResourceManager {
 		// Create mFont object via FontFactory class
 		mFont = FontFactory.create(pEngine.getFontManager(),
 				pEngine.getTextureManager(), 256, 256,
-				Typeface.create(Typeface.DEFAULT, Typeface.NORMAL), 32f, true,
+				Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL), 32f, true,
 				org.andengine.util.adt.color.Color.WHITE_ABGR_PACKED_INT);
 
 		mFont.load();

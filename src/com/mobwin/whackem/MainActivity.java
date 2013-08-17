@@ -220,7 +220,7 @@ public class MainActivity extends BaseGameActivity {
 			}
 		});
 		
-		mEngine.registerUpdateHandler(new TimerHandler(3.5f, new ITimerCallback() {
+		mEngine.registerUpdateHandler(new TimerHandler(6f, new ITimerCallback() {
 			
 			@Override
 			public void onTimePassed(TimerHandler pTimerHandler) {
