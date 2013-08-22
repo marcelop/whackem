@@ -247,6 +247,7 @@ public class GameManager {
 								displayEndLevel(scene, EndLevelScene.GAMEOVER);
 
 								//displayGameOver(scene);
+
 								UserData.getInstance().setHighScore(getCurrentScore());
 								resetGame();
 							}

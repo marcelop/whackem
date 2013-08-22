@@ -1,5 +1,9 @@
 package com.mobwin.whackem.scenes;
 
+import java.io.IOException;
+
+import org.andengine.audio.sound.Sound;
+import org.andengine.audio.sound.SoundFactory;
 import org.andengine.engine.Engine;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.DelayModifier;
@@ -36,6 +40,8 @@ public class SplashScene extends Scene {
 	private Sprite mAndEngineLogoSprite;
 	private Sprite mCompanyLogoSprite;
 
+	private Sound mBubbles;
+
 	public SplashScene(Engine engine, Context pContext) {
 
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
@@ -47,6 +53,18 @@ public class SplashScene extends Scene {
 		// object in order to properly format its position
 		float x = MainActivity.WIDTH / 2;
 		float y = MainActivity.HEIGHT / 4;
+		
+		
+		try {
+			mBubbles = SoundFactory.createSoundFromAsset(
+					engine.getSoundManager(), pContext, "bubbles.mp3");
+		} catch (IllegalStateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		final BitmapTextureAtlas mAndEngineLogoTexture = new BitmapTextureAtlas(
 				engine.getTextureManager(), 512, 512, TextureOptions.BILINEAR);
@@ -59,13 +77,14 @@ public class SplashScene extends Scene {
 				engine.getVertexBufferObjectManager());
 		
 		final BitmapTextureAtlas mCompanyLogoTexture = new BitmapTextureAtlas(
-				engine.getTextureManager(), 600, 401, TextureOptions.BILINEAR);
+
+				engine.getTextureManager(), 1280, 720, TextureOptions.BILINEAR);
 		final ITextureRegion mCompanyLogoTextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(mCompanyLogoTexture, pContext,
 						"splash/sloth_scientist.jpg", 0, 0); 
 		mCompanyLogoTexture.load();
 		mCompanyLogoSprite = new Sprite(x,
-				MainActivity.HEIGHT / 2, 600, 401, mCompanyLogoTextureRegion,
+				MainActivity.HEIGHT / 2, 1280, 720, mCompanyLogoTextureRegion,
 				engine.getVertexBufferObjectManager());
 		
 
@@ -81,14 +100,23 @@ public class SplashScene extends Scene {
 		
 		
 		mCompanyLogo_SequenceEntityModifier = new SequenceEntityModifier(
-				new DelayModifier(1f),
-				new ParallelEntityModifier(new ScaleAtModifier(
-						mEachAnimationDuration, 25f, mEachScaleToSize, 0.5f, 0.5f),
+
+				new DelayModifier(.5f, new IEntityModifierListener() {
+					@Override
+					public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {						
+									
+					}
+					@Override
+					public void onModifierFinished(IModifier<IEntity> pModifier, IEntity pItem) {mBubbles.play();		}
+				}),
+				new ParallelEntityModifier(//new ScaleAtModifier(
+						//mEachAnimationDuration, 25f, mEachScaleToSize, 0.5f, 0.5f),
 						new FadeInModifier(mEachAnimationDuration)),
-				new DelayModifier(mEachAnimationPauseDuration),
-				new ParallelEntityModifier(new ScaleAtModifier(
-						mEachAnimationDuration, mEachScaleToSize, 0f, 0.5f, 0.5f),
-						new FadeOutModifier(mEachAnimationDuration)));
+				new DelayModifier(mEachAnimationPauseDuration*2),
+				new ParallelEntityModifier(//new ScaleAtModifier(
+						//mEachAnimationDuration, mEachScaleToSize, 0f, 0.5f, 0.5f),
+						new FadeOutModifier(mEachAnimationDuration)),
+						new DelayModifier(.5f));
 		
 		mAndEngineLogo_SequenceEntityModifier = new SequenceEntityModifier(
 				new DelayModifier(2f),
