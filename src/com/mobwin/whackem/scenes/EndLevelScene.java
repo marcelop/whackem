@@ -4,15 +4,13 @@ import org.andengine.engine.Engine;
 import org.andengine.entity.Entity;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.DelayModifier;
-import org.andengine.entity.modifier.MoveModifier;
 import org.andengine.entity.modifier.IEntityModifier.IEntityModifierListener;
+import org.andengine.entity.modifier.MoveModifier;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.util.modifier.IModifier;
 import org.andengine.util.modifier.ease.EaseBackOut;
 import org.andengine.util.modifier.ease.EaseElasticOut;
-
-import tv.ouya.console.api.OuyaController;
 
 import android.view.KeyEvent;
 
@@ -20,8 +18,8 @@ import com.mobwin.whackem.GameManager;
 import com.mobwin.whackem.MainActivity;
 import com.mobwin.whackem.MenuBuilder;
 import com.mobwin.whackem.MenuItem;
-import com.mobwin.whackem.ResourceManager;
 import com.mobwin.whackem.MenuItem.IMenuHandler;
+import com.mobwin.whackem.ResourceManager;
 
 public class EndLevelScene extends Scene {
 
@@ -35,7 +33,7 @@ public class EndLevelScene extends Scene {
 	public static final int GAMEOVER = -1;
 	
 	public EndLevelScene(Engine engine, int nextLevel, int score) {
-		
+
 		this.setBackgroundEnabled(false);
 		mLevelText = new Sprite(MainActivity.WIDTH/2, MainActivity.HEIGHT/2, ResourceManager.getInstance().mGameOver, engine.getVertexBufferObjectManager());
 		mGameOverText = new Sprite(MainActivity.WIDTH/2, MainActivity.HEIGHT/2, ResourceManager.getInstance().mGameOver, engine.getVertexBufferObjectManager());
@@ -86,8 +84,11 @@ public class EndLevelScene extends Scene {
 				}
 				@Override
 				public void onClick(MenuItem sender) {
-					ResourceManager.getInstance().mGameMusic.pause();
-					ResourceManager.getInstance().mIntroMusic.play();
+					if(GameManager.getInstance().isMusicEnabled())
+					{
+						ResourceManager.getInstance().mGameMusic.pause();
+						ResourceManager.getInstance().mIntroMusic.play();
+					}
 					MainActivity.activity.mGameScene.clearChildScene();
 					MainActivity.activity.getEngine().setScene(MainActivity.activity.mMenuScene);
 				}

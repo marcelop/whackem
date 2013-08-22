@@ -20,11 +20,13 @@ import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.entity.Entity;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.DelayModifier;
-import org.andengine.entity.modifier.MoveModifier;
 import org.andengine.entity.modifier.IEntityModifier.IEntityModifierListener;
+import org.andengine.entity.modifier.MoveModifier;
 import org.andengine.entity.modifier.SequenceEntityModifier;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.util.modifier.IModifier;
+import org.andengine.util.modifier.ease.EaseBackOut;
+import org.andengine.util.modifier.ease.EaseElasticOut;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -37,8 +39,6 @@ import tv.ouya.console.api.Purchasable;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
-import org.andengine.util.modifier.ease.EaseBackOut;
-import org.andengine.util.modifier.ease.EaseElasticOut;
 
 import com.mobwin.whackem.MenuItem.IMenuHandler;
 import com.mobwin.whackem.scenes.EndLevelScene;
@@ -280,8 +280,7 @@ public class GameManager {
 	}
 	
 	void displayEndLevel(final GameScene scene, int level) {
-		scene.setChildSceneModal(new EndLevelScene(scene.getEngine(), level, mCurrentLevel));
-		
+		scene.setChildSceneModal(new EndLevelScene(scene.getEngine(), level, mCurrentLevel));		
 	}
 	
 	//Display gameover text, as well as score, if it's a new highscore, post on facebook option and return to start
