@@ -101,15 +101,15 @@ public class SplashScene extends Scene {
 				new DelayModifier(.5f, new IEntityModifierListener() {
 					@Override
 					public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {						
-						mBubbles.play();					
+									
 					}
 					@Override
-					public void onModifierFinished(IModifier<IEntity> pModifier, IEntity pItem) {}
+					public void onModifierFinished(IModifier<IEntity> pModifier, IEntity pItem) {mBubbles.play();		}
 				}),
 				new ParallelEntityModifier(//new ScaleAtModifier(
 						//mEachAnimationDuration, 25f, mEachScaleToSize, 0.5f, 0.5f),
 						new FadeInModifier(mEachAnimationDuration)),
-				new DelayModifier(mEachAnimationPauseDuration),
+				new DelayModifier(mEachAnimationPauseDuration*2),
 				new ParallelEntityModifier(//new ScaleAtModifier(
 						//mEachAnimationDuration, mEachScaleToSize, 0f, 0.5f, 0.5f),
 						new FadeOutModifier(mEachAnimationDuration)),
