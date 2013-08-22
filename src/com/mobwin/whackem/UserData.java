@@ -12,8 +12,10 @@ public class UserData {
 	
 	/* These keys will tell the shared preferences editor which
 	   data we're trying to access */
-	 
+	
+	private static final String GAME_UNLOCKED = "gameUnlocked";
 	private static final String UNLOCKED_LEVEL_KEY = "unlockedLevels";
+	private static final String HIGH_SCORE_KEY = "highScore";
 	private static final String SOUND_KEY = "soundKey";
 
 	/* Create our shared preferences object & editor which will
@@ -23,6 +25,12 @@ public class UserData {
 
 	// keep track of our max unlocked level
 	private int mUnlockedLevels;
+	
+	// keep track of our highest score
+	private long mHighScore;
+	
+	// keep track of whether or not the game has been unlocked
+	private boolean mGameUnlocked;
 
 	// keep track of whether or not sound is enabled
 	private boolean mSoundEnabled;
@@ -55,10 +63,18 @@ public class UserData {
 			 */
 			mUnlockedLevels = mSettings.getInt(UNLOCKED_LEVEL_KEY, 1);
 			
+			/* Retrieve our current unlocked levels. if the UNLOCKED_LEVEL_KEY
+			 * does not currently exist in our shared preferences, we'll create
+			 * the data to unlock level 1 by default
+			 */
+			mHighScore = mSettings.getLong(HIGH_SCORE_KEY, 0);
+			
 			/* Same idea as above, except we'll set the sound boolean to true
 			 * if the setting does not currently exist
 			 */
 			mSoundEnabled = mSettings.getBoolean(SOUND_KEY, true);
+			
+			mGameUnlocked = mSettings.getBoolean(GAME_UNLOCKED, false);
 		}
 	}
 
@@ -66,29 +82,58 @@ public class UserData {
 	public synchronized int getMaxUnlockedLevel() {
 		return mUnlockedLevels;
 	}
+	
+	/* retrieve the high score value */
+	public synchronized long getHighScore() {
+		return mHighScore;
+	}
 
+	/* set the high score value */
+	public synchronized void setHighScore(long highScore) {
+		if (highScore > mHighScore)
+		{
+			mHighScore = highScore;
+			mEditor.putLong(HIGH_SCORE_KEY, mHighScore);
+			mEditor.commit();
+		}
+	}
+	
 	/* retrieve the boolean defining whether sound is muted or not */
 	public synchronized boolean isSoundMuted() {
 		return mSoundEnabled;
+	}
+	
+	/* retrieve the boolean defining whether the game is unlocked or not */
+	public synchronized boolean isGameUnlocked() {
+		return mGameUnlocked;
+	}
+	
+	/* Unlock the game forever */
+	public synchronized void unlockGame() {
+		mGameUnlocked = true;
+		mEditor.putBoolean(GAME_UNLOCKED, true);
+		mEditor.commit();
 	}
 
 	/* This method provides a means to increase the max unlocked level
 	 * by a value of 1. unlockNextLevel would be called if a player
 	 * defeats the current maximum unlocked level
 	 */
-	public synchronized void unlockNextLevel() {
-		// Increase the max level by 1
-		mUnlockedLevels++;
-		
-		/* Edit our shared preferences unlockedLevels key, setting its
-		 * value our new mUnlockedLevels value
-		 */
-		mEditor.putInt(UNLOCKED_LEVEL_KEY, mUnlockedLevels);
-		
-		/* commit() must be called by the editor in order to save
-		 * changes made to the shared preference data
-		 */
-		mEditor.commit();
+	public synchronized void unlockLevel(int level) {
+		if (level > mUnlockedLevels)
+		{
+			mUnlockedLevels = level;
+
+			/* Edit our shared preferences unlockedLevels key, setting its
+			 * value our new mUnlockedLevels value
+			 */
+			mEditor.putInt(UNLOCKED_LEVEL_KEY, mUnlockedLevels);
+
+			/* commit() must be called by the editor in order to save
+			 * changes made to the shared preference data
+			 */
+			mEditor.commit();
+		}
 	}
 
 	/* The setSoundMuted method uses the same idea for storing new data

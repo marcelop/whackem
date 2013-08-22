@@ -9,6 +9,9 @@ public class MenuItem {
 	int selector;
 	String[] options;
 	IMenuHandler handler;
+	boolean checkmarkValue = false;
+	boolean hasCheckmark = false;
+	Sprite imgCheckMark = null;
 	
 	public MenuItem (String text, String[] options) {
 		this.text = text;
@@ -23,6 +26,14 @@ public class MenuItem {
 		this.options = null;
 		selector = -1; //no selection
 		handler = null;
+	}
+	
+	public MenuItem (String text, boolean checkMark)
+	{
+		this(text);
+		hasCheckmark = true;
+		checkmarkValue = checkMark;
+		imgCheckMark = new Sprite(0, 0, 50, 50, ResourceManager.getInstance().mCheckMark, MainActivity.activity.getEngine().getVertexBufferObjectManager());
 	}
 	
 	public int selectionUp() {
@@ -69,5 +80,13 @@ public class MenuItem {
 	public interface IMenuHandler {
 		void onChange(MenuItem sender, int selected);
 		void onClick(MenuItem sender);
+	}
+
+	public boolean hasCheckmark() {
+		return hasCheckmark;
+	}
+
+	public void setCheckMarkVisible(boolean b) {
+		imgCheckMark.setVisible(b);
 	}
 }

@@ -57,9 +57,7 @@ public class MenuBuilder {
 			scene.attachChild(new Sprite(menuTexts[i].getX() , menuTexts[i].getY(), 
 					 MainActivity.WIDTH/3 -60, font.getLineHeight()+40, ResourceManager.getInstance().mUIRedButton, MainActivity.activity.getVertexBufferObjectManager()));
 			scene.attachChild(menuTexts[i]);
-			
-			
-			
+
 			if (options[i].hasOptions()) {				
 				/* place the selection after the menu text and the arrow to the left
 				 * menu text _ < _ menu option _ > 
@@ -74,6 +72,14 @@ public class MenuBuilder {
 					imgRightArrow.setX(menuSelections[i].getX() + menuSelections[i].getWidth() + bufferArea);
 				}	
 			}
+			
+			if(options[i].hasCheckmark() && options[i].checkmarkValue)
+			{
+				options[i].imgCheckMark.setX(x + 130);
+				options[i].imgCheckMark.setY(y+5);
+				scene.attachChild(options[i].imgCheckMark);
+			}
+			
 			// separates the lines according to the font size, adding some space in between
 			y -= font.getLineHeight() +40;
 		}

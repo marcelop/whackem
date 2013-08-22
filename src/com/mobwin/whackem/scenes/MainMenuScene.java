@@ -1,5 +1,8 @@
 package com.mobwin.whackem.scenes;
 
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
+
 import org.andengine.engine.Engine;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
@@ -23,8 +26,10 @@ import org.andengine.opengl.font.FontUtils;
 import org.andengine.util.modifier.IModifier;
 import org.andengine.util.modifier.ease.EaseBackOut;
 import org.andengine.util.modifier.ease.EaseElasticOut;
+import org.json.JSONException;
 
 import tv.ouya.console.api.OuyaController;
+import tv.ouya.console.api.OuyaFacade;
 
 import android.view.KeyEvent;
 
@@ -32,12 +37,13 @@ import com.mobwin.whackem.GameManager;
 import com.mobwin.whackem.MainActivity;
 import com.mobwin.whackem.MenuBuilder;
 import com.mobwin.whackem.MenuItem;
+import com.mobwin.whackem.UserData;
 import com.mobwin.whackem.MenuItem.IMenuHandler;
 import com.mobwin.whackem.ResourceManager;
 
 public class MainMenuScene extends Scene {
 
-	Text mMenuSceneText;
+	Text mHighScoreText;
 	Sprite logoSprite;
 	Sprite buttonSprite;
 	MenuBuilder menu;
@@ -57,47 +63,88 @@ public class MainMenuScene extends Scene {
 		
 		//Make a temporary menu
 		
-		String[] o = new String[2];
-		o[0] = "ON";
-		o[1] = "OFF";
-		MenuItem[] items = new MenuItem[4];
+		int menuSize = 3;
+		if (OuyaFacade.getInstance().isRunningOnOUYAHardware() && 
+				!UserData.getInstance().isGameUnlocked())
+			menuSize = 4;
+
+		MenuItem[] items = new MenuItem[menuSize];
 		items[0] = new MenuItem("Start Game");
 		
 		items[0].registerHandler(new IMenuHandler() {
 
 			@Override
 			public void onChange(MenuItem sender, int selected) {
-				// TODO Auto-generated method stub
-				
 			}
 
 			@Override
 			public void onClick(MenuItem sender) {
-				// TODO Auto-generated method stub
-	    		ResourceManager.getInstance().mIntroMusic.pause();
-	    		ResourceManager.getInstance().mGameMusic.play();
+				if(GameManager.getInstance().isMusicEnabled())
+				{
+					ResourceManager.getInstance().mIntroMusic.pause();
+					ResourceManager.getInstance().mGameMusic.play();
+				}
 	    		engine.setScene(MainActivity.activity.mGameScene);
 	    		GameManager.getInstance().startLevel(0, MainActivity.activity.mGameScene);				
 			}
 		});
 		
 		
-		items[1] = new MenuItem("Music", o);
-		items[2] = new MenuItem("Sound Effects", new String[] {"ON","OFF"});
-	
-		items[3] = new MenuItem("Credits");
+		items[1] = new MenuItem("Music", true);
+		items[1].registerHandler(new IMenuHandler() {
+			
+			@Override
+			public void onClick(MenuItem sender) {
+				GameManager.getInstance().toggleMusic();
+				if(GameManager.getInstance().isMusicEnabled())
+				{
+					ResourceManager.getInstance().mIntroMusic.play();			
+					sender.setCheckMarkVisible(true);
+				}
+				else
+				{
+					ResourceManager.getInstance().mIntroMusic.pause();
+					sender.setCheckMarkVisible(false);
+				}
+			}
+			
+			@Override
+			public void onChange(MenuItem sender, int selected) {
+			}
+		});
 		
-		items[3].registerHandler(new IMenuHandler() {
+		//items[2] = new MenuItem("Sound Effects", new String[] {"ON","OFF"});
+		
+		if (OuyaFacade.getInstance().isRunningOnOUYAHardware() && 
+				!UserData.getInstance().isGameUnlocked())
+		{
+			items[2] = new MenuItem("UNLOCK GAME");
+			items[2].registerHandler(new IMenuHandler() {
+				
+				@Override
+				public void onClick(MenuItem sender) {
+					try {
+						GameManager.getInstance().requestPurchase();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+				
+				@Override
+				public void onChange(MenuItem sender, int selected) {}
+			});
+		}
+	
+		items[menuSize-1] = new MenuItem("Credits");
+		
+		items[menuSize-1].registerHandler(new IMenuHandler() {
 
 			@Override
 			public void onChange(MenuItem sender, int selected) {
-				// TODO Auto-generated method stub
-				
 			}
 
 			@Override
 			public void onClick(MenuItem sender) {
-				// TODO Auto-generated method stub
 	    		ResourceManager.getInstance().mIntroMusic.pause();
 	    		//ResourceManager.getInstance().mGameMusic.play();
 	    		engine.setScene(MainActivity.activity.mCreditsScene);
@@ -110,7 +157,6 @@ public class MainMenuScene extends Scene {
 		//end temp menu
 
 		attachChild(menuLayer);
-		
 		
 		//Make logo move indefinitely
 		logoSprite = new Sprite(MainActivity.WIDTH / 2, MainActivity.HEIGHT / 2, ResourceManager.getInstance().mGameTitle, engine.getVertexBufferObjectManager());
@@ -141,6 +187,9 @@ public class MainMenuScene extends Scene {
 		background.attachParallaxEntity(new ParallaxEntity(10, backgroundSprite));
 		setBackground(background);
 		setBackgroundEnabled(true);
+		
+		mHighScoreText = new Text(-MainActivity.WIDTH, -MainActivity.HEIGHT/6, font, "HIGH SCORE: " + UserData.getInstance().getHighScore(), 300, engine.getVertexBufferObjectManager());
+		attachChild(mHighScoreText);
 		
 		ResourceManager.getInstance().mIntroMusic.play();
 	}
@@ -182,9 +231,6 @@ public class MainMenuScene extends Scene {
     
 	@Override
 	public boolean onSceneTouchEvent(TouchEvent pSceneTouchEvent) {
-//		GameManager.getInstance().startLevel(0, MainActivity.activity.getGameScene());
-//		MainActivity.activity.getEngine().setScene(
-//				MainActivity.activity.getGameScene());
 		activateMenu();
 		super.onSceneTouchEvent(pSceneTouchEvent);
 		return true;
@@ -194,7 +240,8 @@ public class MainMenuScene extends Scene {
 	{
 		isMenuActivated = true;
 		logoSprite.registerEntityModifier(new MoveModifier(1f, logoSprite.getX(), logoSprite.getY(), logoSprite.getX(), MainActivity.HEIGHT - (MainActivity.HEIGHT / 2)/4, EaseElasticOut.getInstance()));
-		menuLayer.registerEntityModifier(new MoveModifier(1f, menuLayer.getX(),  MainActivity.HEIGHT/2-100, 0, MainActivity.HEIGHT/2-100, EaseBackOut.getInstance()));		
+		menuLayer.registerEntityModifier(new MoveModifier(1f, menuLayer.getX(),  MainActivity.HEIGHT/2-100, 0, MainActivity.HEIGHT/2-100, EaseBackOut.getInstance()));
+		mHighScoreText.registerEntityModifier(new MoveModifier(1f, mHighScoreText.getX(),  MainActivity.HEIGHT/8, MainActivity.WIDTH/2, MainActivity.HEIGHT/8, EaseBackOut.getInstance()));
 	}
 	
 	public synchronized void onKeyUp(int keyCode, KeyEvent event) {

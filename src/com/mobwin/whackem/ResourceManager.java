@@ -61,6 +61,9 @@ public class ResourceManager {
 	public ITextureRegion mGameHammer;
 	
 	public ITextureRegion mUIRedButton;
+	public ITextureRegion mCheckMark;
+	public ITextureRegion mScoreBox;
+	public ITextureRegion mUIOrangeButton;
 
 	public Sound mHitSound;
 	public Sound mHammerSound;
@@ -157,6 +160,13 @@ public class ResourceManager {
 		
 		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 877, 270, TextureOptions.BILINEAR);
 		mUIRedButton = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "foreground/red_button.png", 0, 0); textureAtlas.load();
+		mUIOrangeButton = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "foreground/orange_button.png", 0, 0); textureAtlas.load();
+				
+		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 150, 150, TextureOptions.DEFAULT);
+		mCheckMark = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "foreground/checkmark.png", 0, 0); textureAtlas.load();
+		
+		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 314, 140, TextureOptions.DEFAULT);
+		mScoreBox = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "foreground/score_box.png", 0, 0); textureAtlas.load();
 	}
 
 	/*
@@ -272,7 +282,7 @@ public class ResourceManager {
 		// Create mFont object via FontFactory class
 		mFont = FontFactory.create(pEngine.getFontManager(),
 				pEngine.getTextureManager(), 256, 256,
-				Typeface.create(Typeface.DEFAULT, Typeface.NORMAL), 32f, true,
+				Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL), 32f, true,
 				org.andengine.util.adt.color.Color.WHITE_ABGR_PACKED_INT);
 
 		mFont.load();

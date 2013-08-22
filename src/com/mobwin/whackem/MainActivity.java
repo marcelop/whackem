@@ -15,6 +15,7 @@ import org.andengine.entity.text.Text;
 import org.andengine.ui.activity.BaseGameActivity;
 
 import tv.ouya.console.api.OuyaController;
+import tv.ouya.console.api.OuyaFacade;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -32,6 +33,8 @@ public class MainActivity extends BaseGameActivity {
 	public static final int WIDTH = 1280;
 	public static final int HEIGHT = 720;
 	public static MainActivity activity;
+	// Your developer id can be found in the Developer Portal
+    public static final String DEVELOPER_ID = "558982c4-6083-4828-8246-b661697e6711";
 	
 
 	//====================================================
@@ -54,11 +57,14 @@ public class MainActivity extends BaseGameActivity {
 	//====================================================	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Log.d("whacka", "Initializing Controller");
+		Log.d("Test","1");
+    	super.onCreate(savedInstanceState);
         OuyaController.init(this);
-        Log.d("whacka", "Finished Initializing Controller");
         activity = this;
+        
+        OuyaFacade.getInstance().init(this, DEVELOPER_ID);
+        // Initializing User Data
+        UserData.getInstance().init(this);
     }
     
 	//====================================================
@@ -215,7 +221,7 @@ public class MainActivity extends BaseGameActivity {
 			}
 		});
 		
-		mEngine.registerUpdateHandler(new TimerHandler(3.5f, new ITimerCallback() {
+		mEngine.registerUpdateHandler(new TimerHandler(6f, new ITimerCallback() {
 			
 			@Override
 			public void onTimePassed(TimerHandler pTimerHandler) {
@@ -234,7 +240,9 @@ public class MainActivity extends BaseGameActivity {
 			}
 		}));
 
-
+		// Initialize the game manager
+		GameManager.getInstance();
+		
 		pOnPopulateSceneCallback.onPopulateSceneFinished();	
 	}
 	
@@ -270,5 +278,11 @@ public class MainActivity extends BaseGameActivity {
 	public Engine getEngine()
 	{
 		return mEngine;
+	}
+	
+	@Override
+	protected void onDestroy() {
+		OuyaFacade.getInstance().shutdown();
+		super.onDestroy();
 	}
 }
