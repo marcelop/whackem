@@ -70,8 +70,10 @@ public class EndLevelScene extends Scene {
 				}
 				@Override
 				public void onClick(MenuItem sender) {
-					// TODO Auto-generated method stub
 					GameManager.getInstance().resetGame();
+					MainActivity.activity.mGameScene.clearChildScene();
+					GameManager.getInstance().startLevel(0, MainActivity.activity.mGameScene);
+					
 				}
 			});
 			items[2] = new MenuItem("Return to main menu");
@@ -84,7 +86,10 @@ public class EndLevelScene extends Scene {
 				}
 				@Override
 				public void onClick(MenuItem sender) {
-					// TODO Auto-generated method stub
+					ResourceManager.getInstance().mGameMusic.pause();
+					ResourceManager.getInstance().mIntroMusic.play();
+					MainActivity.activity.mGameScene.clearChildScene();
+					MainActivity.activity.getEngine().setScene(MainActivity.activity.mMenuScene);
 				}
 			});			
 			mLevelMenuEntity = new Entity( -MainActivity.WIDTH, MainActivity.HEIGHT / 2);

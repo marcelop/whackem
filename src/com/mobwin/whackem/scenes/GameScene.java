@@ -32,7 +32,6 @@ import android.widget.Toast;
 import com.mobwin.whackem.GameManager;
 import com.mobwin.whackem.MainActivity;
 import com.mobwin.whackem.ResourceManager;
-import com.scientistsloth.whackem.R;
 
 public class GameScene extends Scene {
 
@@ -441,6 +440,12 @@ public class GameScene extends Scene {
 
 	public synchronized void onKeyUp(int keyCode, KeyEvent event) {
 		boolean updated = false;
+		if(getChildScene() != null)
+		{
+			((EndLevelScene) getChildScene()).onKeyUp(keyCode, event);
+			return;
+		}
+		
 		switch (keyCode) {
 		case OuyaController.BUTTON_DPAD_DOWN:
 			if(selectorY >= 1)
