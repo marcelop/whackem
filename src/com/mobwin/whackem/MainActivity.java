@@ -57,7 +57,6 @@ public class MainActivity extends BaseGameActivity {
 	//====================================================	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-		Log.d("Test","1");
     	super.onCreate(savedInstanceState);
         OuyaController.init(this);
         activity = this;
