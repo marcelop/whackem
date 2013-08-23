@@ -24,10 +24,7 @@ import org.andengine.util.adt.color.Color;
 import org.andengine.util.modifier.IModifier;
 
 import tv.ouya.console.api.OuyaController;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.view.KeyEvent;
-import android.widget.Toast;
 
 import com.mobwin.whackem.GameManager;
 import com.mobwin.whackem.MainActivity;
@@ -583,45 +580,6 @@ public class GameScene extends Scene {
 	
 	void purchaseGame(){
 		
-	}
-	
-	public void showPurchaseDialog(){ 
-		AlertDialog.Builder alertDialog = new AlertDialog.Builder(
-				MainActivity.activity);
-
-		// Setting Dialog Title
-		alertDialog.setTitle("Funding the Fun");
-
-		// Setting Dialog Message
-		alertDialog.setMessage("Hope you liked whacking around! To continue playing, please unlock the game.");
-
-		// Setting Icon to Dialog
-		//alertDialog2.setIcon(R.drawable.delete);
-
-		// Setting Positive "Yes" Btn
-		alertDialog.setPositiveButton("Unlock",
-				new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int which) {
-				// Write your code here to execute after dialog
-				Toast.makeText(MainActivity.activity.getApplicationContext(),
-						"You clicked on Unlock", Toast.LENGTH_SHORT)
-						.show();
-			}
-		});
-		// Setting Negative "NO" Btn
-		alertDialog.setNegativeButton("Back",
-				new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int which) {
-				// Write your code here to execute after dialog
-				Toast.makeText(MainActivity.activity.getApplicationContext(),
-						"You clicked on Back", Toast.LENGTH_SHORT)
-						.show();
-				dialog.cancel();
-			}
-		});
-
-		// Showing Alert Dialog
-		alertDialog.show();
 	}
 
 	public void showEndLevelMenu(EndLevelMenu endLevelMenu) {

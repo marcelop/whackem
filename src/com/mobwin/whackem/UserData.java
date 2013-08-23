@@ -75,6 +75,7 @@ public class UserData {
 			mSoundEnabled = mSettings.getBoolean(SOUND_KEY, true);
 			
 			mGameUnlocked = mSettings.getBoolean(GAME_UNLOCKED, false);
+			
 		}
 	}
 
