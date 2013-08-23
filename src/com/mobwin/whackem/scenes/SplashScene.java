@@ -81,7 +81,7 @@ public class SplashScene extends Scene {
 				engine.getTextureManager(), 1280, 720, TextureOptions.BILINEAR);
 		final ITextureRegion mCompanyLogoTextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(mCompanyLogoTexture, pContext,
-						"splash/sloth_scientist.jpg", 0, 0); 
+						"splash/scientist_sloth.png", 0, 0); 
 		mCompanyLogoTexture.load();
 		mCompanyLogoSprite = new Sprite(x,
 				MainActivity.HEIGHT / 2, 1280, 720, mCompanyLogoTextureRegion,
