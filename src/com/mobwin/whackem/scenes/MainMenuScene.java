@@ -117,7 +117,7 @@ public class MainMenuScene extends Scene {
 		
 		if (OuyaFacade.getInstance().isRunningOnOUYAHardware() && 
 				!UserData.getInstance().isGameUnlocked())
-		{
+		{ 
 			items[2] = new MenuItem("UNLOCK GAME");
 			items[2].registerHandler(new IMenuHandler() {
 				

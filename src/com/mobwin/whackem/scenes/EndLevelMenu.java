@@ -4,6 +4,7 @@ import org.andengine.engine.Engine;
 import org.andengine.entity.Entity;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.DelayModifier;
+import org.andengine.entity.modifier.FadeOutModifier;
 import org.andengine.entity.modifier.IEntityModifier.IEntityModifierListener;
 import org.andengine.entity.modifier.MoveModifier;
 import org.andengine.entity.scene.Scene;
@@ -21,7 +22,7 @@ import com.mobwin.whackem.MenuItem;
 import com.mobwin.whackem.MenuItem.IMenuHandler;
 import com.mobwin.whackem.ResourceManager;
 
-public class EndLevelScene extends Scene {
+public class EndLevelMenu extends Entity {
 
 	Sprite mLevelText;
 	Sprite mGameOverText;
@@ -32,9 +33,9 @@ public class EndLevelScene extends Scene {
 	
 	public static final int GAMEOVER = -1;
 	
-	public EndLevelScene(Engine engine, int nextLevel, int score) {
+	public EndLevelMenu(Engine engine, int nextLevel, int score) {
 
-		this.setBackgroundEnabled(false);
+		//this.setBackgroundEnabled(false);
 		mLevelText = new Sprite(MainActivity.WIDTH/2, MainActivity.HEIGHT/2, ResourceManager.getInstance().mGameOver, engine.getVertexBufferObjectManager());
 		mGameOverText = new Sprite(MainActivity.WIDTH/2, MainActivity.HEIGHT/2, ResourceManager.getInstance().mGameOver, engine.getVertexBufferObjectManager());
 		
@@ -63,15 +64,20 @@ public class EndLevelScene extends Scene {
 
 				@Override
 				public void onChange(MenuItem sender, int selected) {
-					// TODO Auto-generated method stub
-					
 				}
 				@Override
 				public void onClick(MenuItem sender) {
 					GameManager.getInstance().resetGame();
-					MainActivity.activity.mGameScene.clearChildScene();
+					MainActivity.activity.mGameScene.mEndLevelMenu.registerEntityModifier(new FadeOutModifier(0.25f, new IEntityModifierListener() {
+						@Override
+						public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {						}
+						@Override
+						public void onModifierFinished(IModifier<IEntity> pModifier, IEntity pItem) {
+							MainActivity.activity.mGameScene.detachChild(MainActivity.activity.mGameScene.mEndLevelMenu);
+							MainActivity.activity.mGameScene.mEndLevelMenu = null;
+						}
+					}));
 					GameManager.getInstance().startLevel(0, MainActivity.activity.mGameScene);
-					
 				}
 			});
 			items[2] = new MenuItem("Return to main menu");
@@ -89,7 +95,8 @@ public class EndLevelScene extends Scene {
 						ResourceManager.getInstance().mGameMusic.pause();
 						ResourceManager.getInstance().mIntroMusic.play();
 					}
-					MainActivity.activity.mGameScene.clearChildScene();
+					MainActivity.activity.mGameScene.detachChild(MainActivity.activity.mGameScene.mEndLevelMenu);
+					MainActivity.activity.mGameScene.mEndLevelMenu = null;
 					MainActivity.activity.getEngine().setScene(MainActivity.activity.mMenuScene);
 				}
 			});			

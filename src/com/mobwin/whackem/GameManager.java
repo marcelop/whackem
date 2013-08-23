@@ -41,7 +41,7 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.mobwin.whackem.MenuItem.IMenuHandler;
-import com.mobwin.whackem.scenes.EndLevelScene;
+import com.mobwin.whackem.scenes.EndLevelMenu;
 import com.mobwin.whackem.scenes.GameScene;
 import com.scientistsloth.whackem.R;
 
@@ -244,12 +244,11 @@ public class GameManager {
 							if(mMissedMoles > mMaxMissedMoles)
 							{
 								//Game Over
-								displayEndLevel(scene, EndLevelScene.GAMEOVER);
+								displayEndLevel(scene, EndLevelMenu.GAMEOVER);
 
 								//displayGameOver(scene);
 
 								UserData.getInstance().setHighScore(getCurrentScore());
-								resetGame();
 							}
 							else
 							{
@@ -280,7 +279,7 @@ public class GameManager {
 	}
 	
 	void displayEndLevel(final GameScene scene, int level) {
-		scene.setChildSceneModal(new EndLevelScene(scene.getEngine(), level, mCurrentLevel));		
+		((GameScene) scene).showEndLevelMenu(new EndLevelMenu(scene.getEngine(), level, mCurrentLevel));		
 	}
 	
 	//Display gameover text, as well as score, if it's a new highscore, post on facebook option and return to start

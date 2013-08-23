@@ -51,6 +51,8 @@ public class GameScene extends Scene {
 	Sprite mCloud2;
 	
 	Sprite mScoreBox;
+	
+	public EndLevelMenu mEndLevelMenu = null;
 
 	int selectorX = 1;
 	int selectorY = 1;
@@ -388,6 +390,9 @@ public class GameScene extends Scene {
 
 	public synchronized void onKeyDown(int keyCode, KeyEvent event) {
 		boolean updated = false;
+		if(mEndLevelMenu != null)
+			return;
+
 		switch (keyCode) {
 		case OuyaController.BUTTON_DPAD_DOWN:
 			if(selectorY <= 1)
@@ -440,9 +445,9 @@ public class GameScene extends Scene {
 
 	public synchronized void onKeyUp(int keyCode, KeyEvent event) {
 		boolean updated = false;
-		if(getChildScene() != null)
+		if(mEndLevelMenu != null)
 		{
-			((EndLevelScene) getChildScene()).onKeyUp(keyCode, event);
+			mEndLevelMenu.onKeyUp(keyCode, event);
 			return;
 		}
 		
@@ -617,5 +622,10 @@ public class GameScene extends Scene {
 
 		// Showing Alert Dialog
 		alertDialog.show();
+	}
+
+	public void showEndLevelMenu(EndLevelMenu endLevelMenu) {
+		mEndLevelMenu = endLevelMenu;
+		attachChild(mEndLevelMenu);
 	}
 }
