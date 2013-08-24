@@ -50,12 +50,14 @@ public class ResourceManager {
 	public ITextureRegion mGameHoleSelector;
 	public ITextureRegion mGameHoleSelectorAlpha;
 	public ITiledTextureRegion mGameMole;
+	public ITiledTextureRegion mGameMoleGlasses;
 	public ITextureRegion mGameFlowers;
 	public ITextureRegion mGameTree;
 	public ITextureRegion mGameCloud1;
 	public ITextureRegion mGameCloud2;
 	public ITextureRegion mGameMoon;
 	public ITextureRegion mGameOver;
+	public ITextureRegion mFakeBackground;
 	
 	public ITextureRegion mGameTitle;
 	public ITextureRegion mGameHammer;
@@ -125,9 +127,22 @@ public class ResourceManager {
 		mGameHoleSelector = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "foreground/selection.png", 0, 0); textureAtlas.load();
 		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 1280, 720, TextureOptions.BILINEAR);
 		mGameHoleSelectorAlpha = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "foreground/selection_alpha.png", 0, 0); textureAtlas.load();
+		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 1280, 720, TextureOptions.DEFAULT);
+		mFakeBackground = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "background/falseBackground.png", 0, 0); textureAtlas.load();
 
+		
 		BuildableBitmapTextureAtlas bmpTextureAtlas = new BuildableBitmapTextureAtlas(pEngine.getTextureManager(), 1424, 200, TextureOptions.BILINEAR);
 		mGameMole = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(bmpTextureAtlas, pContext, "mole/mole.png", 8, 1);
+		try {
+			bmpTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0,0,0));
+		} catch (Exception e) {
+			e.printStackTrace(); 
+		}
+		
+		bmpTextureAtlas.load();
+		
+		bmpTextureAtlas = new BuildableBitmapTextureAtlas(pEngine.getTextureManager(), 1424, 200, TextureOptions.BILINEAR);
+		mGameMoleGlasses = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(bmpTextureAtlas, pContext, "mole/molewithglasses.png", 8, 1);
 		try {
 			bmpTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0,0,0));
 		} catch (Exception e) {
@@ -183,6 +198,7 @@ public class ResourceManager {
 		mGameHolesRegion3.getTexture().unload();
 		mGameHolesRegion4.getTexture().unload();
 		mGameMole.getTexture().unload();
+		mGameMoleGlasses.getTexture().unload();
 		mGameFlowers.getTexture().unload();
 		mGameTree.getTexture().unload();
 		mGameCloud1.getTexture().unload();

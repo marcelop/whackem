@@ -1,19 +1,26 @@
 package com.mobwin.whackem.scenes;
 
 import org.andengine.engine.Engine;
+import org.andengine.engine.camera.Camera;
 import org.andengine.entity.Entity;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.DelayModifier;
 import org.andengine.entity.modifier.MoveModifier;
 import org.andengine.entity.modifier.IEntityModifier.IEntityModifierListener;
 import org.andengine.entity.scene.Scene;
+import org.andengine.entity.scene.background.Background;
+import org.andengine.entity.scene.background.IBackground;
+import org.andengine.entity.scene.background.SpriteBackground;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.opengl.util.GLState;
 import org.andengine.util.modifier.IModifier;
 import org.andengine.util.modifier.ease.EaseBackOut;
 import org.andengine.util.modifier.ease.EaseElasticOut;
 
 import tv.ouya.console.api.OuyaController;
 
+import android.annotation.SuppressLint;
+import android.util.Log;
 import android.view.KeyEvent;
 
 import com.mobwin.whackem.GameManager;
@@ -28,6 +35,10 @@ public class EndLevelScene extends Scene {
 	Sprite mLevelText;
 	Sprite mGameOverText;
 	
+	Sprite mNewHighscore;
+	Sprite mBackground;
+
+	
 	MenuBuilder mLevelMenu;
 	MenuBuilder mGameOverMenu;
 	Entity mLevelMenuEntity;
@@ -36,11 +47,14 @@ public class EndLevelScene extends Scene {
 	
 	public EndLevelScene(Engine engine, int nextLevel, int score) {
 		
-		this.setBackgroundEnabled(false);
+		this.setBackgroundEnabled(true);
+
+		mBackground = new Sprite(MainActivity.WIDTH/2, 0, ResourceManager.getInstance().mFakeBackground, engine.getVertexBufferObjectManager());
+		//this.attachChild(mBackground);
+		this.setBackground(new SpriteBackground(mBackground));
+
 		mLevelText = new Sprite(MainActivity.WIDTH/2, MainActivity.HEIGHT/2, ResourceManager.getInstance().mGameOver, engine.getVertexBufferObjectManager());
 		mGameOverText = new Sprite(MainActivity.WIDTH/2, MainActivity.HEIGHT/2, ResourceManager.getInstance().mGameOver, engine.getVertexBufferObjectManager());
-		
-		
 		
 		if (nextLevel == GAMEOVER)
 		{
@@ -121,12 +135,20 @@ public class EndLevelScene extends Scene {
 			this.attachChild(mGameOverText);
 			this.attachChild(mLevelMenuEntity);
 		}
-
-		
 	}
 	
 	public synchronized void onKeyUp(int keyCode, KeyEvent event) {
 		mLevelMenu.onKeyUp(keyCode, event);
 	}
-	
+	/*
+	@SuppressLint("WrongCall")
+	@Override
+	public void onDraw(GLState pGLState, Camera pCamera) {
+		//This is a modal scene only, so there must be a parent
+		if(this.hasParent())
+			this.getParentScene().onDraw(pGLState, pCamera);
+		
+		super.onManagedDraw(pGLState, pCamera);
+	}
+	*/
 }

@@ -193,13 +193,13 @@ public class GameManager {
 	{
 		if (level == 0)
 			resetGame();
-		
+		Log.d("ScientistSloth","start of level " + level);
 		mCurrentLevel = level;
-		mMolesInLevel = 10 + level*5;	
+		mMolesInLevel = 10 + (int)(level/5)*3;	
 		mMissedMoles = INITIAL_MOLE_COUNT;
 		mMolesUp = INITIAL_MOLE_COUNT;
 		mMaxMissedMoles = (int) (mMolesInLevel*0.3f);
-		mMaxSimultaneousMoles = (int) (2 + Math.floor(level / 15));
+		mMaxSimultaneousMoles = 2 + (int)(level / 3);
 		
 		for (int i = 0; i < scene.moles.length; i++) {
 			for (int j = 0; j < scene.moles[i].length; j++) {
@@ -221,7 +221,15 @@ public class GameManager {
 				scene.curTimeElapsed  += pSecondsElapsed;
 				if (scene.curTimeElapsed >= 0.3f)
 				{
-					scene.moles[Math.abs(scene.mRand.nextInt())%3][Math.abs(scene.mRand.nextInt())%3].makeMoleClimb(); 
+					int m = Math.abs(scene.mRand.nextInt())%3, 
+					n = Math.abs(scene.mRand.nextInt())%3;
+					//if (mCurrentLevel > 3)
+					//{
+						//add 3% chance of finding an ally mole every 2 levels. start with 10% at level 3
+					//	if (scene.mRand.nextInt(100) < 8 + ((int)(mCurrentLevel/2))*2)
+							scene.moles[m][n].setMoleType(1);
+					//}
+					scene.moles[m][n].makeMoleClimb();
 					scene.curTimeElapsed = 0;
 					
 					//Verify if we can finish the game
@@ -244,9 +252,8 @@ public class GameManager {
 							if(mMissedMoles > mMaxMissedMoles)
 							{
 								//Game Over
-								displayEndLevel(scene, EndLevelScene.GAMEOVER);
-
-								//displayGameOver(scene);
+								Log.d("ScientistSloth","game over");
+								displayGameOver(scene);
 
 								UserData.getInstance().setHighScore(getCurrentScore());
 								resetGame();
@@ -258,6 +265,7 @@ public class GameManager {
 								UserData.getInstance().unlockLevel(mCurrentLevel);
 								ResourceManager.getInstance().mLevelUpSound.play();
 								displayNextLevel(mCurrentLevel, scene);
+								Log.d("ScientistSloth","end of level " + (mCurrentLevel - 1));
 								scene.registerEntityModifier(new SequenceEntityModifier(new DelayModifier(3, new IEntityModifierListener() {
 									@Override
 									public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {}
@@ -281,6 +289,7 @@ public class GameManager {
 	
 	void displayEndLevel(final GameScene scene, int level) {
 		scene.setChildSceneModal(new EndLevelScene(scene.getEngine(), level, mCurrentLevel));
+		Log.d("SS",scene.getChildScene().toString());
 		
 	}
 	

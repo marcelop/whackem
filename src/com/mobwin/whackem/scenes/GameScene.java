@@ -79,32 +79,55 @@ public class GameScene extends Scene {
 			moles[i] = new MoleInstance[3];
 		}
 
-		moles[0][0] = new MoleInstance(394,394);
-		moles[0][1] = new MoleInstance(632,394);
-		moles[0][2] = new MoleInstance(872,394);
+		moles[0][0] = new MoleInstance(394,394,0);
+		moles[0][1] = new MoleInstance(632,394,0);
+		moles[0][2] = new MoleInstance(872,394,0);
 
-		moles[1][0] = new MoleInstance(394,248);
-		moles[1][1] = new MoleInstance(632,248);
-		moles[1][2] = new MoleInstance(867,248);
+		moles[1][0] = new MoleInstance(394,248,0);
+		moles[1][1] = new MoleInstance(632,248,0);
+		moles[1][2] = new MoleInstance(867,248,0);
 
-		moles[2][0] = new MoleInstance(394,105);
-		moles[2][1] = new MoleInstance(632,105);
-		moles[2][2] = new MoleInstance(872,105);
-
+		moles[2][0] = new MoleInstance(394,105,0);
+		moles[2][1] = new MoleInstance(632,105,0);
+		moles[2][2] = new MoleInstance(872,105,0);
 
 	}
 
 	public class MoleInstance
 	{
-		public MoleInstance(float i, float j) {
+		public MoleInstance(float i, float j, int moleType) {
 			x = i;
 			y = j;
 			hiddenPos = y-90;
 			showingPos = y+40;
+			this.moleType = moleType;
 
-			moleSprite = new AnimatedSprite(x, hiddenPos, 135, 152, ResourceManager.getInstance().mGameMole, getEngine().getVertexBufferObjectManager());
+			enemyMoleSprite = new AnimatedSprite(x, hiddenPos, 135, 152, ResourceManager.getInstance().mGameMole, getEngine().getVertexBufferObjectManager());
+			allyMoleSprite = new AnimatedSprite(x, hiddenPos, 135, 152, ResourceManager.getInstance().mGameMoleGlasses, getEngine().getVertexBufferObjectManager());
+			
+			if (moleType == 0) {//regular mole
+				moleSprite = enemyMoleSprite;
+			}
+			else {//mole with glasses
+				moleSprite = allyMoleSprite;
+			}
 		}
 
+		public int getMoleType() {
+			return moleType;
+		}
+		
+		public void setMoleType(int moleType) {
+			this.moleType = moleType;
+			if (moleType == 0) //regular mole
+			{
+				moleSprite = enemyMoleSprite;
+			}
+			else { //mole with glasses
+				moleSprite = allyMoleSprite;
+			}
+		}
+		
 		void animMoleLaugh()
 		{
 			int[] frames = {0,1,2,3,2,3,2,1,0};
@@ -127,6 +150,7 @@ public class GameScene extends Scene {
 		{
 			if(state == MoleState.HIDDEN && GameManager.getInstance().isInGame() && GameManager.getInstance().canMoleClimb())
 			{
+				float delay = 2 - (float)Math.log(GameManager.getInstance().getCurrentLevel()*10)/10;
 				GameManager.getInstance().decrementMoleCount();
 				moleSprite.animate(new long[1], new int[1], false);
 				moleSprite.registerEntityModifier(new SequenceEntityModifier(
@@ -152,7 +176,7 @@ public class GameScene extends Scene {
 									animMoleLaugh();
 							}
 						}), 
-						new DelayModifier(2, new IEntityModifierListener() {
+						new DelayModifier(delay, new IEntityModifierListener() {
 							@Override
 							public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {
 							}
@@ -175,7 +199,8 @@ public class GameScene extends Scene {
 					public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {
 						state = MoleState.HIDING;
 						GameManager.getInstance().decrementMolesUp();
-						GameManager.getInstance().incrementMissedMoleCount();
+						if (moleType == 0)
+							GameManager.getInstance().incrementMissedMoleCount();
 
 						registerEntityModifier(new DelayModifier(0.05f, new IEntityModifierListener() {
 							@Override
@@ -183,6 +208,7 @@ public class GameScene extends Scene {
 							@Override
 							public void onModifierFinished(IModifier<IEntity> pModifier, IEntity pItem) {
 								forceUpdateSelectorAlpha();	
+								setMoleType(0); //once done hiding, turn into enemy
 							}
 						}));
 					}
@@ -207,13 +233,18 @@ public class GameScene extends Scene {
 								state = MoleState.HIT;
 								GameManager.getInstance().decrementMolesUp();
 								animMoleDie();
-								GameManager.getInstance().incrementMoleHitCount();
-								GameManager.getInstance().incrementScore(10);
+								if (moleType == 0) {
+									GameManager.getInstance().incrementMoleHitCount();
+									GameManager.getInstance().incrementScore(10);
+								}
+								else
+									GameManager.getInstance().incrementMissedMoleCount();
 								registerEntityModifier(new DelayModifier(0.25f, new IEntityModifierListener() {
 									@Override
 									public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {}
 									@Override
 									public void onModifierFinished(IModifier<IEntity> pModifier, IEntity pItem) {
+										setMoleType(0); //once done hiding, turn into enemy
 										forceUpdateSelectorAlpha();	
 									}
 								}));
@@ -248,8 +279,9 @@ public class GameScene extends Scene {
 		float y;
 		float hiddenPos;
 		float showingPos;
+		int moleType;
 
-		public AnimatedSprite moleSprite;
+		public AnimatedSprite moleSprite, allyMoleSprite, enemyMoleSprite;
 		public MoleState state = MoleState.HIDDEN;
 
 	}
@@ -420,7 +452,7 @@ public class GameScene extends Scene {
 			break;
 
 		case OuyaController.BUTTON_A:
-			moles[Math.abs(mRand.nextInt())%3][Math.abs(mRand.nextInt())%3].makeMoleClimb(); 
+			//moles[Math.abs(mRand.nextInt())%3][Math.abs(mRand.nextInt())%3].makeMoleClimb(); 
 			break;
 
 		case OuyaController.BUTTON_O:
