@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 
 import org.andengine.engine.Engine;
+import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.Entity;
@@ -189,9 +190,18 @@ public class MainMenuScene extends Scene {
 		setBackgroundEnabled(true);
 		
 		mHighScoreText = new Text(-MainActivity.WIDTH, -MainActivity.HEIGHT/6, font, "HIGH SCORE: " + UserData.getInstance().getHighScore(), 300, engine.getVertexBufferObjectManager());
+		mHighScoreText.registerUpdateHandler(new IUpdateHandler() {
+			@Override
+			public void reset() {}
+			@Override
+			public void onUpdate(float pSecondsElapsed) {
+				mHighScoreText.setText("HIGH SCORE: " + UserData.getInstance().getHighScore());
+			}
+		});
 		attachChild(mHighScoreText);
 		
 		ResourceManager.getInstance().mIntroMusic.play();
+		
 	}
 
 	protected void registerSkew(final Sprite logoSprite) {
@@ -250,4 +260,7 @@ public class MainMenuScene extends Scene {
 		else
 			activateMenu();
 	}
+	
+	
+	
 }

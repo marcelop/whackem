@@ -62,7 +62,7 @@ public class GameManager {
 	private static final int INITIAL_HIT_COUNT = 0;
 	private static final int INITIAL_LEVEL = 0;
 
-	protected static final int UNLOCK_GAME_LEVEL = 2;
+	protected static final int UNLOCK_GAME_LEVEL = 100;
 	
 	/* The game manager should keep track of certain data involved in
 	 * our game. This particular game manager holds data for score, bird
@@ -608,6 +608,7 @@ public class GameManager {
 						.show();
 				dialog.cancel();
 				displayEndLevel(MainActivity.activity.mGameScene, EndLevelMenu.GAMEOVER);
+				UserData.getInstance().setHighScore(getCurrentScore());
 			}
 		});
 
@@ -623,7 +624,7 @@ public class GameManager {
 		alertDialog.setTitle("Funding the Fun");
 
 		// Setting Dialog Message
-		alertDialog.setMessage("Thanks a lot!! We love you!!\nNow don't stop whackin'!");
+		alertDialog.setMessage("Thanks a lot!! We love you!! <3\nNow don't stop whackin'!");
 
 		// Setting Icon to Dialog
 		//alertDialog2.setIcon(R.drawable.delete);
