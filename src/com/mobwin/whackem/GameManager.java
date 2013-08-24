@@ -20,11 +20,13 @@ import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.entity.Entity;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.DelayModifier;
-import org.andengine.entity.modifier.MoveModifier;
 import org.andengine.entity.modifier.IEntityModifier.IEntityModifierListener;
+import org.andengine.entity.modifier.MoveModifier;
 import org.andengine.entity.modifier.SequenceEntityModifier;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.util.modifier.IModifier;
+import org.andengine.util.modifier.ease.EaseBackOut;
+import org.andengine.util.modifier.ease.EaseElasticOut;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,15 +36,17 @@ import tv.ouya.console.api.OuyaFacade;
 import tv.ouya.console.api.OuyaResponseListener;
 import tv.ouya.console.api.Product;
 import tv.ouya.console.api.Purchasable;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
-import org.andengine.util.modifier.ease.EaseBackOut;
-import org.andengine.util.modifier.ease.EaseElasticOut;
+import android.widget.Toast;
 
 import com.mobwin.whackem.MenuItem.IMenuHandler;
-import com.mobwin.whackem.scenes.EndLevelScene;
+import com.mobwin.whackem.scenes.EndLevelMenu;
 import com.mobwin.whackem.scenes.GameScene;
+import com.mobwin.whackem.scenes.MainMenuScene;
 import com.scientistsloth.whackem.R;
 
 public class GameManager {
@@ -57,6 +61,8 @@ public class GameManager {
 	private static final int INITIAL_MOLE_COUNT = 0;
 	private static final int INITIAL_HIT_COUNT = 0;
 	private static final int INITIAL_LEVEL = 0;
+
+	protected static final int UNLOCK_GAME_LEVEL = 100;
 	
 	/* The game manager should keep track of certain data involved in
 	 * our game. This particular game manager holds data for score, bird
@@ -252,11 +258,12 @@ public class GameManager {
 							if(mMissedMoles > mMaxMissedMoles)
 							{
 								//Game Over
-								Log.d("ScientistSloth","game over");
-								displayGameOver(scene);
+
+								displayEndLevel(scene, EndLevelMenu.GAMEOVER);
+
+								//displayGameOver(scene);
 
 								UserData.getInstance().setHighScore(getCurrentScore());
-								resetGame();
 							}
 							else
 							{
@@ -265,16 +272,27 @@ public class GameManager {
 								UserData.getInstance().unlockLevel(mCurrentLevel);
 								ResourceManager.getInstance().mLevelUpSound.play();
 								displayNextLevel(mCurrentLevel, scene);
-								Log.d("ScientistSloth","end of level " + (mCurrentLevel - 1));
-								scene.registerEntityModifier(new SequenceEntityModifier(new DelayModifier(3, new IEntityModifierListener() {
-									@Override
-									public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {}
-									
-									@Override
-									public void onModifierFinished(IModifier<IEntity> pModifier, IEntity pItem) {
-										startLevel(mCurrentLevel, scene);
+								
+								if(mCurrentLevel == UNLOCK_GAME_LEVEL && !UserData.getInstance().isGameUnlocked())
+								{
+									try {
+										requestPurchase();
+									} catch (Exception e) {
+										resetGame();
+										MainActivity.activity.getEngine().setScene(MainActivity.activity.mMenuScene);
 									}
-								})));
+								}
+								else{
+									scene.registerEntityModifier(new SequenceEntityModifier(new DelayModifier(3, new IEntityModifierListener() {
+										@Override
+										public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {}
+
+										@Override
+										public void onModifierFinished(IModifier<IEntity> pModifier, IEntity pItem) {
+											startLevel(mCurrentLevel, scene);
+										}
+									})));
+								}
 							}
 							
 						}
@@ -288,9 +306,9 @@ public class GameManager {
 	}
 	
 	void displayEndLevel(final GameScene scene, int level) {
-		scene.setChildSceneModal(new EndLevelScene(scene.getEngine(), level, mCurrentLevel));
-		Log.d("SS",scene.getChildScene().toString());
-		
+
+		((GameScene) scene).showEndLevelMenu(new EndLevelMenu(scene.getEngine(), level, mCurrentLevel));		
+
 	}
 	
 	//Display gameover text, as well as score, if it's a new highscore, post on facebook option and return to start
@@ -455,31 +473,65 @@ public class GameManager {
 		}
 	};
 	
-	public CancelIgnoringOuyaResponseListener<String> purchaseListener =
-			new CancelIgnoringOuyaResponseListener<String>() {
+//	public CancelIgnoringOuyaResponseListener<String> purchaseListener =
+//			new CancelIgnoringOuyaResponseListener<String>() {
+//		@Override
+//		public void onSuccess(String response) {
+//			try {
+//				OuyaEncryptionHelper helper = new OuyaEncryptionHelper();
+//
+//				JSONObject result = new JSONObject(response);
+//
+//				String id = helper.decryptPurchaseResponse(result, mPublicKey);
+//				
+//				/*** UNLOCK THE GAME ****/
+//				
+//				UserData.getInstance().unlockGame();
+//				
+//
+//				Log.d("Purchase", "Congrats you bought: " + mGameUnlockProduct.getName());
+//			} catch (Exception e) {
+//				Log.e("Purchase", "Your purchase failed.", e);
+//			}
+//		}
+//	@Override
+//	public void onFailure(int errorCode, String errorMessage, Bundle errorBundle) {
+//		Log.d("Error", errorMessage);
+//	}
+//};
+	
+	public OuyaResponseListener<String> purchaseListener = new OuyaResponseListener<String>() {
+		
 		@Override
 		public void onSuccess(String response) {
 			try {
-				OuyaEncryptionHelper helper = new OuyaEncryptionHelper();
+			OuyaEncryptionHelper helper = new OuyaEncryptionHelper();
 
-				JSONObject result = new JSONObject(response);
+			JSONObject result = new JSONObject(response);
 
-				String id = helper.decryptPurchaseResponse(result, mPublicKey);
-				
-				/*** UNLOCK THE GAME ****/
-				
-				UserData.getInstance().unlockGame();
-				
-
-				Log.d("Purchase", "Congrats you bought: " + mGameUnlockProduct.getName());
+			String id = helper.decryptPurchaseResponse(result, mPublicKey);
+			
+			/*** UNLOCK THE GAME ****/
+			
+			UserData.getInstance().unlockGame();
+			
+			showThankYouDialog();
+			
+			Log.d("Purchase", "Congrats you bought: " + mGameUnlockProduct.getName());
 			} catch (Exception e) {
 				Log.e("Purchase", "Your purchase failed.", e);
 			}
 		}
-
+		
 		@Override
-		public void onFailure(int errorCode, String errorMessage, Bundle errorBundle) {
-			Log.d("Error", errorMessage);
+		public void onFailure(int arg0, String arg1, Bundle arg2) {
+			Log.d("Error", arg1);
+		}
+		
+		@Override
+		public void onCancel() {
+			if(MainActivity.activity.getEngine().getScene().getClass().equals(GameScene.class) && !UserData.getInstance().isGameUnlocked())
+				showSuggestBuyAlert();
 		}
 	};
 
@@ -529,7 +581,75 @@ public class GameManager {
 	        OuyaFacade.getInstance().requestPurchase(purchasable, purchaseListener);
 	    }
 
+	protected void showSuggestBuyAlert() {
+		AlertDialog.Builder alertDialog = new AlertDialog.Builder(
+				MainActivity.activity);
+
+		// Setting Dialog Title
+		alertDialog.setTitle("Funding the Fun");
+
+		// Setting Dialog Message
+		alertDialog.setMessage("Hope you liked whacking around! Please unlock the game for unlimited play.");
+
+		// Setting Icon to Dialog
+		//alertDialog2.setIcon(R.drawable.delete);
+
+		// Setting Positive "Yes" Btn
+		alertDialog.setPositiveButton("Unlock",
+				new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				// Write your code here to execute after dialog
+				Toast.makeText(MainActivity.activity.getApplicationContext(),
+						"You clicked on Unlock", Toast.LENGTH_SHORT)
+						.show();
+				try {
+					requestPurchase();
+				} catch (Exception e) {
+					e.printStackTrace();
+				} 
+			}
+		});
+		// Setting Negative "NO" Btn
+		alertDialog.setNegativeButton("Back",
+				new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				// Write your code here to execute after dialog
+				Toast.makeText(MainActivity.activity.getApplicationContext(),
+						"You clicked on Back", Toast.LENGTH_SHORT)
+						.show();
+				dialog.cancel();
+				displayEndLevel(MainActivity.activity.mGameScene, EndLevelMenu.GAMEOVER);
+				UserData.getInstance().setHighScore(getCurrentScore());
+			}
+		});
+
+		// Showing Alert Dialog
+		alertDialog.show();
+	}
 	
-	
-	
+	protected void showThankYouDialog() {
+		AlertDialog.Builder alertDialog = new AlertDialog.Builder(
+				MainActivity.activity);
+
+		// Setting Dialog Title
+		alertDialog.setTitle("Funding the Fun");
+
+		// Setting Dialog Message
+		alertDialog.setMessage("Thanks a lot!! We love you!! <3\nNow don't stop whackin'!");
+
+		// Setting Icon to Dialog
+		//alertDialog2.setIcon(R.drawable.delete);
+
+		// Setting Positive "Yes" Btn
+		alertDialog.setPositiveButton("OK",
+				new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				// Write your code here to execute after dialog
+				startLevel(mCurrentLevel, MainActivity.activity.mGameScene);
+			}
+		});
+
+		// Showing Alert Dialog
+		alertDialog.show();
+	}
 }

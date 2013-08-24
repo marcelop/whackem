@@ -24,15 +24,11 @@ import org.andengine.util.adt.color.Color;
 import org.andengine.util.modifier.IModifier;
 
 import tv.ouya.console.api.OuyaController;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.view.KeyEvent;
-import android.widget.Toast;
 
 import com.mobwin.whackem.GameManager;
 import com.mobwin.whackem.MainActivity;
 import com.mobwin.whackem.ResourceManager;
-import com.scientistsloth.whackem.R;
 
 public class GameScene extends Scene {
 
@@ -52,6 +48,8 @@ public class GameScene extends Scene {
 	Sprite mCloud2;
 	
 	Sprite mScoreBox;
+	
+	public EndLevelMenu mEndLevelMenu = null;
 
 	int selectorX = 1;
 	int selectorY = 1;
@@ -421,6 +419,9 @@ public class GameScene extends Scene {
 
 	public synchronized void onKeyDown(int keyCode, KeyEvent event) {
 		boolean updated = false;
+		if(mEndLevelMenu != null)
+			return;
+
 		switch (keyCode) {
 		case OuyaController.BUTTON_DPAD_DOWN:
 			if(selectorY <= 1)
@@ -473,6 +474,12 @@ public class GameScene extends Scene {
 
 	public synchronized void onKeyUp(int keyCode, KeyEvent event) {
 		boolean updated = false;
+		if(mEndLevelMenu != null)
+		{
+			mEndLevelMenu.onKeyUp(keyCode, event);
+			return;
+		}
+		
 		switch (keyCode) {
 		case OuyaController.BUTTON_DPAD_DOWN:
 			if(selectorY >= 1)
@@ -606,43 +613,9 @@ public class GameScene extends Scene {
 	void purchaseGame(){
 		
 	}
-	
-	public void showPurchaseDialog(){ 
-		AlertDialog.Builder alertDialog = new AlertDialog.Builder(
-				MainActivity.activity);
 
-		// Setting Dialog Title
-		alertDialog.setTitle("Funding the Fun");
-
-		// Setting Dialog Message
-		alertDialog.setMessage("Hope you liked whacking around! To continue playing, please unlock the game.");
-
-		// Setting Icon to Dialog
-		//alertDialog2.setIcon(R.drawable.delete);
-
-		// Setting Positive "Yes" Btn
-		alertDialog.setPositiveButton("Unlock",
-				new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int which) {
-				// Write your code here to execute after dialog
-				Toast.makeText(MainActivity.activity.getApplicationContext(),
-						"You clicked on Unlock", Toast.LENGTH_SHORT)
-						.show();
-			}
-		});
-		// Setting Negative "NO" Btn
-		alertDialog.setNegativeButton("Back",
-				new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int which) {
-				// Write your code here to execute after dialog
-				Toast.makeText(MainActivity.activity.getApplicationContext(),
-						"You clicked on Back", Toast.LENGTH_SHORT)
-						.show();
-				dialog.cancel();
-			}
-		});
-
-		// Showing Alert Dialog
-		alertDialog.show();
+	public void showEndLevelMenu(EndLevelMenu endLevelMenu) {
+		mEndLevelMenu = endLevelMenu;
+		attachChild(mEndLevelMenu);
 	}
 }
