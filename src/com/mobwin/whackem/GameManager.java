@@ -197,9 +197,10 @@ public class GameManager {
 	
 	public void startLevel(int level, final GameScene scene)
 	{
-		if (level == 0)
+		if (level == 0) {
 			resetGame();
-		Log.d("ScientistSloth","start of level " + level);
+			scene.resetHammerPosition();
+		}
 		mCurrentLevel = level;
 		mMolesInLevel = 10 + (int)(level/5)*3;	
 		mMissedMoles = INITIAL_MOLE_COUNT;

@@ -24,6 +24,7 @@ import org.andengine.util.adt.color.Color;
 import org.andengine.util.modifier.IModifier;
 
 import tv.ouya.console.api.OuyaController;
+import android.util.Log;
 import android.view.KeyEvent;
 
 import com.mobwin.whackem.GameManager;
@@ -116,17 +117,18 @@ public class GameScene extends Scene {
 		}
 		
 		public void setMoleType(int moleType) {
-			this.moleType = moleType;
-			if (moleType == 0) //regular mole
-			{
-				moleSprite = enemyMoleSprite;
-			}
-			else { //mole with glasses
-				moleSprite = allyMoleSprite;
+			if (state == MoleState.HIDDEN) { //only switch if the mole is hidden away
+				this.moleType = moleType;
+				if (moleType == 0) 	{ //regular mole
+					moleSprite = enemyMoleSprite;
+				}
+				else { //mole with glasses
+					moleSprite = allyMoleSprite;
+				}
 			}
 		}
 		
-		void animMoleLaugh()
+		void animMoleLaugh() 
 		{
 			int[] frames = {0,1,2,3,2,3,2,1,0};
 			long[] durations = new long[frames.length];
@@ -148,43 +150,44 @@ public class GameScene extends Scene {
 		{
 			if(state == MoleState.HIDDEN && GameManager.getInstance().isInGame() && GameManager.getInstance().canMoleClimb())
 			{
+				Log.d("Scientist Sloth","" + moleType);
 				float delay = 2 - (float)Math.log(GameManager.getInstance().getCurrentLevel()*10)/10;
 				GameManager.getInstance().decrementMoleCount();
 				moleSprite.animate(new long[1], new int[1], false);
+				//moleSprite.clearEntityModifiers();
 				moleSprite.registerEntityModifier(new SequenceEntityModifier(
-						new MoveModifier(0.3f, moleSprite.getX(), moleSprite.getY(), moleSprite.getX(), showingPos, new IEntityModifierListener() {
-
+					new MoveModifier(0.3f, moleSprite.getX(), moleSprite.getY(), moleSprite.getX(), showingPos, new IEntityModifierListener() {
 							@Override
-							public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {
-								state = MoleState.CLIMBING;
-								registerEntityModifier(new DelayModifier(0.25f, new IEntityModifierListener() {
-									@Override
-									public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {}
-									@Override
-									public void onModifierFinished(IModifier<IEntity> pModifier, IEntity pItem) {
-										forceUpdateSelectorAlpha();	
-									}
-								}));
-							}
-
+						public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {
+							Log.d("Scientist Sloth","Climbing " + moleType);
+							state = MoleState.CLIMBING;
+							registerEntityModifier(new DelayModifier(0.25f, new IEntityModifierListener() {
+								@Override
+								public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {}
+								@Override
+								public void onModifierFinished(IModifier<IEntity> pModifier, IEntity pItem) {
+									forceUpdateSelectorAlpha();	
+								}
+							}));
+						}
+						@Override
+						public void onModifierFinished(IModifier<IEntity> pModifier, IEntity pItem) {
+							state = MoleState.VULNERABLE;
+							if(mRand.nextInt() > 0)
+								animMoleLaugh();
+						}
+					}), 
+					new DelayModifier(2, new IEntityModifierListener() {
+						@Override
+						public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {
+							Log.d("Scientist Sloth", "delay modifier started");
+						}
 							@Override
-							public void onModifierFinished(IModifier<IEntity> pModifier, IEntity pItem) {
-								state = MoleState.VULNERABLE;
-								if(mRand.nextInt() > 0)
-									animMoleLaugh();
-							}
-						}), 
-						new DelayModifier(delay, new IEntityModifierListener() {
-							@Override
-							public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {
-							}
-
-							@Override
-							public void onModifierFinished(IModifier<IEntity> pModifier, IEntity pItem) {
-								makeMoleHide();					
-							}
-						})
-						));
+						public void onModifierFinished(IModifier<IEntity> pModifier, IEntity pItem) {
+							makeMoleHide();					
+						}
+					})
+				));
 			}
 		}
 
@@ -540,6 +543,16 @@ public class GameScene extends Scene {
 			}
 		});
 		mHammer.registerEntityModifier(new MoveModifier(0.1f ,mHammer.getX(), mHammer.getY(), newX + mHammer.getWidth()*0.4f, newY + mHammer.getHeight()*0.2f));
+	}
+	
+	public void resetHammerPosition() {
+		selectorX = 1;
+		selectorY = 1;
+		float newX = moles[selectorX][selectorY].x-5;
+		float newY = moles[selectorX][selectorY].y;
+		mHoleSelector.setPosition(newX,newY);
+		mHoleSelectorAlpha.setPosition(newX,newY);
+		mHammer.setPosition(newX + mHammer.getWidth()*0.4f, newY + mHammer.getHeight()*0.2f);
 	}
 
 
