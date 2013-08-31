@@ -230,12 +230,12 @@ public class GameManager {
 				{
 					int m = Math.abs(scene.mRand.nextInt())%3, 
 					n = Math.abs(scene.mRand.nextInt())%3;
-					//if (mCurrentLevel > 3)
-					//{
+					if (mCurrentLevel > 3)
+					{
 						//add 3% chance of finding an ally mole every 2 levels. start with 10% at level 3
-					//	if (scene.mRand.nextInt(100) < 8 + ((int)(mCurrentLevel/2))*2)
+						if (scene.mRand.nextInt(100) < 8 + ((int)(mCurrentLevel/2))*2)
 							scene.moles[m][n].setMoleType(1);
-					//}
+					}
 					scene.moles[m][n].makeMoleClimb();
 					scene.curTimeElapsed = 0;
 					

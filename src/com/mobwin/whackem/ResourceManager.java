@@ -131,8 +131,8 @@ public class ResourceManager {
 		mFakeBackground = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "background/falseBackground.png", 0, 0); textureAtlas.load();
 
 		
-		BuildableBitmapTextureAtlas bmpTextureAtlas = new BuildableBitmapTextureAtlas(pEngine.getTextureManager(), 1424, 200, TextureOptions.BILINEAR);
-		mGameMole = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(bmpTextureAtlas, pContext, "mole/mole.png", 8, 1);
+		BuildableBitmapTextureAtlas bmpTextureAtlas = new BuildableBitmapTextureAtlas(pEngine.getTextureManager(), 2848, 200, TextureOptions.BILINEAR);
+		mGameMole = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(bmpTextureAtlas, pContext, "mole/double_mole.png", 16, 1);
 		try {
 			bmpTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0,0,0));
 		} catch (Exception e) {

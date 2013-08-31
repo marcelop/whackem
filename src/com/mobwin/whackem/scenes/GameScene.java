@@ -101,15 +101,7 @@ public class GameScene extends Scene {
 			showingPos = y+40;
 			this.moleType = moleType;
 
-			enemyMoleSprite = new AnimatedSprite(x, hiddenPos, 135, 152, ResourceManager.getInstance().mGameMole, getEngine().getVertexBufferObjectManager());
-			allyMoleSprite = new AnimatedSprite(x, hiddenPos, 135, 152, ResourceManager.getInstance().mGameMoleGlasses, getEngine().getVertexBufferObjectManager());
-			
-			if (moleType == 0) {//regular mole
-				moleSprite = enemyMoleSprite;
-			}
-			else {//mole with glasses
-				moleSprite = allyMoleSprite;
-			}
+			moleSprite = new AnimatedSprite(x, hiddenPos, 135, 152, ResourceManager.getInstance().mGameMole, getEngine().getVertexBufferObjectManager());
 		}
 
 		public int getMoleType() {
@@ -119,18 +111,13 @@ public class GameScene extends Scene {
 		public void setMoleType(int moleType) {
 			if (state == MoleState.HIDDEN) { //only switch if the mole is hidden away
 				this.moleType = moleType;
-				if (moleType == 0) 	{ //regular mole
-					moleSprite = enemyMoleSprite;
-				}
-				else { //mole with glasses
-					moleSprite = allyMoleSprite;
-				}
 			}
 		}
 		
 		void animMoleLaugh() 
 		{
-			int[] frames = {0,1,2,3,2,3,2,1,0};
+			int o = moleType*8; //frame offset
+			int[] frames = {o + 0,o + 1,o + 2,o + 3,o + 2,o + 3,o + 2,o + 1,o + 0};
 			long[] durations = new long[frames.length];
 			for (int i = 0; i < durations.length; i++) 
 				durations[i] = 100;
@@ -139,7 +126,8 @@ public class GameScene extends Scene {
 
 		void animMoleDie()
 		{
-			int[] frames = {4,5,6,7,6,7};
+			int o = moleType*8; //frame offset
+			int[] frames = {o + 4,o + 5,o + 6,o + 7,o + 6,o + 7};
 			long[] durations = new long[frames.length];
 			for (int i = 0; i < durations.length; i++) 
 				durations[i] = 50;
@@ -282,7 +270,7 @@ public class GameScene extends Scene {
 		float showingPos;
 		int moleType;
 
-		public AnimatedSprite moleSprite, allyMoleSprite, enemyMoleSprite;
+		public AnimatedSprite moleSprite; //, allyMoleSprite, enemyMoleSprite;
 		public MoleState state = MoleState.HIDDEN;
 
 	}
