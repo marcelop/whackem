@@ -209,6 +209,7 @@ public class GameManager {
 		mMaxMissedMoles = (int) (mMolesInLevel*0.3f);
 		mMaxSimultaneousMoles = 2 + (int)(level / 3);
 		
+		
 		for (int i = 0; i < scene.moles.length; i++) {
 			for (int j = 0; j < scene.moles[i].length; j++) {
 				GameScene.MoleInstance mole = scene.moles[i][j];

@@ -211,6 +211,7 @@ public class GameScene extends Scene {
 					@Override
 					public void onModifierFinished(IModifier<IEntity> pModifier, IEntity pItem) {
 						state = MoleState.HIDDEN;
+						moleType = MoleType.ENEMY; //turn into a regular mole again
 						updateSelectorAlpha();
 					}
 				}));
