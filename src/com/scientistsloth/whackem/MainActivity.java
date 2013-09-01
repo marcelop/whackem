@@ -24,6 +24,7 @@ import com.scientistsloth.whackem.scenes.CreditsScene;
 import com.scientistsloth.whackem.scenes.GameScene;
 import com.scientistsloth.whackem.scenes.MainMenuScene;
 import com.scientistsloth.whackem.scenes.SplashScene;
+import com.scientistsloth.whackem.scenes.TutorialScene;
 
 public class MainActivity extends BaseGameActivity {
 
@@ -120,6 +121,11 @@ public class MainActivity extends BaseGameActivity {
     	else if(mEngine.getScene().getClass().equals(GameScene.class))
     	{
     		((GameScene) mEngine.getScene()).onKeyUp(keyCode, event);
+    		return true;
+    	}
+    	else if(mEngine.getScene().getClass().equals(TutorialScene.class))
+    	{
+    		((TutorialScene) mEngine.getScene()).onKeyUp(keyCode, event);
     		return true;
     	}
     	

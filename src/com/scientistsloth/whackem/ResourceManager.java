@@ -9,18 +9,14 @@ import org.andengine.audio.sound.SoundFactory;
 import org.andengine.engine.Engine;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
-import org.andengine.opengl.texture.ITexture;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
-import org.andengine.opengl.texture.atlas.buildable.BuildableTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtlasBuilder;
-import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder.TextureAtlasBuilderException;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
-import org.andengine.util.debug.Debug;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -58,6 +54,7 @@ public class ResourceManager {
 	public ITextureRegion mGameMoon;
 	public ITextureRegion mGameOver;
 	public ITextureRegion mFakeBackground;
+	public ITextureRegion mTutorial;
 	
 	public ITextureRegion mGameTitle;
 	public ITextureRegion mGameHammer;
@@ -131,6 +128,8 @@ public class ResourceManager {
 		mGameHoleSelectorAlpha = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "foreground/selection_alpha.png", 0, 0); textureAtlas.load();
 		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 1280, 720, TextureOptions.DEFAULT);
 		mFakeBackground = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "background/falseBackground.png", 0, 0); textureAtlas.load();
+		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 1280, 720, TextureOptions.BILINEAR);
+		mTutorial = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "background/WhackTutorial.png", 0, 0); textureAtlas.load();
 
 		
 		BuildableBitmapTextureAtlas bmpTextureAtlas = new BuildableBitmapTextureAtlas(pEngine.getTextureManager(), 1424, 400, TextureOptions.BILINEAR);
@@ -304,7 +303,7 @@ public class ResourceManager {
 		// Create mFont object via FontFactory class
 		mFont = FontFactory.create(pEngine.getFontManager(),
 				pEngine.getTextureManager(), 256, 256,
-				Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL), 32f, true,
+				Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD), 32f, true,
 				org.andengine.util.adt.color.Color.WHITE_ABGR_PACKED_INT);
 
 		mFont.load();

@@ -83,11 +83,9 @@ public class MainMenuScene extends Scene {
 				if(GameManager.getInstance().isMusicEnabled())
 				{
 					ResourceManager.getInstance().mIntroMusic.pause();
-					ResourceManager.getInstance().mGameMusic.play();
-					ResourceManager.getInstance().mGameMusic.setVolume(0.7f);
+					engine.setScene(new TutorialScene());
 				}
-	    		engine.setScene(MainActivity.activity.mGameScene);
-	    		GameManager.getInstance().startLevel(0, MainActivity.activity.mGameScene);				
+				
 			}
 		});
 		

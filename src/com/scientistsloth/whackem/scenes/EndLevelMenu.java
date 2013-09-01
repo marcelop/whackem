@@ -84,7 +84,7 @@ public class EndLevelMenu extends Entity {
 					GameManager.getInstance().startLevel(0, MainActivity.activity.mGameScene);
 				}
 			});
-			items[1] = new MenuItem("Return to main menu");
+			items[1] = new MenuItem("Back to main menu");
 			items[1].registerHandler(new IMenuHandler() {
 
 				@Override

@@ -88,7 +88,7 @@ public class EndLevelScene extends Scene {
 					GameManager.getInstance().resetGame();
 				}
 			});
-			items[2] = new MenuItem("Return to main menu");
+			items[2] = new MenuItem("Back to main menu");
 			items[2].registerHandler(new IMenuHandler() {
 
 				@Override
