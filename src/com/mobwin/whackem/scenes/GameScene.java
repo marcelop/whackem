@@ -140,7 +140,7 @@ public class GameScene extends Scene {
 			{
 				Log.d("Scientist Sloth","" + moleType);
 				float delay = 2 - (float)Math.log(GameManager.getInstance().getCurrentLevel()*10)/10;
-				GameManager.getInstance().decrementMoleCount();
+				if (moleType == 0) GameManager.getInstance().decrementMoleCount();
 				moleSprite.animate(new long[1], new int[1], false);
 				//moleSprite.clearEntityModifiers();
 				moleSprite.registerEntityModifier(new SequenceEntityModifier(
@@ -252,6 +252,7 @@ public class GameScene extends Scene {
 							@Override
 							public void onModifierFinished(IModifier<IEntity> pModifier, IEntity pItem) {
 								state = MoleState.HIDDEN;
+								moleType = 0; //turn into a regular mole again
 								updateSelectorAlpha();
 							}
 						})));
