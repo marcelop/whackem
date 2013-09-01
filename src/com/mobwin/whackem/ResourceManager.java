@@ -263,7 +263,7 @@ public class ResourceManager {
 			mButtonClickSound = SoundFactory.createSoundFromAsset(
 					pEngine.getSoundManager(), pContext, "menuchange.wav");
 			mLevelUpSound = SoundFactory.createSoundFromAsset(
-					pEngine.getSoundManager(), pContext, "level-completed.wav");
+					pEngine.getSoundManager(), pContext, "level-up.mp3");
 			mGameOverSound = SoundFactory.createSoundFromAsset(
 					pEngine.getSoundManager(), pContext, "gameover.wav");
 			mIntroMusic = MusicFactory.createMusicFromAsset(
