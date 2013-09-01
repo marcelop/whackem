@@ -68,9 +68,11 @@ public class ResourceManager {
 	public ITextureRegion mUIOrangeButton;
 
 	public Sound mHitSound;
+	public Sound mAllyHitSound;
 	public Sound mHammerSound;
 	public Sound mButtonClickSound;
 	public Sound mLevelUpSound;
+	public Sound mGameOverSound;
 	public Music mIntroMusic;
 	public Music mGameMusic;
 
@@ -254,12 +256,16 @@ public class ResourceManager {
 			// Create mSound object via SoundFactory class
 			mHitSound = SoundFactory.createSoundFromAsset(
 					pEngine.getSoundManager(), pContext, "hit.wav");
+			mAllyHitSound = SoundFactory.createSoundFromAsset(
+					pEngine.getSoundManager(), pContext, "allyhit.wav");
 			mHammerSound = SoundFactory.createSoundFromAsset(
 					pEngine.getSoundManager(), pContext, "hammer.wav");
 			mButtonClickSound = SoundFactory.createSoundFromAsset(
-					pEngine.getSoundManager(), pContext, "button_down.wav");
+					pEngine.getSoundManager(), pContext, "menuchange.wav");
 			mLevelUpSound = SoundFactory.createSoundFromAsset(
-					pEngine.getSoundManager(), pContext, "level-up.mp3");
+					pEngine.getSoundManager(), pContext, "level-completed.wav");
+			mGameOverSound = SoundFactory.createSoundFromAsset(
+					pEngine.getSoundManager(), pContext, "gameover.wav");
 			mIntroMusic = MusicFactory.createMusicFromAsset(
 					pEngine.getMusicManager(), pContext, "intro.mp3");
 			mGameMusic = MusicFactory.createMusicFromAsset(

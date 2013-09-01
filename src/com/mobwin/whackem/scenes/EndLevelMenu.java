@@ -43,6 +43,9 @@ public class EndLevelMenu extends Entity {
 		
 		if (nextLevel == GAMEOVER)
 		{
+			ResourceManager.getInstance().mGameOverSound.play();
+			ResourceManager.getInstance().mGameMusic.setVolume(0.3f);
+			
 			float x = MainActivity.WIDTH / 2;
 			float y = ResourceManager.getInstance().mFont.getLineHeight() / 2 + 190;
 			MenuItem[] items = new MenuItem[3];
@@ -75,6 +78,7 @@ public class EndLevelMenu extends Entity {
 						public void onModifierFinished(IModifier<IEntity> pModifier, IEntity pItem) {
 							MainActivity.activity.mGameScene.detachChild(MainActivity.activity.mGameScene.mEndLevelMenu);
 							MainActivity.activity.mGameScene.mEndLevelMenu = null;
+							ResourceManager.getInstance().mGameMusic.setVolume(0.7f);
 						}
 					}));
 					GameManager.getInstance().startLevel(0, MainActivity.activity.mGameScene);
@@ -92,6 +96,7 @@ public class EndLevelMenu extends Entity {
 				public void onClick(MenuItem sender) {
 					if(GameManager.getInstance().isMusicEnabled())
 					{
+						ResourceManager.getInstance().mGameMusic.setVolume(0.7f);
 						ResourceManager.getInstance().mGameMusic.pause();
 						ResourceManager.getInstance().mIntroMusic.play();
 					}

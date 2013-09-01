@@ -220,7 +220,11 @@ public class GameScene extends Scene {
 		{
 			if(state == MoleState.VULNERABLE)
 			{
-				ResourceManager.getInstance().mHitSound.play();
+				if(moleType == MoleType.ENEMY)
+					ResourceManager.getInstance().mHitSound.play();
+				else
+					ResourceManager.getInstance().mAllyHitSound.play();
+				
 				moleSprite.registerEntityModifier(new SequenceEntityModifier(
 						new DelayModifier(0.2f, new IEntityModifierListener() {
 							@Override
