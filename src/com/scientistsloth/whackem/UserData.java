@@ -1,4 +1,4 @@
-package com.mobwin.whackem;
+package com.scientistsloth.whackem;
 
 import android.content.Context;
 import android.content.SharedPreferences;

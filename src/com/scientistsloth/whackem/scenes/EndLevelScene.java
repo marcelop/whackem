@@ -1,4 +1,4 @@
-package com.mobwin.whackem.scenes;
+package com.scientistsloth.whackem.scenes;
 
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.Camera;
@@ -23,12 +23,12 @@ import android.annotation.SuppressLint;
 import android.util.Log;
 import android.view.KeyEvent;
 
-import com.mobwin.whackem.GameManager;
-import com.mobwin.whackem.MainActivity;
-import com.mobwin.whackem.MenuBuilder;
-import com.mobwin.whackem.MenuItem;
-import com.mobwin.whackem.ResourceManager;
-import com.mobwin.whackem.MenuItem.IMenuHandler;
+import com.scientistsloth.whackem.GameManager;
+import com.scientistsloth.whackem.MainActivity;
+import com.scientistsloth.whackem.MenuBuilder;
+import com.scientistsloth.whackem.MenuItem;
+import com.scientistsloth.whackem.ResourceManager;
+import com.scientistsloth.whackem.MenuItem.IMenuHandler;
 
 public class EndLevelScene extends Scene {
 

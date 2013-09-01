@@ -1,4 +1,4 @@
-package com.mobwin.whackem;
+package com.scientistsloth.whackem;
 
 import org.andengine.engine.Engine;
 import org.andengine.engine.FixedStepEngine;
@@ -20,10 +20,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 
-import com.mobwin.whackem.scenes.CreditsScene;
-import com.mobwin.whackem.scenes.GameScene;
-import com.mobwin.whackem.scenes.MainMenuScene;
-import com.mobwin.whackem.scenes.SplashScene;
+import com.scientistsloth.whackem.scenes.CreditsScene;
+import com.scientistsloth.whackem.scenes.GameScene;
+import com.scientistsloth.whackem.scenes.MainMenuScene;
+import com.scientistsloth.whackem.scenes.SplashScene;
 
 public class MainActivity extends BaseGameActivity {
 

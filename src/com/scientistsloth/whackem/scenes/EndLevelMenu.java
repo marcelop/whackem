@@ -1,4 +1,4 @@
-package com.mobwin.whackem.scenes;
+package com.scientistsloth.whackem.scenes;
 
 import org.andengine.engine.Engine;
 import org.andengine.entity.Entity;
@@ -15,12 +15,12 @@ import org.andengine.util.modifier.ease.EaseElasticOut;
 
 import android.view.KeyEvent;
 
-import com.mobwin.whackem.GameManager;
-import com.mobwin.whackem.MainActivity;
-import com.mobwin.whackem.MenuBuilder;
-import com.mobwin.whackem.MenuItem;
-import com.mobwin.whackem.MenuItem.IMenuHandler;
-import com.mobwin.whackem.ResourceManager;
+import com.scientistsloth.whackem.GameManager;
+import com.scientistsloth.whackem.MainActivity;
+import com.scientistsloth.whackem.MenuBuilder;
+import com.scientistsloth.whackem.MenuItem;
+import com.scientistsloth.whackem.ResourceManager;
+import com.scientistsloth.whackem.MenuItem.IMenuHandler;
 
 public class EndLevelMenu extends Entity {
 
@@ -48,8 +48,8 @@ public class EndLevelMenu extends Entity {
 			
 			float x = MainActivity.WIDTH / 2;
 			float y = ResourceManager.getInstance().mFont.getLineHeight() / 2 + 190;
-			MenuItem[] items = new MenuItem[3];
-			items[0] = new MenuItem("Share!");			
+			MenuItem[] items = new MenuItem[2];
+			/*items[0] = new MenuItem("Share!");			
 			items[0].registerHandler(new IMenuHandler() {
 
 				@Override
@@ -61,9 +61,9 @@ public class EndLevelMenu extends Entity {
 				public void onClick(MenuItem sender) {
 					// TODO Auto-generated method stub
 				}
-			});
-			items[1] = new MenuItem("Play again");
-			items[1].registerHandler(new IMenuHandler() {
+			});*/
+			items[0] = new MenuItem("Play again");
+			items[0].registerHandler(new IMenuHandler() {
 
 				@Override
 				public void onChange(MenuItem sender, int selected) {
@@ -84,8 +84,8 @@ public class EndLevelMenu extends Entity {
 					GameManager.getInstance().startLevel(0, MainActivity.activity.mGameScene);
 				}
 			});
-			items[2] = new MenuItem("Return to main menu");
-			items[2].registerHandler(new IMenuHandler() {
+			items[1] = new MenuItem("Return to main menu");
+			items[1].registerHandler(new IMenuHandler() {
 
 				@Override
 				public void onChange(MenuItem sender, int selected) {

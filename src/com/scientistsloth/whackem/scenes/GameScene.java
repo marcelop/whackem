@@ -1,4 +1,4 @@
-package com.mobwin.whackem.scenes;
+package com.scientistsloth.whackem.scenes;
 
 import java.util.Random;
 
@@ -27,9 +27,9 @@ import tv.ouya.console.api.OuyaController;
 import android.util.Log;
 import android.view.KeyEvent;
 
-import com.mobwin.whackem.GameManager;
-import com.mobwin.whackem.MainActivity;
-import com.mobwin.whackem.ResourceManager;
+import com.scientistsloth.whackem.GameManager;
+import com.scientistsloth.whackem.MainActivity;
+import com.scientistsloth.whackem.ResourceManager;
 
 public class GameScene extends Scene {
 

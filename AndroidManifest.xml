@@ -20,7 +20,7 @@
           android:versionName="1.0">
     <uses-sdk android:minSdkVersion="16"/>
     <application android:label="@string/app_name" android:logo="@drawable/ouya_icon" android:icon="@drawable/ic_launcher">
-        <activity android:name="com.mobwin.whackem.MainActivity"
+        <activity android:name="com.scientistsloth.whackem.MainActivity"
                   android:label="@string/app_name"
                   android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
             <intent-filter>
@@ -29,9 +29,9 @@
                 <category android:name="tv.ouya.intent.category.GAME"/>
             </intent-filter>
         </activity>
-        <activity android:name="com.mobwin.whackem.GameActivity"
+        <activity android:name="com.scientistsloth.whackem.GameActivity"
                   android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"/>
-        <activity android:name="com.mobwin.whackem.OptionsActivity"
+        <activity android:name="com.scientistsloth.whackem.OptionsActivity"
                   android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"/>
     </application>
 </manifest>

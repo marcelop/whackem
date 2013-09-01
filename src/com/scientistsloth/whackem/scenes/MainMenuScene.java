@@ -1,4 +1,4 @@
-package com.mobwin.whackem.scenes;
+package com.scientistsloth.whackem.scenes;
 
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
@@ -34,13 +34,13 @@ import tv.ouya.console.api.OuyaFacade;
 
 import android.view.KeyEvent;
 
-import com.mobwin.whackem.GameManager;
-import com.mobwin.whackem.MainActivity;
-import com.mobwin.whackem.MenuBuilder;
-import com.mobwin.whackem.MenuItem;
-import com.mobwin.whackem.UserData;
-import com.mobwin.whackem.MenuItem.IMenuHandler;
-import com.mobwin.whackem.ResourceManager;
+import com.scientistsloth.whackem.GameManager;
+import com.scientistsloth.whackem.MainActivity;
+import com.scientistsloth.whackem.MenuBuilder;
+import com.scientistsloth.whackem.MenuItem;
+import com.scientistsloth.whackem.ResourceManager;
+import com.scientistsloth.whackem.UserData;
+import com.scientistsloth.whackem.MenuItem.IMenuHandler;
 
 public class MainMenuScene extends Scene {
 

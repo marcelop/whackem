@@ -1,4 +1,4 @@
-package com.mobwin.whackem.scenes;
+package com.scientistsloth.whackem.scenes;
 
 import java.io.IOException;
 
@@ -25,8 +25,8 @@ import org.andengine.util.modifier.IModifier;
 
 import android.content.Context;
 
-import com.mobwin.whackem.MainActivity;
-import com.mobwin.whackem.ResourceManager;
+import com.scientistsloth.whackem.MainActivity;
+import com.scientistsloth.whackem.ResourceManager;
 
 public class SplashScene extends Scene {
 

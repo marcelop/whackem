@@ -1,4 +1,4 @@
-package com.mobwin.whackem.scenes;
+package com.scientistsloth.whackem.scenes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,8 +24,8 @@ import android.annotation.SuppressLint;
 import android.util.Log;
 import android.view.KeyEvent;
 
-import com.mobwin.whackem.MainActivity;
-import com.mobwin.whackem.ResourceManager;
+import com.scientistsloth.whackem.MainActivity;
+import com.scientistsloth.whackem.ResourceManager;
 
 public class CreditsScene extends Scene {
 

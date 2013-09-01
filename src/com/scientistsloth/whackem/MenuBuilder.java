@@ -1,4 +1,4 @@
-package com.mobwin.whackem;
+package com.scientistsloth.whackem;
 
 import org.andengine.engine.Engine;
 import org.andengine.entity.Entity;

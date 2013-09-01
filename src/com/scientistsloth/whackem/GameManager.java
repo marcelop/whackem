@@ -1,4 +1,4 @@
-package com.mobwin.whackem;
+package com.scientistsloth.whackem;
 
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -43,12 +43,12 @@ import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.mobwin.whackem.MenuItem.IMenuHandler;
-import com.mobwin.whackem.scenes.EndLevelMenu;
-import com.mobwin.whackem.scenes.GameScene;
-import com.mobwin.whackem.scenes.GameScene.MoleType;
-import com.mobwin.whackem.scenes.MainMenuScene;
 import com.scientistsloth.whackem.R;
+import com.scientistsloth.whackem.MenuItem.IMenuHandler;
+import com.scientistsloth.whackem.scenes.EndLevelMenu;
+import com.scientistsloth.whackem.scenes.GameScene;
+import com.scientistsloth.whackem.scenes.MainMenuScene;
+import com.scientistsloth.whackem.scenes.GameScene.MoleType;
 
 public class GameManager {
 	
@@ -63,7 +63,7 @@ public class GameManager {
 	private static final int INITIAL_HIT_COUNT = 0;
 	private static final int INITIAL_LEVEL = 0;
 
-	protected static final int UNLOCK_GAME_LEVEL = 100;
+	protected static final int UNLOCK_GAME_LEVEL = 16;
 	
 	/* The game manager should keep track of certain data involved in
 	 * our game. This particular game manager holds data for score, bird
