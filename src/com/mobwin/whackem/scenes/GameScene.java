@@ -146,8 +146,15 @@ public class GameScene extends Scene {
 			{
 				Log.d("Scientist Sloth","" + moleType);
 				float delay = 2 - (float)Math.log(GameManager.getInstance().getCurrentLevel()*10)/10;
-				if (moleType == MoleType.ENEMY) GameManager.getInstance().decrementMoleCount();
-				moleSprite.animate(new long[1], new int[1], false);
+				int[] frames = new int[1];
+				if (moleType == MoleType.ENEMY)
+				{
+					GameManager.getInstance().decrementMoleCount();
+				}
+				else
+					frames[0] = 8;
+
+				moleSprite.animate(new long[1], frames, false);
 				//moleSprite.clearEntityModifiers();
 				moleSprite.registerEntityModifier(new SequenceEntityModifier(
 					new MoveModifier(0.3f, moleSprite.getX(), moleSprite.getY(), moleSprite.getX(), showingPos, new IEntityModifierListener() {
