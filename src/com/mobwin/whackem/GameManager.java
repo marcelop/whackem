@@ -46,6 +46,7 @@ import android.widget.Toast;
 import com.mobwin.whackem.MenuItem.IMenuHandler;
 import com.mobwin.whackem.scenes.EndLevelMenu;
 import com.mobwin.whackem.scenes.GameScene;
+import com.mobwin.whackem.scenes.GameScene.MoleType;
 import com.mobwin.whackem.scenes.MainMenuScene;
 import com.scientistsloth.whackem.R;
 
@@ -234,7 +235,7 @@ public class GameManager {
 					{
 						//add 3% chance of finding an ally mole every 2 levels. start with 10% at level 3
 						if (scene.mRand.nextInt(100) < 8 + ((int)(mCurrentLevel/2))*2)
-							scene.moles[m][n].setMoleType(1);
+							scene.moles[m][n].setMoleType(MoleType.ALLY);
 					}
 					scene.moles[m][n].makeMoleClimb();
 					scene.curTimeElapsed = 0;
