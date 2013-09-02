@@ -32,6 +32,8 @@ import org.json.JSONException;
 import tv.ouya.console.api.OuyaController;
 import tv.ouya.console.api.OuyaFacade;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.view.KeyEvent;
 
 import com.scientistsloth.whackem.GameManager;
@@ -127,6 +129,10 @@ public class MainMenuScene extends Scene {
 						GameManager.getInstance().requestPurchase();
 					} catch (Exception e) {
 						e.printStackTrace();
+						showPurchaseFailedAlert();
+						// If failed because products list was empty, try to get it again
+						if(GameManager.mGameUnlockProduct == null)
+							GameManager.getInstance().requestProductsList();
 					}
 				}
 				
@@ -201,6 +207,32 @@ public class MainMenuScene extends Scene {
 		
 		ResourceManager.getInstance().mIntroMusic.play();
 		
+	}
+
+	protected void showPurchaseFailedAlert() {
+		AlertDialog.Builder alertDialog = new AlertDialog.Builder(
+				MainActivity.activity);
+
+		// Setting Dialog Title
+		alertDialog.setTitle("Purchase Failed");
+
+		// Setting Dialog Message
+		alertDialog.setMessage("Sorry, but the purchase failed. Your connection is probably acting weird. Please try again later.");
+
+		// Setting Icon to Dialog
+		//alertDialog2.setIcon(R.drawable.delete);
+
+//		// Setting Positive "Yes" Btn
+//		alertDialog.setPositiveButton("OK",
+//				new DialogInterface.OnClickListener() {
+//			public void onClick(DialogInterface dialog, int which) {
+//				// Write your code here to execute after dialog
+//				startLevel(mCurrentLevel, MainActivity.activity.mGameScene);
+//			}
+//		});
+
+		// Showing Alert Dialog
+		alertDialog.show();
 	}
 
 	protected void registerSkew(final Sprite logoSprite) {

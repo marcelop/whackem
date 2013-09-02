@@ -9,6 +9,8 @@ import org.andengine.audio.sound.SoundFactory;
 import org.andengine.engine.Engine;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
+import org.andengine.opengl.font.StrokeFont;
+import org.andengine.opengl.texture.ITexture;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
@@ -17,6 +19,7 @@ import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSourc
 import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtlasBuilder;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
+import org.andengine.util.adt.color.Color;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -300,11 +303,15 @@ public class ResourceManager {
 	public synchronized void loadFonts(Engine pEngine) {
 		FontFactory.setAssetBasePath("fonts/");
 
+		final ITexture strokeFontTexture = new BitmapTextureAtlas(pEngine.getTextureManager(), 256, 256, TextureOptions.BILINEAR);
+		
 		// Create mFont object via FontFactory class
-		mFont = FontFactory.create(pEngine.getFontManager(),
+	/*	mFont = FontFactory.create(pEngine.getFontManager(),
 				pEngine.getTextureManager(), 256, 256,
-				Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD), 32f, true,
-				org.andengine.util.adt.color.Color.WHITE_ABGR_PACKED_INT);
+				Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 32f, true,
+				org.andengine.util.adt.color.Color.WHITE_ABGR_PACKED_INT);*/
+				
+		mFont = new StrokeFont(pEngine.getFontManager(), strokeFontTexture, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 32f, true, Color.WHITE, 1, Color.BLACK);
 
 		mFont.load();
 	}

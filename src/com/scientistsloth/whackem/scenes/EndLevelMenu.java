@@ -31,6 +31,8 @@ public class EndLevelMenu extends Entity {
 	MenuBuilder mGameOverMenu;
 	Entity mLevelMenuEntity;
 	
+	boolean readyForInput = false;
+	
 	public static final int GAMEOVER = -1;
 	
 	public EndLevelMenu(Engine engine, int nextLevel, int score) {
@@ -119,6 +121,16 @@ public class EndLevelMenu extends Entity {
 				public void onModifierFinished(IModifier<IEntity> pModifier, IEntity pItem) {
 					pItem.setVisible(true);
 					pItem.registerEntityModifier(new MoveModifier(1f, pItem.getX(),  MainActivity.HEIGHT/2-100, 0, MainActivity.HEIGHT/2-100, EaseBackOut.getInstance()));
+					pItem.registerEntityModifier(new DelayModifier(1f, new IEntityModifierListener() {
+						@Override
+						public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {}
+
+						@Override
+						public void onModifierFinished(IModifier<IEntity> pModifier, IEntity pItem) {
+							// Accept input when finished moving
+							readyForInput = true;
+						}
+					}));
 				}
 			}));
 		
@@ -144,7 +156,8 @@ public class EndLevelMenu extends Entity {
 	}
 	
 	public synchronized void onKeyUp(int keyCode, KeyEvent event) {
-		mLevelMenu.onKeyUp(keyCode, event);
+		if(readyForInput)
+			mLevelMenu.onKeyUp(keyCode, event);
 	}
 	
 }

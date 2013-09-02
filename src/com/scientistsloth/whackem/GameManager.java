@@ -43,11 +43,9 @@ import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.scientistsloth.whackem.R;
 import com.scientistsloth.whackem.MenuItem.IMenuHandler;
 import com.scientistsloth.whackem.scenes.EndLevelMenu;
 import com.scientistsloth.whackem.scenes.GameScene;
-import com.scientistsloth.whackem.scenes.MainMenuScene;
 import com.scientistsloth.whackem.scenes.GameScene.MoleType;
 
 public class GameManager {
@@ -98,6 +96,11 @@ public class GameManager {
 	
 	// The constructor fills the product list
 	GameManager()
+	{
+		requestProductsList();
+	}
+	
+	public void requestProductsList()
 	{
 		if (OuyaFacade.getInstance().isRunningOnOUYAHardware() && 
 				!UserData.getInstance().isGameUnlocked()){
@@ -278,8 +281,17 @@ public class GameManager {
 									try {
 										requestPurchase();
 									} catch (Exception e) {
-										resetGame();
-										MainActivity.activity.getEngine().setScene(MainActivity.activity.mMenuScene);
+										if(mGameUnlockProduct == null)
+											requestProductsList();
+										
+										MainActivity.activity.runOnUiThread(new Runnable() {
+											@Override
+											public void run() {
+												showPurchaseFailedTryAgain();	
+											}
+										});
+										
+										
 									}
 								}
 								else{
@@ -308,7 +320,6 @@ public class GameManager {
 	void displayEndLevel(final GameScene scene, int level) {
 
 		((GameScene) scene).showEndLevelMenu(new EndLevelMenu(scene.getEngine(), level, mCurrentLevel));		
-
 	}
 	
 	//Display gameover text, as well as score, if it's a new highscore, post on facebook option and return to start
@@ -470,6 +481,7 @@ public class GameManager {
 		@Override
 		public void onFailure(int errorCode, String errorMessage, Bundle errorBundle) {
 			Log.d("Error", errorMessage);
+			mGameUnlockProduct = null;
 		}
 	};
 	
@@ -578,6 +590,7 @@ public class GameManager {
 //	        synchronized (mOutstandingPurchaseRequests) {
 //	            mOutstandingPurchaseRequests.put(uniqueId, product);
 //	        }
+	        Log.d("whackem", "Requesting purchase..."); 
 	        OuyaFacade.getInstance().requestPurchase(purchasable, purchaseListener);
 	    }
 
@@ -652,4 +665,53 @@ public class GameManager {
 		// Showing Alert Dialog
 		alertDialog.show();
 	}
+	
+
+	protected void showPurchaseFailedTryAgain() {
+		AlertDialog.Builder alertDialog = new AlertDialog.Builder(
+				MainActivity.activity);
+
+		// Setting Dialog Title
+		alertDialog.setTitle("Funding the Fun");
+
+		// Setting Dialog Message
+		alertDialog.setMessage("To continue you must unlock the game, but it looks like your connection isn't playing nice. Please try again.");
+
+		// Setting Icon to Dialog
+		//alertDialog2.setIcon(R.drawable.delete);
+
+		// Setting Positive "Yes" Btn
+		alertDialog.setPositiveButton("Unlock",
+				new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				// Write your code here to execute after dialog
+				Toast.makeText(MainActivity.activity.getApplicationContext(),
+						"You clicked on Unlock", Toast.LENGTH_SHORT)
+						.show();
+				try {
+					requestPurchase();
+				} catch (Exception e) {
+					dialog.cancel();
+					showPurchaseFailedTryAgain();
+				} 
+			}
+		});
+		// Setting Negative "NO" Btn
+		alertDialog.setNegativeButton("End Game",
+				new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				// Write your code here to execute after dialog
+				Toast.makeText(MainActivity.activity.getApplicationContext(),
+						"You clicked on Back", Toast.LENGTH_SHORT)
+						.show();
+				dialog.cancel();
+				displayEndLevel(MainActivity.activity.mGameScene, EndLevelMenu.GAMEOVER);
+				UserData.getInstance().setHighScore(getCurrentScore());
+			}
+		});
+
+		// Showing Alert Dialog
+		alertDialog.show();
+	}
+
 }
