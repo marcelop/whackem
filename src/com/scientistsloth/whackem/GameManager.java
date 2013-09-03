@@ -69,10 +69,12 @@ public class GameManager {
 	 */
 	private long mCurrentScore;
 	private int mMoleHitCount;
+	public int mMoleHitCountThisLevel;
 	private int mHitCount;
+	public int mHitCountThisLevel;
 	private int mCurrentLevel;
 	private int mMolesInLevel;
-	private int mMissedMoles;
+	public int mMissedMoles;
 	private int mMaxMissedMoles;
 	private int mMaxSimultaneousMoles;
 	private GameState mState;
@@ -148,6 +150,7 @@ public class GameManager {
 	public void incrementMoleHitCount()
 	{
 		mMoleHitCount++;
+		mMoleHitCountThisLevel++;
 	}
 	
 	public void incrementMissedMoleCount()
@@ -163,6 +166,7 @@ public class GameManager {
 
 	public void incrementHitCount() {
 		mHitCount++;
+		mHitCountThisLevel++;
 	}
 	
 	public void decrementMoleCount() {
@@ -184,6 +188,11 @@ public class GameManager {
 	public float getAccuracy()
 	{
 		return mHitCount == 0 ? 0 : mMoleHitCount *100/ mHitCount;
+	}
+	
+	public float getAccuracyThisLevel()
+	{
+		return mHitCountThisLevel == 0 ? 0 : mMoleHitCountThisLevel *100/ mHitCountThisLevel;
 	}
 	
 	// Resetting the game simply means we must revert back to initial values.
@@ -211,6 +220,8 @@ public class GameManager {
 		mMolesUp = INITIAL_MOLE_COUNT;
 		mMaxMissedMoles = (int) (mMolesInLevel*0.3f);
 		mMaxSimultaneousMoles = 2 + (int)(level / 3);
+		mHitCountThisLevel = 0;
+		mMoleHitCountThisLevel = 0;
 		
 		
 		for (int i = 0; i < scene.moles.length; i++) {
@@ -243,7 +254,7 @@ public class GameManager {
 					}
 					scene.moles[m][n].makeMoleClimb();
 					scene.curTimeElapsed = 0;
-					
+
 					//Verify if we can finish the game
 					if(mState == GameState.FINISHING)
 					{
@@ -272,44 +283,39 @@ public class GameManager {
 							{
 								//Yay! Next Level
 								mCurrentLevel++;
+								displayEndLevel(scene, mCurrentLevel);
 								UserData.getInstance().unlockLevel(mCurrentLevel);
 								ResourceManager.getInstance().mLevelUpSound.play();
-								displayNextLevel(mCurrentLevel, scene);
-								
-								if(mCurrentLevel == UNLOCK_GAME_LEVEL && !UserData.getInstance().isGameUnlocked())
-								{
-									try {
-										requestPurchase();
-									} catch (Exception e) {
-										if(mGameUnlockProduct == null)
-											requestProductsList();
-										
-										MainActivity.activity.runOnUiThread(new Runnable() {
-											@Override
-											public void run() {
-												showPurchaseFailedTryAgain();	
-											}
-										});
-										
-										
-									}
-								}
-								else{
-									scene.registerEntityModifier(new SequenceEntityModifier(new DelayModifier(3, new IEntityModifierListener() {
-										@Override
-										public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {}
+								//displayNextLevel(mCurrentLevel, scene);
 
-										@Override
-										public void onModifierFinished(IModifier<IEntity> pModifier, IEntity pItem) {
-											startLevel(mCurrentLevel, scene);
+								scene.registerEntityModifier(new DelayModifier(1f, new IEntityModifierListener() {
+									@Override
+									public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {}
+									@Override
+									public void onModifierFinished(IModifier<IEntity> pModifier, IEntity pItem) {
+										if(mCurrentLevel == UNLOCK_GAME_LEVEL && !UserData.getInstance().isGameUnlocked())
+										{
+											try {
+												requestPurchase();
+											} catch (Exception e) {
+												if(mGameUnlockProduct == null)
+													requestProductsList();
+
+												MainActivity.activity.runOnUiThread(new Runnable() {
+													@Override
+													public void run() {
+														showPurchaseFailedTryAgain();	
+													}
+												});
+
+
+											}
 										}
-									})));
-								}
+									}
+								}));							
 							}
-							
 						}
 					}
-					
 				}
 				scene.mGameSceneText.setText("LEVEL:   " + GameManager.getInstance().getCurrentLevel() + "\nSCORE: " + GameManager.getInstance().getCurrentScore());// + " ACCURACY: " + GameManager.getInstance().getAccuracy());
 

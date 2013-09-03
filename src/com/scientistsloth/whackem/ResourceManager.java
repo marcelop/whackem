@@ -59,6 +59,11 @@ public class ResourceManager {
 	public ITextureRegion mFakeBackground;
 	public ITextureRegion mTutorial;
 	
+	public ITextureRegion mEndLevel;
+	public ITextureRegion mGoodJob;
+	public ITextureRegion mStar;
+	public ITextureRegion mStarFrame;
+	
 	public ITextureRegion mGameTitle;
 	public ITextureRegion mGameHammer;
 	
@@ -133,7 +138,14 @@ public class ResourceManager {
 		mFakeBackground = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "background/falseBackground.png", 0, 0); textureAtlas.load();
 		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 1280, 720, TextureOptions.BILINEAR);
 		mTutorial = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "background/WhackTutorial.png", 0, 0); textureAtlas.load();
-
+		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 833, 508, TextureOptions.DEFAULT);
+		mEndLevel = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "foreground/end_level_box.png", 0, 0); textureAtlas.load();
+/*
+		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 833, 508, TextureOptions.DEFAULT);
+		mStar = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "foreground/end_level_box.png", 0, 0); textureAtlas.load();
+		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 833, 508, TextureOptions.DEFAULT);
+		mStarFrame = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "foreground/end_level_box.png", 0, 0); textureAtlas.load();
+*/
 		
 		BuildableBitmapTextureAtlas bmpTextureAtlas = new BuildableBitmapTextureAtlas(pEngine.getTextureManager(), 1424, 400, TextureOptions.BILINEAR);
 		mGameMole = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(bmpTextureAtlas, pContext, "mole/double_mole.png", 8, 2);
@@ -169,6 +181,8 @@ public class ResourceManager {
 		
 		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 486, 123, TextureOptions.BILINEAR);
 		mGameOver = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "foreground/gameover.png", 0, 0); textureAtlas.load();
+		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 359, 105, TextureOptions.BILINEAR);
+		mGoodJob = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "foreground/good_job.png", 0, 0); textureAtlas.load();
 		
 		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 496, 133, TextureOptions.BILINEAR);
 		mGameTitle = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "foreground/logo.png", 0, 0); textureAtlas.load();
