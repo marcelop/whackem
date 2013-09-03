@@ -1,8 +1,6 @@
 package com.scientistsloth.whackem;
 
 import org.andengine.entity.sprite.Sprite;
-import org.andengine.entity.text.Text;
-import org.andengine.opengl.font.Font;
 
 public class MenuItem {
 	String text;

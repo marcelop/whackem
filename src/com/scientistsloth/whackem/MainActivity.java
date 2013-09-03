@@ -17,7 +17,6 @@ import org.andengine.ui.activity.BaseGameActivity;
 import tv.ouya.console.api.OuyaController;
 import tv.ouya.console.api.OuyaFacade;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 
 import com.scientistsloth.whackem.scenes.CreditsScene;

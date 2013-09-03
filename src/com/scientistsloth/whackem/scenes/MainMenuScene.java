@@ -1,12 +1,7 @@
 package com.scientistsloth.whackem.scenes;
 
-import java.io.UnsupportedEncodingException;
-import java.security.GeneralSecurityException;
-
 import org.andengine.engine.Engine;
 import org.andengine.engine.handler.IUpdateHandler;
-import org.andengine.engine.handler.timer.ITimerCallback;
-import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.Entity;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.DelayModifier;
@@ -18,31 +13,25 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.AutoParallaxBackground;
 import org.andengine.entity.scene.background.ParallaxBackground;
 import org.andengine.entity.scene.background.ParallaxBackground.ParallaxEntity;
-import org.andengine.entity.sprite.ButtonSprite;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.font.Font;
-import org.andengine.opengl.font.FontUtils;
 import org.andengine.util.modifier.IModifier;
 import org.andengine.util.modifier.ease.EaseBackOut;
 import org.andengine.util.modifier.ease.EaseElasticOut;
-import org.json.JSONException;
 
-import tv.ouya.console.api.OuyaController;
 import tv.ouya.console.api.OuyaFacade;
-
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.view.KeyEvent;
 
 import com.scientistsloth.whackem.GameManager;
 import com.scientistsloth.whackem.MainActivity;
 import com.scientistsloth.whackem.MenuBuilder;
 import com.scientistsloth.whackem.MenuItem;
+import com.scientistsloth.whackem.MenuItem.IMenuHandler;
 import com.scientistsloth.whackem.ResourceManager;
 import com.scientistsloth.whackem.UserData;
-import com.scientistsloth.whackem.MenuItem.IMenuHandler;
 
 public class MainMenuScene extends Scene {
 

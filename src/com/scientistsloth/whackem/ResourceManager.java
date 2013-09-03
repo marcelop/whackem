@@ -140,12 +140,12 @@ public class ResourceManager {
 		mTutorial = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "background/WhackTutorial.png", 0, 0); textureAtlas.load();
 		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 833, 508, TextureOptions.DEFAULT);
 		mEndLevel = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "foreground/end_level_box.png", 0, 0); textureAtlas.load();
-/*
+
 		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 833, 508, TextureOptions.DEFAULT);
-		mStar = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "foreground/end_level_box.png", 0, 0); textureAtlas.load();
+		mStar = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "foreground/gold-star-sm.png", 0, 0); textureAtlas.load();
 		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 833, 508, TextureOptions.DEFAULT);
-		mStarFrame = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "foreground/end_level_box.png", 0, 0); textureAtlas.load();
-*/
+		mStarFrame = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "foreground/vacant-star-sm.png", 0, 0); textureAtlas.load();
+
 		
 		BuildableBitmapTextureAtlas bmpTextureAtlas = new BuildableBitmapTextureAtlas(pEngine.getTextureManager(), 1424, 400, TextureOptions.BILINEAR);
 		mGameMole = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(bmpTextureAtlas, pContext, "mole/double_mole.png", 8, 2);

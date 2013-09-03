@@ -22,7 +22,6 @@ import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.DelayModifier;
 import org.andengine.entity.modifier.IEntityModifier.IEntityModifierListener;
 import org.andengine.entity.modifier.MoveModifier;
-import org.andengine.entity.modifier.SequenceEntityModifier;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.util.modifier.IModifier;
 import org.andengine.util.modifier.ease.EaseBackOut;
@@ -61,7 +60,7 @@ public class GameManager {
 	private static final int INITIAL_HIT_COUNT = 0;
 	private static final int INITIAL_LEVEL = 0;
 
-	protected static final int UNLOCK_GAME_LEVEL = 16;
+	protected static final int UNLOCK_GAME_LEVEL = 11;
 	
 	/* The game manager should keep track of certain data involved in
 	 * our game. This particular game manager holds data for score, bird
@@ -212,8 +211,8 @@ public class GameManager {
 	{
 		if (level == 0) {
 			resetGame();
-			scene.resetHammerPosition();
 		}
+		scene.resetHammerPosition();
 		mCurrentLevel = level;
 		mMolesInLevel = 10 + (int)(level/5)*3;	
 		mMissedMoles = INITIAL_MOLE_COUNT;

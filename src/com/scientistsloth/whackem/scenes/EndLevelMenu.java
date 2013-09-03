@@ -29,6 +29,13 @@ public class EndLevelMenu extends Entity {
 	Text mLevelStatsText;
 	Sprite mGameOverText;
 	
+	Sprite mGoldStar1;
+	Sprite mGoldStar2;
+	Sprite mGoldStar3;
+	Sprite mVacantStar1;
+	Sprite mVacantStar2;
+	Sprite mVacantStar3;
+	
 	MenuBuilder mLevelMenu;
 	MenuBuilder mGameOverMenu;
 	Entity mLevelMenuEntity;
@@ -45,6 +52,14 @@ public class EndLevelMenu extends Entity {
 		mNextLevel = nextLevel;
 		mGameOverText = new Sprite(MainActivity.WIDTH/2, MainActivity.HEIGHT/2, ResourceManager.getInstance().mGameOver, engine.getVertexBufferObjectManager());
 		mGoodJobText = new Sprite(MainActivity.WIDTH/2, MainActivity.HEIGHT/2, ResourceManager.getInstance().mGoodJob, engine.getVertexBufferObjectManager());
+		
+		mGoldStar1 = new Sprite(MainActivity.WIDTH/2 - 100, -50, 75, 75, ResourceManager.getInstance().mStar, engine.getVertexBufferObjectManager());
+		mGoldStar2 = new Sprite(MainActivity.WIDTH/2, -50, 75, 75, ResourceManager.getInstance().mStar, engine.getVertexBufferObjectManager());
+		mGoldStar3 = new Sprite(MainActivity.WIDTH/2 + 100, -50, 75, 75, ResourceManager.getInstance().mStar, engine.getVertexBufferObjectManager());
+		mVacantStar1 = new Sprite(MainActivity.WIDTH/2 -100, -50, 70, 70, ResourceManager.getInstance().mStarFrame, engine.getVertexBufferObjectManager());
+		mVacantStar2 = new Sprite(MainActivity.WIDTH/2, -50, 70, 70, ResourceManager.getInstance().mStarFrame, engine.getVertexBufferObjectManager());
+		mVacantStar3 = new Sprite(MainActivity.WIDTH/2 + 100, -50, 70, 70, ResourceManager.getInstance().mStarFrame, engine.getVertexBufferObjectManager());
+		
 		
 		ResourceManager.getInstance().mGameMusic.setVolume(0.3f);
 		
@@ -168,12 +183,12 @@ public class EndLevelMenu extends Entity {
 					"Level Accuracy: " + GameManager.getInstance().getAccuracyThisLevel() + "\n"
 					, 1000, engine.getVertexBufferObjectManager());
 			
-			mBackground = new Sprite(MainActivity.WIDTH/2, MainActivity.HEIGHT / 10, ResourceManager.getInstance().mEndLevel, engine.getVertexBufferObjectManager());
+			mBackground = new Sprite(MainActivity.WIDTH/2, MainActivity.HEIGHT / 10, 450, 508, ResourceManager.getInstance().mEndLevel, engine.getVertexBufferObjectManager());
 			mLevelMenuEntity = new Entity( -MainActivity.WIDTH, MainActivity.HEIGHT / 2);
 			mLevelMenuEntity.attachChild(mBackground);
 			mLevelMenuEntity.attachChild(mLevelText);
 			mLevelMenuEntity.attachChild(mLevelStatsText);
-			mLevelMenuEntity.registerEntityModifier(new DelayModifier(2, new IEntityModifierListener() {
+			mLevelMenuEntity.registerEntityModifier(new DelayModifier(1, new IEntityModifierListener() {
 
 				@Override
 				public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {
@@ -199,9 +214,18 @@ public class EndLevelMenu extends Entity {
 			
 			//attachChild(mBackground);
 			
+			mLevelMenuEntity.attachChild(mVacantStar1);
+			mLevelMenuEntity.attachChild(mVacantStar2);
+			mLevelMenuEntity.attachChild(mVacantStar3);
+			
+			mLevelMenuEntity.attachChild(mGoldStar1);
+			if(GameManager.getInstance().getAccuracyThisLevel() > 33)
+				mLevelMenuEntity.attachChild(mGoldStar2);
+			if(GameManager.getInstance().getAccuracyThisLevel() > 66)
+				mLevelMenuEntity.attachChild(mGoldStar3);
 			
 			
-			mGoodJobText.registerEntityModifier(new DelayModifier(2, new IEntityModifierListener() {
+			mGoodJobText.registerEntityModifier(new DelayModifier(1, new IEntityModifierListener() {
 
 				@Override
 				public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {
