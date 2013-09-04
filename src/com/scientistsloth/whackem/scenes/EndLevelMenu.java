@@ -20,6 +20,7 @@ import com.scientistsloth.whackem.GameManager;
 import com.scientistsloth.whackem.MainActivity;
 import com.scientistsloth.whackem.MenuBuilder;
 import com.scientistsloth.whackem.MenuItem;
+import com.scientistsloth.whackem.UserData;
 import com.scientistsloth.whackem.MenuItem.IMenuHandler;
 import com.scientistsloth.whackem.ResourceManager;
 
@@ -49,6 +50,8 @@ public class EndLevelMenu extends Entity {
 	
 	public EndLevelMenu(Engine engine, int nextLevel, int score) {
 
+		UserData.getInstance().setHighScore(GameManager.getInstance().getCurrentScore());
+		
 		mNextLevel = nextLevel;
 		mGameOverText = new Sprite(MainActivity.WIDTH/2, MainActivity.HEIGHT/2, ResourceManager.getInstance().mGameOver, engine.getVertexBufferObjectManager());
 		mGoodJobText = new Sprite(MainActivity.WIDTH/2, MainActivity.HEIGHT/2, ResourceManager.getInstance().mGoodJob, engine.getVertexBufferObjectManager());
@@ -219,9 +222,9 @@ public class EndLevelMenu extends Entity {
 			mLevelMenuEntity.attachChild(mVacantStar3);
 			
 			mLevelMenuEntity.attachChild(mGoldStar1);
-			if(GameManager.getInstance().getAccuracyThisLevel() > 33)
+			if(GameManager.getInstance().getAccuracyThisLevel() > 60)
 				mLevelMenuEntity.attachChild(mGoldStar2);
-			if(GameManager.getInstance().getAccuracyThisLevel() > 66)
+			if(GameManager.getInstance().getAccuracyThisLevel() > 80)
 				mLevelMenuEntity.attachChild(mGoldStar3);
 			
 			

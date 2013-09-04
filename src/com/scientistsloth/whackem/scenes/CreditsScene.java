@@ -85,13 +85,13 @@ public class CreditsScene extends Scene {
 		names[0] = new String[]{"Marcelo Perez","Andre Macedo"};
 		
 		titles[1] = "GRAPHICS";
-		names[1] = new String[]{"Marcelo Perez","Vicki Wenderlich", "http://www.vickiwenderlich.com/"};
+		names[1] = new String[]{"Marcelo Perez","Andre Macedo", "Vicki Wenderlich", "http://www.vickiwenderlich.com/"};
 		
 		titles[2] = "SOUND";
 		names[2] = new String[]{"FreeSound","http://www.freesound.org/"};
 		
 		titles[3] = "THANKS TO:";
-		names[3] = new String[]{"Jenny Lui","Alan Mazieiro","Jorge Nascimento Junior","KOS-MOS","YOU"};
+		names[3] = new String[]{"Jenny Lui","Alan Mazieiro","Jorge Nascimento Junior","YOU! Thanks for Playing!"};
 		
 		// include them in the screen
 		allLines = new ArrayList<Entity>();

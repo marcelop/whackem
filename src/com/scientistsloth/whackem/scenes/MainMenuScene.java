@@ -114,14 +114,17 @@ public class MainMenuScene extends Scene {
 				
 				@Override
 				public void onClick(MenuItem sender) {
-					try {
-						GameManager.getInstance().requestPurchase();
-					} catch (Exception e) {
-						e.printStackTrace();
-						showPurchaseFailedAlert();
-						// If failed because products list was empty, try to get it again
-						if(GameManager.mGameUnlockProduct == null)
-							GameManager.getInstance().requestProductsList();
+					if(!UserData.getInstance().isGameUnlocked())
+					{
+						try {
+							GameManager.getInstance().requestPurchase();
+						} catch (Exception e) {
+							e.printStackTrace();
+							showPurchaseFailedAlert();
+							// If failed because products list was empty, try to get it again
+							if(GameManager.mGameUnlockProduct == null)
+								GameManager.getInstance().requestProductsList();
+						}
 					}
 				}
 				

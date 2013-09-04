@@ -566,7 +566,7 @@ public class GameManager {
 	        purchaseRequest.put("uuid", uniqueId);
 	        purchaseRequest.put("identifier", mGameUnlockProduct.getIdentifier());
 	        // This value is only needed for testing, not setting it results in a live purchase
-	        purchaseRequest.put("testing", "true"); 
+//	        purchaseRequest.put("testing", "true"); 
 	        String purchaseRequestJson = purchaseRequest.toString();
 
 	        byte[] keyBytes = new byte[16];
@@ -617,9 +617,9 @@ public class GameManager {
 				new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				// Write your code here to execute after dialog
-				Toast.makeText(MainActivity.activity.getApplicationContext(),
-						"You clicked on Unlock", Toast.LENGTH_SHORT)
-						.show();
+//				Toast.makeText(MainActivity.activity.getApplicationContext(),
+//						"You clicked on Unlock", Toast.LENGTH_SHORT)
+//						.show();
 				try {
 					requestPurchase();
 				} catch (Exception e) {
@@ -632,9 +632,9 @@ public class GameManager {
 				new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				// Write your code here to execute after dialog
-				Toast.makeText(MainActivity.activity.getApplicationContext(),
-						"You clicked on Back", Toast.LENGTH_SHORT)
-						.show();
+//				Toast.makeText(MainActivity.activity.getApplicationContext(),
+//						"You clicked on Back", Toast.LENGTH_SHORT)
+//						.show();
 				dialog.cancel();
 				displayEndLevel(MainActivity.activity.mGameScene, EndLevelMenu.GAMEOVER);
 				UserData.getInstance().setHighScore(getCurrentScore());
@@ -663,7 +663,12 @@ public class GameManager {
 				new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				// Write your code here to execute after dialog
-				startLevel(mCurrentLevel, MainActivity.activity.mGameScene);
+				MainActivity.activity.runOnUpdateThread(new Runnable() {
+					@Override
+					public void run() {
+						startLevel(mCurrentLevel, MainActivity.activity.mGameScene);		
+					}
+				});
 			}
 		});
 
@@ -690,9 +695,9 @@ public class GameManager {
 				new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				// Write your code here to execute after dialog
-				Toast.makeText(MainActivity.activity.getApplicationContext(),
-						"You clicked on Unlock", Toast.LENGTH_SHORT)
-						.show();
+//				Toast.makeText(MainActivity.activity.getApplicationContext(),
+//						"You clicked on Unlock", Toast.LENGTH_SHORT)
+//						.show();
 				try {
 					requestPurchase();
 				} catch (Exception e) {
@@ -706,12 +711,18 @@ public class GameManager {
 				new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				// Write your code here to execute after dialog
-				Toast.makeText(MainActivity.activity.getApplicationContext(),
-						"You clicked on Back", Toast.LENGTH_SHORT)
-						.show();
+//				Toast.makeText(MainActivity.activity.getApplicationContext(),
+//						"You clicked on Back", Toast.LENGTH_SHORT)
+//						.show();
 				dialog.cancel();
-				displayEndLevel(MainActivity.activity.mGameScene, EndLevelMenu.GAMEOVER);
-				UserData.getInstance().setHighScore(getCurrentScore());
+				MainActivity.activity.runOnUpdateThread(new Runnable() {
+					@Override
+					public void run() {
+						displayEndLevel(MainActivity.activity.mGameScene, EndLevelMenu.GAMEOVER);
+						UserData.getInstance().setHighScore(getCurrentScore());
+					}
+				});
+				
 			}
 		});
 

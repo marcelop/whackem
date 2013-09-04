@@ -544,8 +544,13 @@ public class GameScene extends Scene {
 		mHammer.unregisterEntityModifiers(new IEntityModifierMatcher() {
 			@Override
 			public boolean matches(IModifier<IEntity> pObject) {
+				try{
 				if (pObject.getClass() == MoveModifier.class)
 					return true;
+				}
+				catch(Exception e)
+				{};
+				
 				return false;
 			}
 		});
@@ -555,6 +560,9 @@ public class GameScene extends Scene {
 	public void resetHammerPosition() {
 		selectorX = 1;
 		selectorY = 1;
+		mHammer.clearEntityModifiers();
+		mHoleSelector.clearEntityModifiers();
+		mHoleSelectorAlpha.clearEntityModifiers();
 		float newX = moles[selectorX][selectorY].x-5;
 		float newY = moles[selectorX][selectorY].y;
 		mHoleSelector.setPosition(newX,newY);
