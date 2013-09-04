@@ -74,8 +74,8 @@ public class MainMenuScene extends Scene {
 				if(GameManager.getInstance().isMusicEnabled())
 				{
 					ResourceManager.getInstance().mIntroMusic.pause();
-					engine.setScene(new TutorialScene());
 				}
+				engine.setScene(new TutorialScene());
 				
 			}
 		});
@@ -143,7 +143,7 @@ public class MainMenuScene extends Scene {
 
 			@Override
 			public void onClick(MenuItem sender) {
-	    		ResourceManager.getInstance().mIntroMusic.pause();
+	    		//ResourceManager.getInstance().mIntroMusic.pause();
 	    		//ResourceManager.getInstance().mGameMusic.play();
 	    		engine.setScene(MainActivity.activity.mCreditsScene);
 	    		MainActivity.activity.mCreditsScene.start();

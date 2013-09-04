@@ -63,6 +63,11 @@ public class EndLevelMenu extends Entity {
 		mVacantStar2 = new Sprite(MainActivity.WIDTH/2, -50, 70, 70, ResourceManager.getInstance().mStarFrame, engine.getVertexBufferObjectManager());
 		mVacantStar3 = new Sprite(MainActivity.WIDTH/2 + 100, -50, 70, 70, ResourceManager.getInstance().mStarFrame, engine.getVertexBufferObjectManager());
 		
+		if(MainActivity.activity.mGameScene.mEndLevelMenu != null)
+		{
+			MainActivity.activity.mGameScene.detachChild(MainActivity.activity.mGameScene.mEndLevelMenu);
+			MainActivity.activity.mGameScene.mEndLevelMenu = null;
+		}
 		
 		ResourceManager.getInstance().mGameMusic.setVolume(0.3f);
 		

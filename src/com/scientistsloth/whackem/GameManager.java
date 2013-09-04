@@ -60,7 +60,7 @@ public class GameManager {
 	private static final int INITIAL_HIT_COUNT = 0;
 	private static final int INITIAL_LEVEL = 0;
 
-	protected static final int UNLOCK_GAME_LEVEL = 11;
+	protected static final int UNLOCK_GAME_LEVEL = 10;
 	
 	/* The game manager should keep track of certain data involved in
 	 * our game. This particular game manager holds data for score, bird
@@ -718,6 +718,11 @@ public class GameManager {
 				MainActivity.activity.runOnUpdateThread(new Runnable() {
 					@Override
 					public void run() {
+						if(MainActivity.activity.mGameScene.mEndLevelMenu != null)
+						{
+							MainActivity.activity.mGameScene.detachChild(MainActivity.activity.mGameScene.mEndLevelMenu);
+							MainActivity.activity.mGameScene.mEndLevelMenu = null;
+						}
 						displayEndLevel(MainActivity.activity.mGameScene, EndLevelMenu.GAMEOVER);
 						UserData.getInstance().setHighScore(getCurrentScore());
 					}
