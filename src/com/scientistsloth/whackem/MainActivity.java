@@ -1,5 +1,7 @@
 package com.scientistsloth.whackem;
 
+import java.util.ArrayList;
+
 import org.andengine.engine.Engine;
 import org.andengine.engine.FixedStepEngine;
 import org.andengine.engine.camera.Camera;
@@ -25,6 +27,13 @@ import com.scientistsloth.whackem.scenes.MainMenuScene;
 import com.scientistsloth.whackem.scenes.SplashScene;
 import com.scientistsloth.whackem.scenes.TutorialScene;
 
+
+enum keyEventType
+{
+	KEY_UP,
+	KEY_DOWN
+}
+
 public class MainActivity extends BaseGameActivity {
 
 	//====================================================
@@ -35,8 +44,21 @@ public class MainActivity extends BaseGameActivity {
 	public static MainActivity activity;
 	// Your developer id can be found in the Developer Portal
     public static final String DEVELOPER_ID = "558982c4-6083-4828-8246-b661697e6711";
+    
+    private ArrayList<KeyCommand> keyCommandList = new ArrayList<KeyCommand>();
 	
-
+    public class KeyCommand 
+    {
+    	public int keyCode = 0;
+    	public keyEventType keyType;
+    	public KeyEvent keyEvent;
+    	public KeyCommand(int code, keyEventType type, KeyEvent event) {
+    		keyCode = code;
+    		keyType = type;
+    		keyEvent = event;
+		}
+    }
+    
 	//====================================================
 	// VARIABLES
 	//====================================================
@@ -84,13 +106,19 @@ public class MainActivity extends BaseGameActivity {
 	    	break;
 		}
     	
+    	synchronized (keyCommandList) {
+			keyCommandList.add(new KeyCommand(keyCode, keyEventType.KEY_DOWN, event));
+		}
+    	
+    	return super.onKeyDown(keyCode, event);
+    }
+    
+    public void executeOnKeyDown(int keyCode, KeyEvent event)
+    {
     	if(mEngine.getScene().getClass().equals(GameScene.class))
     	{
     		((GameScene) mEngine.getScene()).onKeyDown(keyCode, event);
-    		return true;
     	}
-    	
-    	return super.onKeyDown(keyCode, event);
     }
     
     @Override
@@ -107,30 +135,34 @@ public class MainActivity extends BaseGameActivity {
 		default:
 			break;
 		}
+    	
+    	synchronized (keyCommandList) {
+			keyCommandList.add(new KeyCommand(keyCode, keyEventType.KEY_UP, event));
+		}
+    	
+    	return super.onKeyUp(keyCode, event);
+    }
+    
+    public void executeOnKeyUp(int keyCode, KeyEvent event)
+    {
     	if(mEngine.getScene().getClass().equals(MainMenuScene.class))
     	{
     		((MainMenuScene) mEngine.getScene()).onKeyUp(keyCode, event);
-    		return true;
     	}
     	else if(mEngine.getScene().getClass().equals(CreditsScene.class))
     	{
     		((CreditsScene) mEngine.getScene()).onKeyUp(keyCode, event);
-    		return true;
     	}
     	else if(mEngine.getScene().getClass().equals(GameScene.class))
     	{
     		((GameScene) mEngine.getScene()).onKeyUp(keyCode, event);
-    		return true;
     	}
     	else if(mEngine.getScene().getClass().equals(TutorialScene.class))
     	{
     		((TutorialScene) mEngine.getScene()).onKeyUp(keyCode, event);
-    		return true;
     	}
-    	
-    	return super.onKeyUp(keyCode, event);
     }
-	
+    
 	//====================================================
 	// CREATE ENGINE OPTIONS
 	//====================================================
@@ -214,7 +246,28 @@ public class MainActivity extends BaseGameActivity {
 			public void reset() {}
 			@Override
 			public void onUpdate(float arg0) {
-//				OuyaController.startOfFrame();
+				OuyaController.startOfFrame();
+				
+				// Process key messages
+				synchronized (keyCommandList) {
+					while(keyCommandList.size() > 0)
+					{
+						KeyCommand command = keyCommandList.get(0);
+						switch (command.keyType) {
+						case KEY_DOWN:
+							executeOnKeyDown(command.keyCode, command.keyEvent);
+							break;
+						case KEY_UP:
+							executeOnKeyUp(command.keyCode, command.keyEvent);
+							break;
+						default:
+							break;
+						}
+						keyCommandList.remove(0);
+					}
+						
+					
+				}
 				
 //				if (OuyaController.getControllerByDeviceId(1)!= null && OuyaController.getControllerByDeviceId(1).buttonChangedThisFrame(OuyaController.BUTTON_DPAD_DOWN))
 //				{

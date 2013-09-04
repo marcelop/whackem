@@ -142,7 +142,7 @@ public class MainMenuScene extends Scene {
 			}
 
 			@Override
-			public void onClick(MenuItem sender) {
+			public void onClick(MenuItem sender) { 
 	    		//ResourceManager.getInstance().mIntroMusic.pause();
 	    		//ResourceManager.getInstance().mGameMusic.play();
 	    		engine.setScene(MainActivity.activity.mCreditsScene);

@@ -60,7 +60,7 @@ public class GameManager {
 	private static final int INITIAL_HIT_COUNT = 0;
 	private static final int INITIAL_LEVEL = 0;
 
-	protected static final int UNLOCK_GAME_LEVEL = 10;
+	protected static final int UNLOCK_GAME_LEVEL = 3;
 	
 	/* The game manager should keep track of certain data involved in
 	 * our game. This particular game manager holds data for score, bird
@@ -663,12 +663,12 @@ public class GameManager {
 				new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				// Write your code here to execute after dialog
-				MainActivity.activity.runOnUpdateThread(new Runnable() {
-					@Override
-					public void run() {
-						startLevel(mCurrentLevel, MainActivity.activity.mGameScene);		
-					}
-				});
+//				MainActivity.activity.runOnUpdateThread(new Runnable() {
+//					@Override
+//					public void run() {
+//						startLevel(mCurrentLevel, MainActivity.activity.mGameScene);		
+//					}
+//				});
 			}
 		});
 

@@ -144,7 +144,7 @@ public class GameScene extends Scene {
 		{
 			if(state == MoleState.HIDDEN && GameManager.getInstance().isInGame() && GameManager.getInstance().canMoleClimb())
 			{
-				Log.d("Scientist Sloth","" + moleType);
+//				Log.d("Scientist Sloth","" + moleType);
 				float delay = 2 - (float)Math.log(GameManager.getInstance().getCurrentLevel()*10)/10;
 				int[] frames = new int[1];
 				if (moleType == MoleType.ENEMY)
@@ -160,7 +160,7 @@ public class GameScene extends Scene {
 					new MoveModifier(0.3f, moleSprite.getX(), moleSprite.getY(), moleSprite.getX(), showingPos, new IEntityModifierListener() {
 							@Override
 						public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {
-							Log.d("Scientist Sloth","Climbing " + moleType);
+//							Log.d("Scientist Sloth","Climbing " + moleType);
 							state = MoleState.CLIMBING;
 							registerEntityModifier(new DelayModifier(0.25f, new IEntityModifierListener() {
 								@Override
@@ -181,7 +181,7 @@ public class GameScene extends Scene {
 					new DelayModifier(2, new IEntityModifierListener() {
 						@Override
 						public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {
-							Log.d("Scientist Sloth", "delay modifier started");
+//							Log.d("Scientist Sloth", "delay modifier started");
 						}
 							@Override
 						public void onModifierFinished(IModifier<IEntity> pModifier, IEntity pItem) {

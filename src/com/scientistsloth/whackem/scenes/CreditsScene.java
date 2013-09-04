@@ -52,8 +52,8 @@ public class CreditsScene extends Scene {
 		// Add return option at the bottom right corner of the screen
 		Font font = ResourceManager.getInstance().mFont;
 		
-		float x = MainActivity.WIDTH - 180;
-		float y = font.getLineHeight();
+		float x = MainActivity.WIDTH - 250;
+		float y = font.getLineHeight() + 40;
 		
 		final Text returnOption = new Text(x, y, font, MENU_BACK_STRING, engine.getVertexBufferObjectManager());
 		final Sprite a_button = new Sprite(x-30, y, 65, 80, ResourceManager.getInstance().mO_BUTTON, engine.getVertexBufferObjectManager());
@@ -100,8 +100,8 @@ public class CreditsScene extends Scene {
 			y = addToList(titles[i],names[i], allLines, x, y);
 		}
 		
-		Log.d("All lines - font height", "" + font.getLineHeight());
-		for (Entity e : allLines)	Log.d("All Lines", "" + e.getY());
+//		Log.d("All lines - font height", "" + font.getLineHeight());
+//		for (Entity e : allLines)	Log.d("All Lines", "" + e.getY());
 		
 		// include background
 		backgroundSprite = new Sprite(MainActivity.WIDTH / 2 , MainActivity.HEIGHT/2,MainActivity.WIDTH, MainActivity.HEIGHT, ResourceManager.getInstance().mMenuBackgroundTextureRegion, engine.getVertexBufferObjectManager());
