@@ -130,9 +130,9 @@ public class ResourceManager {
 		mGameHolesRegion3 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "background/bg_layer2.png", 0, 0); textureAtlas.load();
 		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 1280, 720, TextureOptions.DEFAULT);
 		mGameHolesRegion4 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "background/bg_layer4.png", 0, 0); textureAtlas.load();
-		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 1280, 720, TextureOptions.BILINEAR);
+		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 260, 148, TextureOptions.BILINEAR);
 		mGameHoleSelector = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "foreground/selection.png", 0, 0); textureAtlas.load();
-		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 1280, 720, TextureOptions.BILINEAR);
+		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 260, 148, TextureOptions.BILINEAR);
 		mGameHoleSelectorAlpha = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "foreground/selection_alpha.png", 0, 0); textureAtlas.load();
 		textureAtlas = new BitmapTextureAtlas(pEngine.getTextureManager(), 1280, 720, TextureOptions.DEFAULT);
 		mFakeBackground = BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, pContext, "background/falseBackground.png", 0, 0); textureAtlas.load();
