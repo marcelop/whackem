@@ -325,7 +325,7 @@ public class GameScene extends Scene {
 		attachChild(new Sprite((MainActivity.WIDTH / 2)-7, (MainActivity.HEIGHT/4)-180, 642, 2*MainActivity.HEIGHT/2, ResourceManager.getInstance().mGameDirtRegion, mEngine.getVertexBufferObjectManager()));
 
 		//Layer 3
-		attachChild(new Sprite(MainActivity.WIDTH / 2, MainActivity.HEIGHT/2, MainActivity.WIDTH, MainActivity.HEIGHT, ResourceManager.getInstance().mGameHolesRegion3, mEngine.getVertexBufferObjectManager()));
+		attachChild(new Sprite(MainActivity.WIDTH / 2 -11, 104 +72+144, 653, 144, ResourceManager.getInstance().mGameHolesRegion3, mEngine.getVertexBufferObjectManager()));
 
 		for (MoleInstance data : moles[1])
 			attachChild(data.moleSprite);
@@ -334,13 +334,13 @@ public class GameScene extends Scene {
 		attachChild(new Sprite((MainActivity.WIDTH / 2)-7, (MainActivity.HEIGHT/4)-380, 642, 2*MainActivity.HEIGHT/2, ResourceManager.getInstance().mGameDirtRegion, mEngine.getVertexBufferObjectManager()));
 
 		//Layer 2
-		attachChild(new Sprite(MainActivity.WIDTH / 2, MainActivity.HEIGHT/2, MainActivity.WIDTH, MainActivity.HEIGHT, ResourceManager.getInstance().mGameHolesRegion2, mEngine.getVertexBufferObjectManager()));
+		attachChild(new Sprite(MainActivity.WIDTH / 2  -11, 104 + 72, 653, 144, ResourceManager.getInstance().mGameHolesRegion2, mEngine.getVertexBufferObjectManager()));
 
 		for (MoleInstance data : moles[2])
 			attachChild(data.moleSprite);
 
 		//Layer 1
-		attachChild(new Sprite(MainActivity.WIDTH / 2, MainActivity.HEIGHT/2, MainActivity.WIDTH, MainActivity.HEIGHT, ResourceManager.getInstance().mGameHolesRegion1, mEngine.getVertexBufferObjectManager()));
+		attachChild(new Sprite(MainActivity.WIDTH / 2 -9, 55, 668, 110, ResourceManager.getInstance().mGameHolesRegion1, mEngine.getVertexBufferObjectManager()));
 
 
 		//Hole Selectors
