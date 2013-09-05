@@ -187,8 +187,8 @@ public class EndLevelMenu extends Entity {
 			mLevelStatsText = new Text(MainActivity.WIDTH/2, MainActivity.HEIGHT / 8, ResourceManager.getInstance().mFont, 
 					"Missed Moles: " + GameManager.getInstance().mMissedMoles + "\n" +
 					"Moles Hit: " + GameManager.getInstance().mMoleHitCountThisLevel + "\n" +
-					"Total Accuracy: " + GameManager.getInstance().getAccuracy() + "\n" +
-					"Level Accuracy: " + GameManager.getInstance().getAccuracyThisLevel() + "\n"
+					"Total Accuracy: " + GameManager.getInstance().getAccuracy() + "%\n" +
+					"Level Accuracy: " + GameManager.getInstance().getAccuracyThisLevel() + "%\n"
 					, 1000, engine.getVertexBufferObjectManager());
 			
 			mBackground = new Sprite(MainActivity.WIDTH/2, MainActivity.HEIGHT / 10, 450, 508, ResourceManager.getInstance().mEndLevel, engine.getVertexBufferObjectManager());

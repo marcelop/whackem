@@ -60,7 +60,7 @@ public class GameManager {
 	private static final int INITIAL_HIT_COUNT = 0;
 	private static final int INITIAL_LEVEL = 0;
 
-	protected static final int UNLOCK_GAME_LEVEL = 3;
+	protected static final int UNLOCK_GAME_LEVEL = 10;
 	
 	/* The game manager should keep track of certain data involved in
 	 * our game. This particular game manager holds data for score, bird
@@ -248,7 +248,7 @@ public class GameManager {
 					if (mCurrentLevel > 3)
 					{
 						//add 3% chance of finding an ally mole every 2 levels. start with 10% at level 3
-						if (scene.mRand.nextInt(100) < 8 + ((int)(mCurrentLevel/2))*2)
+						if (scene.mRand.nextInt(100) < 10)
 							scene.moles[m][n].setMoleType(MoleType.ALLY);
 					}
 					scene.moles[m][n].makeMoleClimb();
