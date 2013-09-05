@@ -103,7 +103,12 @@ public class EndLevelMenu extends Entity {
 					GameManager.getInstance().resetGame();
 					MainActivity.activity.mGameScene.mEndLevelMenu.registerEntityModifier(new FadeOutModifier(0.25f, new IEntityModifierListener() {
 						@Override
-						public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {						}
+						public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {
+							int nbChildren = MainActivity.activity.mGameScene.mEndLevelMenu.getChildCount();
+							for (int i = 0; i < nbChildren; i++) {
+								MainActivity.activity.mGameScene.mEndLevelMenu.getChildByIndex(i).registerEntityModifier(new FadeOutModifier(0.5f));
+							}
+						}
 						@Override
 						public void onModifierFinished(IModifier<IEntity> pModifier, IEntity pItem) {
 							MainActivity.activity.mGameScene.detachChild(MainActivity.activity.mGameScene.mEndLevelMenu);
@@ -263,7 +268,12 @@ public class EndLevelMenu extends Entity {
 			{
 				MainActivity.activity.mGameScene.mEndLevelMenu.registerEntityModifier(new FadeOutModifier(0.25f, new IEntityModifierListener() {
 					@Override
-					public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {						}
+					public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {
+						int nbChildren = MainActivity.activity.mGameScene.mEndLevelMenu.getChildCount();
+						for (int i = 0; i < nbChildren; i++) {
+							MainActivity.activity.mGameScene.mEndLevelMenu.getChildByIndex(i).registerEntityModifier(new FadeOutModifier(0.5f));
+						}
+					}
 					@Override
 					public void onModifierFinished(IModifier<IEntity> pModifier, IEntity pItem) {
 						MainActivity.activity.mGameScene.detachChild(MainActivity.activity.mGameScene.mEndLevelMenu);
